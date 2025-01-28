@@ -14,7 +14,7 @@ class RegisterController extends Controller
 {
     use RegistersUsers;
 
-    protected $redirectTo = '/email/verify';
+    protected $redirectTo = '/login';
 
     public function __construct()
     {
