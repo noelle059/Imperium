@@ -32,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'emails_verified_at',
+        'email_verified_at', // This should match the database column name
     ];
 
     /**
@@ -51,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $casts = [
-        'emails_verified_at' => 'timestamp',
+        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -60,11 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
      * @return bool
      */
     public function markEmailAsVerified()
-    {
-        return $this->forceFill([
-            'emails_verified_at' => $this->freshTimestamp(), // This should set the timestamp
-        ])->save();
-    }
+{
+    return $this->forceFill([
+        'email_verified_at' => now(),
+    ])->save();
+}
+
 
     /**
      * Determine if the user has verified their email address.
@@ -73,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasVerifiedEmail()
     {
-        return $this->emails_verified_at !== null;
+        return $this->email_verified_at !== null;
     }
 
     /**

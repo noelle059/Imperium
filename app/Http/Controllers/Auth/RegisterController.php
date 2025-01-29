@@ -14,7 +14,7 @@ class RegisterController extends Controller
 {
     use RegistersUsers;
 
-    protected $redirectTo = '/login';
+    protected $redirectTo = '/email/verify';
 
     public function __construct()
     {
@@ -53,6 +53,7 @@ class RegisterController extends Controller
     $this->guard()->login($user);
 
     // Redirect to verification notice
-    return redirect(route('verification.notice'));
+    return redirect()->route('login')->with('status', 'Registration successful! Please log in.');
+
 }
 }

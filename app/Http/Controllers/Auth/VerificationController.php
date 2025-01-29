@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\User; // Import the User model
 
 class VerificationController extends Controller
 {
@@ -26,28 +27,24 @@ class VerificationController extends Controller
     {
         // Log the verification attempt
         Log::info('Verification attempt for user ID: ' . $request->id);
-    
+
         // Find the user
         $user = User::findOrFail($request->id);
-    
+
         // Check if the email is already verified
         if ($user->hasVerifiedEmail()) {
             Log::info('User  email already verified: ' . $user->email);
             return redirect($this->redirectTo);
         }
-    
-        // Verify the email
+
+        // Verify the email and set the verification timestamp
         if ($user->markEmailAsVerified()) {
-            // Manually update emails_verified_at
-            $user->emails_verified_at = now(); // This should set the timestamp
-            $user->save(); // Save the user to the database
-    
             Log::info('User  email verified successfully: ' . $user->email);
         } else {
             Log::error('Failed to mark email as verified for user: ' . $user->email);
         }
-    
-        // Redirect to dashboard
+
+        // Redirect to the dashboard
         return redirect($this->redirectTo)->with('status', 'Email verified successfully!');
     }
 

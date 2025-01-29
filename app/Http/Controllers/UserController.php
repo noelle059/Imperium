@@ -7,8 +7,9 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function insertUser(Request $request)
+    public function insertUser (Request $request)
     {
+        // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:255|regex:/^[\p{L} .\'-]+$/u',
             'email' => 'required|email|unique:users,email',
@@ -22,17 +23,13 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            // 'emails_verified_at' => null, // No need to set this during registration
         ]);
     
         // Send email verification notification
         $user->sendEmailVerificationNotification();
     
-        return redirect('/email-verification')->with('message', 'User created! Please verify your email.');
+        // Redirect to login with a message
+        return redirect('/login')->with('message', 'User  created! Please verify your email.');
     }
-    
 }
-
-
-
-
-
