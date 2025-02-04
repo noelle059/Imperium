@@ -1,47 +1,116 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="{{ asset('scripts/login.js') }}" defer></script>
+</head>
+<body>
+<section>
+    <div class="container">
+        <div class="user signinBx">
+            <div class="imgBx"><img src="images/IMPERIUM_ICON.png" alt="" /></div>
+            <div class="formBx">
+                <form id="loginForm" action="" onsubmit="return validateLoginForm()">
+                    <h2>CLASSROOM AUTOMATION & MANAGEMENT SYSTEM</h2>
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" placeholder="Username" oninput="validateUsername(this)" required>
+                        <span id="usernameError" class="error-message"></span>
+                        <span class="error-icon">&#9888;</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" oninput="validatePassword(this)" required>
+                        <span id="passwordError" class="error-message"></span>
+                        <span class="error-icon">&#9888;</span>  
+                        <button id="togglePassword" type="button">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <input type="submit" id="loginBtn" value="Login" />
+                    <div>
+                        <a href="{{ url('auth/google') }}" class="google-btn">Login using Google</a>        
+                    </div>
+                    <p class="signup">
+                        Don't have an account? 
+                        <a href="#" onclick="toggleForm();">Register Now.</a>
+                    </p>
+                    <div class="flex items-center justify-end mt-4">
+    @if (Route::has('password.request'))
+        <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+            {{ __('Forgot your password?') }}
+        </a>
+    @endif
+</div>
+                </form>
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="user signupBx">
+            <div class="formBx">
+                <form action="{{ route('register') }}" method="POST" onsubmit="return validateSignupForm()">
+                    @csrf
+                    <h2>Create an account</h2>
+                    <div class="form-group">
+                        <input type="text" id="signupName" name="name" placeholder="First Name" required>
+                        <span id="signupNameError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="signupLastName" name="last_name" placeholder="Last Name" required>
+                        <span id="signupLastNameError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="signupEmail" name="email" placeholder="Email Address" required>
+                        <span id="signupEmailError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="signupContactNumber" name="contact_number" placeholder="Contact Number" required>
+                        <span id="signupContactNumberError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signupPassword" name="password" placeholder="Password" required>
+                        <span id="signupPasswordError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signupConfirmPassword" name="password_confirmation" placeholder="Confirm Password" required>
+                        <span id="signupConfirmPasswordError" class="error-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="6LdSlMsqAAAAAOSck4VmalLxW2CpjG3vpmaC7SUe"></div>
+                        <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
+                        <div id="recaptcha-warning" class="text-red-500 mt-2 hidden"></div>
+                    </div>
+                    <input type="submit" value="Register" class="btn" />
+                    <p class="signup">
+                            Already have an account ?
+                            <a href="#" onclick="toggleForm();">Sign in.</a>
+                        </p>
+                </form>
+            </div>
+            <div class="imgBx"><img src="images/SIGNUP_ICON.png" alt="" /></div>
         </div>
+    </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+
+</section>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+        function validateRecaptcha() {
+            var response = grecaptcha.getResponse();
+            var warning = document.getElementById('recaptcha-warning');
+
+            if (response.length === 0) {
+                warning.classList.remove('hidden'); // Show warning message
+                return false; // Prevent form submission
+            } else {
+                warning.classList.add('hidden'); // Hide warning message
+                return true; // Allow form submission
+            }
+        }
+    </script>
+</body>
+</html>

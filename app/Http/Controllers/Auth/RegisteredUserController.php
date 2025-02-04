@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -34,31 +36,54 @@ class RegisteredUserController extends Controller
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[\p{L} ]+$/u' // Ensure the name contains only letters and spaces
+                'regex:/^[\p{L} ]+$/u' 
             ],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'last_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\p{L} ]+$/u' 
+            ],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
             'contact_number'=> [
                 'required',
                 'string',
-                'size:11', // Ensure the length is exactly 11
-                'regex:/^09[0-9]{9}$/' // Ensure it starts with 09 and is followed by 9 digits
-            ], // Add this line
-
+                'size:11', 
+                'regex:/^09[0-9]{9}$/',
+                'unique:'.User ::class,
+            ],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'g-recaptcha-response' => 'required', // Validate the reCAPTCHA response
         ]);
-
+    
+        // Verify the reCAPTCHA response
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+        ]);
+    
+        $responseBody = json_decode($response->getBody());
+    
+        // Log the response for debugging
+        \Log::info('reCAPTCHA response:', (array) $responseBody);
+    
+        if (!$responseBody->success) {
+            return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA verification failed.']);
+        }
+    
+        // Proceed with user registration
         $user = User::create([
             'name' => $request->name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'contact_number' => $request->contact_number, // Add this line
-
+            'contact_number' => $request->contact_number,
         ]);
-
+    
         event(new Registered($user));
-
+    
         Auth::login($user);
-
+    
         return redirect(route('dashboard', absolute: false));
     }
 }
