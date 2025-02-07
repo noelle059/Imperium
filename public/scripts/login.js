@@ -51,12 +51,17 @@ function continueWithGoogle() {
   console.log("Continue with Google button clicked!");
 }
 
-function validateSignupUsername(input) {
-  const username = input.value;
-  const errorSpan = document.getElementById('signupUsernameError');
+function validateSignupName(input) {
+  const name = input.value;
+  const errorSpan = document.getElementById('signupNameError');
 
-  if (username === '') {
-      errorSpan.textContent = "Username is required.";
+  if (name === '') {
+      errorSpan.textContent = "First name is required.";
+      errorSpan.style.display = 'block';
+      input.classList.add('invalid');
+      return false;
+  } else if (!/^[a-zA-Z\s]*$/.test(name)) {
+      errorSpan.textContent = "First name can only contain letters and spaces.";
       errorSpan.style.display = 'block';
       input.classList.add('invalid');
       return false;
@@ -67,6 +72,48 @@ function validateSignupUsername(input) {
       return true;
   }
 }
+
+document.getElementById('signupName').addEventListener('keypress', function(event) {
+  const charCode = (event.which) ? event.which : event.keyCode;
+
+  if (charCode >= 48 && charCode <= 57) {
+      event.preventDefault();
+  }
+});
+
+
+function validateSignupLastName(input) {
+  const lastName = input.value;
+  const errorSpan = document.getElementById('signupLastNameError');
+
+  if (lastName === '') {
+      errorSpan.textContent = "Last name is required.";
+      errorSpan.style.display = 'block';
+      input.classList.add('invalid');
+      return false;
+  } else if (!/^[a-zA-Z\s]*$/.test(lastName)) {
+      errorSpan.textContent = "Last name can only contain letters and spaces.";
+      errorSpan.style.display = 'block';
+      input.classList.add('invalid');
+      return false;
+  } else {
+      errorSpan.textContent = "";
+      errorSpan.style.display = 'none';
+      input.classList.remove('invalid');
+      return true;
+  }
+}
+
+document.getElementById('signupLastName').addEventListener('keypress', function(event) {
+  const charCode = (event.which) ? event.which : event.keyCode;
+  
+  if (charCode >= 48 && charCode <= 57) {
+      event.preventDefault();
+  }
+});
+
+
+
 
 function validateSignupEmail(input) {
   const email = input.value;
@@ -80,6 +127,31 @@ function validateSignupEmail(input) {
       return false;
   } else if (!emailRegex.test(email)) {
       errorSpan.textContent = "Invalid email format.";
+      errorSpan.style.display = 'block';
+      input.classList.add('invalid');
+      return false;
+  } else {
+      errorSpan.textContent = "";
+      errorSpan.style.display = 'none';
+      input.classList.remove('invalid');
+      return true;
+  }
+}
+
+function validateSignupContactNumber(input) {
+  const contactNumber = input.value;
+  const errorSpan = document.getElementById('signupContactNumberError');
+
+  const cleanedNumber = contactNumber.replace(/[^0-9]/g, '');
+  input.value = cleanedNumber; 
+
+  if (cleanedNumber === '') {
+      errorSpan.textContent = "Contact number is required.";
+      errorSpan.style.display = 'block';
+      input.classList.add('invalid');
+      return false;
+  } else if (cleanedNumber.length < 7) { 
+      errorSpan.textContent = "Contact number must be at least 7 digits.";
       errorSpan.style.display = 'block';
       input.classList.add('invalid');
       return false;

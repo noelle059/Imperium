@@ -56,28 +56,38 @@
                     @csrf
                     <h2>Create an account</h2>
                     <div class="form-group">
-                        <input type="text" id="signupName" name="name" placeholder="First Name" required>
-                        <span id="signupNameError" class="error-message"></span>
+                        <input type="text" id="signupName" name="name" placeholder="First Name" oninput="validateSignupName(this)" required>
+                             <span id="signupNameError" class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="signupLastName" name="last_name" placeholder="Last Name" required>
-                        <span id="signupLastNameError" class="error-message"></span>
+                       <input type="text" id="signupLastName" name="last_name" placeholder="Last Name" oninput="validateSignupLastName(this)">
+                            <span id="signupLastNameError" class="error-message"></span>
+                            <span class="error-icon">&#9888;</span>
                     </div>
                     <div class="form-group">
-                        <input type="email" id="signupEmail" name="email" placeholder="Email Address" required>
-                        <span id="signupEmailError" class="error-message"></span>
+                        <input type="email" id="signupEmail" name="email" placeholder="Email Address" oninput="validateSignupEmail(this)">
+                            <span id="signupEmailError" class="error-message"></span>
+                            <span class="error-icon">&#9888;</span>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="signupContactNumber" name="contact_number" placeholder="Contact Number" required>
-                        <span id="signupContactNumberError" class="error-message"></span>
+                        <input type="text" id="signupContactNumber" name="contact_number" placeholder="Contact Number" oninput="validateSignupContactNumber(this)" required>
+                            <span id="signupContactNumberError" class="error-message"></span>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="signupPassword" name="password" placeholder="Password" required>
-                        <span id="signupPasswordError" class="error-message"></span>
+                        <input type="password" id="signupPassword" name="password" placeholder="Password"  oninput="validateSignupPassword(this)">
+                            <span id="signupPasswordError" class="error-message"></span>
+                            <span class="error-icon">&#9888;</span>
+                            <button id="toggleSignupPassword" type="button">
+                                <i class="fas fa-eye" id="toggleSignupPasswordIcon"></i>
+                            </button>
                     </div>
                     <div class="form-group">
-                        <input type="password" id="signupConfirmPassword" name="password_confirmation" placeholder="Confirm Password" required>
-                        <span id="signupConfirmPasswordError" class="error-message"></span>
+                        <input type="password" id="signupConfirmPassword" name="password_confirmation" placeholder="Confirm Password" oninput="validateSignupConfirmPassword(this)">
+                            <span id="signupConfirmPasswordError" class="error-message"></span>
+                            <span class="error-icon">&#9888;</span>
+                            <button id="toggleSignupConfirmPassword" type="button">
+                                <i class="fas fa-eye" id="toggleSignupConfirmPasswordIcon"></i>
+                            </button>
                     </div>
                     <div class="form-group">
                         <div class="g-recaptcha" data-sitekey="6LdSlMsqAAAAAOSck4VmalLxW2CpjG3vpmaC7SUe"></div>
