@@ -23,8 +23,8 @@ section {
 
 section .container {
   position: relative;
-  width: 1000px;
-  height: 700px;
+  width: 900px;
+  height: 550px;
   background: #fff;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -70,13 +70,13 @@ section .container .user .formBx {
 }
 
 section .container .user .formBx form h2 {
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: #555;
 }
 
@@ -136,14 +136,13 @@ section .container .user .formBx form h2 {
 section .container .user .formBx form input {
   position: relative;
   width: 100%;
-  padding: 13px;
+  padding: 8px;
   background: #f5f5f5;
   color: #333;
   border: none;
   outline: none;
   border-radius: 7px;
   box-shadow: none;
-  margin: 4px 0;
   font-size: 15px;
   letter-spacing: 1px;
   font-weight: 300;
@@ -179,25 +178,9 @@ section .container .user .formBx form input {
 
 
 .container .user .formBx form input[type='submit'] {
-  max-width: 100%;
+  display: inline-block;
+  width: 100%; 
   background: #9ABA2F;
-  color: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  transition: 0.5s;
-  border-radius: 15px;
-}
-
-.container .user .formBx form input[type='submit']:hover {
-  background: #f5f5f5; 
-  color: #809927;
-}
-
-.google-btn {
-  width: 100%;
-  background: #9ABA2F; 
   text-align: center;
   color: #fff;
   cursor: pointer;
@@ -207,7 +190,31 @@ section .container .user .formBx form input {
   transition: 0.5s;
   border-radius: 15px;
   border: none;
-  padding: 10px 15px; 
+  padding: 10px 15px;
+  text-decoration: none; 
+}
+
+.container .user .formBx form input[type='submit']:hover {
+  background: #f5f5f5; 
+  color: #809927;
+}
+
+.google-btn {
+  display: inline-block;
+  width: 100%; 
+  background: #9ABA2F;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: 0.5s;
+  border-radius: 15px;
+  border: none;
+  padding: 10px 15px;
+  text-decoration: none; 
+  margin-top: 10px;
 }
 
 .google-btn:hover {
@@ -217,7 +224,7 @@ section .container .user .formBx form input {
 
 section .container .user .formBx form .signup {
   position: relative;
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 12px;
   letter-spacing: 1px;
   color: #555;
@@ -296,15 +303,15 @@ section .container.active .signinBx .imgBx {
 /* FORGOT PASSWORD BUTTON */
 .forgot-password {
   text-align: center; 
-  margin-top: 10px; 
+  margin-top: 5px; 
   width: 100%; 
 }
 
 .forgot-password a {
   color: #555;
   text-decoration: none;
-  font-size: 12px; 
-  font-weight: 600; 
+  font-size: 15px; 
+  font-weight: 500; 
 }
 
 .forgot-password a:hover {
