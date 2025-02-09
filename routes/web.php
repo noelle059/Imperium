@@ -6,17 +6,17 @@ use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/landingpage', function () {
+    return view('landingpage');
 });
-
-Route::get('/', function () {
-    return view('homepage');
-})->name('homepage');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/landingpage', function () {
+//     return view('landingpage');
+// })->middleware(['auth', 'verified'])->name('landingpage');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
