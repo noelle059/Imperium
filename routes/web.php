@@ -6,8 +6,12 @@ use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/landingpage', function () {
-    return view('landingpage');
+Route::get('/main', function () {
+    return view('main');
+});
+
+Route::get('/user/home', function () {
+    return view('user.home');
 });
 
 Route::get('/dashboard', function () {
@@ -28,6 +32,10 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
 // User dashboard route
 Route::get('/user/dashboard', function () {

@@ -11,7 +11,7 @@
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",
-        "bootstrap": "^5.2.3",
+        "bootstrap": "^5.3.3",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.5.1",
@@ -20,7 +20,6 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
-        "bootstrap": "^5.3.3",
         "flowbite": "^3.1.2"
     }
 }
