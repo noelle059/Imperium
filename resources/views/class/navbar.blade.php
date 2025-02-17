@@ -8,8 +8,8 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-                    <li class="nav-item"><a class="nav-link active mx-lg-2" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link active mx-lg-2" href="#carouselExampleIndicators">Home</a></li>
+                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#">Contact</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#">Insights</a></li>
@@ -19,7 +19,7 @@
                 </ul>
             </div>
         </div>
-        <a href="{{ route('login') }}" class="login-button d-none d-lg-block">Login</a>  
+        <a href="{{ route('login') }}" class="login-button d-none d-lg-block">LOGIN</a>  
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

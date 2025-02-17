@@ -6,8 +6,8 @@ use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/main', function () {
-    return view('main');
+Route::get('/homepage', function () {
+    return view('homepage');
 });
 
 Route::get('/user/home', function () {

@@ -1,22 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
-@import url('mediaquery.css');
+@import url('main_mediaquery.css');
+
 
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: (122, 122, 122, 0.363);
+    padding-top: 60px;
 }
 
 .offcanvas-body a{
-    font-weight: 800;
-    font-size: 20px;
+    font-size: 22px;
 }
 
+.offcanvas-body a:hover{
+    font-weight: 700;
+}
+
+
 .navbar{
+    position: fixed;
     background-color: #ffffff;
     height: 80px;
-    margin: 20px;
-    border-radius: 16px;
+    border-radius: 2px;
     padding: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
 }
 
 .navbar-brand{
@@ -35,25 +42,26 @@ body {
 
 /* Login button styles */
 .login-button {
-    background-color: #9aba2f;
+    background-color: #47773f;
     color: #fff;
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 500;
     padding: 8px 20px;
-    border-radius: 50px;
+    border-radius: 10px;
     text-decoration: none;
     margin-right: 100px;
+    width: 130px;
     transition: 0.3s background-color;
+    text-align: center;
 }
 
 /* Hover effect */
 .login-button:hover {
     background-color: #f8f8f8;
-    color: #9aba2f;
-    border: 3px solid #9aba2f;
+    color: #47773f;
+    border: 3px solid #47773f;
 }
 
-/* Para mawala ang margin sa loob ng menu */
 .offcanvas .login-button {
     display: block;
     text-align: center;
@@ -81,7 +89,7 @@ body {
 }
 
 .nav-link:hover, .nav-link.active {
-    color: #9aba2f;
+    color: #47773f;
 }
 
 
@@ -93,7 +101,7 @@ body {
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background-color: #009970;
+    background-color: #47773f;
     visibility: hidden;
     transition: 0.3s ease-in-out;
 }
@@ -126,32 +134,25 @@ body {
     }
 }
 
-.hero-section {
-    background-color: #e2e2e2;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 70px;
-}
-
-.hero-section::before {
-    background-color: #e2e2e2;
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
 
 /* PREV & NEXT BUTTON */
-.carousel-control-prev-icon,
+/* .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: brightness(0); /* Makes the icon black */
-}
+    filter: brightness(0); 
+    left: -10px;
+} */
 
 .carousel-indicators button {
-    filter: brightness(0);
+    filter: brightness(0.3);
 }
 
+#carouselExampleIndicators img {
+    max-height: 870px; 
+    width: auto; 
+    object-fit: contain; 
+}
+
+#carouselExampleIndicators {
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
