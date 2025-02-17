@@ -19,10 +19,6 @@
 
 <body>
     @include('class.navbar')
-
-
-    <section class="hero-section" ></section>
-
     @include('class.carousel')
     @include('class.about')
 
