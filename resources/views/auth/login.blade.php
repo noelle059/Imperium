@@ -1,3 +1,10 @@
+@if(session('message'))
+    <div class="alert alert-info" id="floating-alert">
+        {{ session('message') }}
+    </div>
+@endif
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +22,11 @@
         <div class="user signinBx">
             <div class="imgBx"><img src="images/IMPERIUM_ICON.png" alt="" /></div>
             <div class="formBx">
-                <form id="loginForm" action="" onsubmit="return validateLoginForm()">
+                <form id="loginForm" action="{{ route('login') }}" method="POST" onsubmit="return validateLoginForm()">
+                @csrf
                     <h2>CLASSROOM AUTOMATION & MANAGEMENT SYSTEM</h2>
                     <div class="form-group">
-                        <input type="text" id="username" name="username" placeholder="Username" oninput="validateUsername(this)" required>
+                        <input type="text" id="email" name="email" placeholder="Email" oninput="validateUsername(this)" required>
                         <span id="usernameError" class="error-message"></span>
                         <span class="error-icon">&#9888;</span>
                     </div>
@@ -125,5 +133,8 @@
             }
         }
     </script>
+
+
+
 </body>
 </html>

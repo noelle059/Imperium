@@ -35,23 +35,27 @@ class GoogleController extends Controller
                     // You can add other fields if necessary
                 ]);
 
-                // Log the user in
-                Auth::login($user);
-
-                // Redirect to a form to collect the contact number
-                return redirect()->route('google.phone', ['user' => $user->id]);
-            }
-
-            // Log the user in if they already exist
+                  // Log the user in
             Auth::login($user);
 
-            // Redirect to the desired route after login
-            return redirect()->route('dashboard'); // Change 'dashboard' to your desired route
-
-        } catch (Exception $e) {
-            // Handle the error (e.g., log it, show an error message, etc.)
-            return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
+            // Redirect to a form to collect the contact number
+            return redirect()->route('google.phone', ['user' => $user->id]);
         }
+
+        // Log the user in if they already exist
+        Auth::login($user);
+
+        // Check if the user is an admin and redirect accordingly
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+        } else {
+            return redirect()->route('dashboard'); // Change 'dashboard' to your desired route
+        }
+
+    } catch (Exception $e) {
+        // Handle the error (e.g., log it, show an error message, etc.)
+        return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
+    }
     }
 
     public function showPhoneForm(Request $request)
@@ -81,6 +85,6 @@ class GoogleController extends Controller
         Auth::login($user);
 
         // Redirect to the desired route after login
-        return redirect()->route('dashboard'); // Change 'dashboard' to your desired route
+        return redirect()->route('main'); // Change 'dashboard' to your desired route
     }
 }

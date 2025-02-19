@@ -6,7 +6,7 @@ use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/homepage', function () {
+Route::get('/', function () {
     return view('homepage');
 });
 
@@ -33,7 +33,21 @@ require __DIR__.'/auth.php';
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+// Modify the login route to check if the user is already authenticated
 Route::get('/login', function () {
+    if (Auth::check()) {
+        // Check if the user is verified
+        if (!Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
+        }
+
+        // Check if the user is an admin
+        if (Auth::user()->is_admin) {
+            return redirect()->route('admin.dashboard')->with('alert', "Already logged in as an admin, logout to use a different account.");
+        } else {
+            return redirect()->route('user.dashboard')->with('alert', "Already logged in, logout to use a different account.");
+        }
+    }
     return view('auth.login');
 })->name('login');
 
@@ -53,11 +67,9 @@ Route::get('/admin/dashboard', function () {
     return redirect()->route('user.dashboard')->with('error', 'You do not have access to this page.');
 })->name('admin.dashboard');
 
-
-//Google Sign-in
+// Google Sign-in
 Route::get('auth/google', [GoogleController::class, 'googlePage']); // Corrected method name
 Route::get('auth/google/callback', [GoogleController::class, 'googleCallback']); // Corrected method name
 
 Route::get('auth/google/phone', [GoogleController::class, 'showPhoneForm'])->name('google.phone');
 Route::post('auth/google/phone', [GoogleController::class, 'storePhone'])->name('google.phone.store');
-
