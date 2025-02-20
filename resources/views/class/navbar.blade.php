@@ -12,7 +12,7 @@
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#about">About</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#feedback">Feedback</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#">Insights</a></li>
-                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#footer">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#contact">Contact</a></li>
                     <li class="nav-item d-lg-none">
                         <a href="{{ route('login') }}" class="login-button">Login</a>
                     </li>
