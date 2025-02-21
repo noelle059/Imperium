@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Signup</title>
+    <title>Account</title>
+    <link rel="icon" type="image/svg" href="{{ asset('images/FAVICON_1.png') }}">
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('scripts/login.js') }}" defer></script>
@@ -106,7 +107,7 @@
                         </p>
                 </form>
             </div>
-            <div class="imgBx"><img src="images/CSD.png" alt="" /></div>
+            <div class="imgBx"><img src="images/CSD.svg" alt="" /></div>
         </div>
     </div>
 

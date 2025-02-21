@@ -4,16 +4,18 @@
 .about-section {
     background-image: url('/images/ABOUT_BACKGROUND.svg');
     background-size: cover;
-    background-position: center; 
+    background-position: top; /* O kaya 'center top' */
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 50px 10%;
     background-color: #ffffff;
     position: relative;
-    min-height: 800px; 
+    min-height: 100vh; /* Mas mataas para hindi ma-crop */
     padding-top: 120px;
 }
+
 
 .about-text {
     max-width: 50%;
