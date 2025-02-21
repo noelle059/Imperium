@@ -1,10 +1,3 @@
-@if(session('message'))
-    <div class="alert alert-info" id="floating-alert">
-        {{ session('message') }}
-    </div>
-@endif
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +8,12 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="{{ asset('scripts/login.js') }}" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+<x-floating-alert :message="session('alert')" />
+
 <section>
     <div class="container">
         <div class="user signinBx">

@@ -10,9 +10,9 @@
 
 
     <!-- Firebase SDK (Modular approach for v9 and above) -->
-    <script type="module" src="script.js"></script>
+    <script type="module" src="/script.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 
 </head>
 <body>
@@ -112,7 +112,7 @@
 
 
  <!--PATH: PUBLIC: BUTTON JS -->
- <script src="button.js"></script>
+ <script src="/button.js"></script>
 
 
  <!-- Bootstrap Bundle JS (Includes Popper) -->

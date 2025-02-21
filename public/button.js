@@ -96,16 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
     checkAndControl();
 });
 
-function toggleSwitch(switchId) {
-    const element = document.getElementById(switchId);
-    if (element) {
-        console.log(`Switch ${switchId} is now: ${element.checked}`);
-    } else {
-        console.warn(`Element with id ${switchId} not found.`);
-    }
-}
-
-
 
 function powerOnAll(button) {
     // Set all switches and outlet to on
