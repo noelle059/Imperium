@@ -19,6 +19,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+            <!-- Navbar -->
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -32,7 +33,12 @@
 
             <!-- Page Content -->
             <main>
+
+
             @yield('content')
+
+
+
             </main>
         </div>
     </body>
