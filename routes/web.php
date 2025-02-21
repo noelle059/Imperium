@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController; // Adjust this to your actual controller
@@ -23,7 +24,7 @@ Route::get('/user/home', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -34,7 +35,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Authentication routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
@@ -58,18 +59,30 @@ Route::get('/login', function () {
 
 // User dashboard route
 Route::get('/user/dashboard', function () {
+    // Check if the user is authenticated
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
+    }
+
+    // If the user is authenticated, return the user dashboard view
     return view('user.dashboard'); // Ensure this view exists
 })->name('user.dashboard');
+
 
 // Admin dashboard route with inline check
 Route::get('/admin/dashboard', function () {
     // Check if the user is authenticated and is an admin
+
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('alert', 'You must be logged in to access the admin dashboard.');
+    }
+    
     if (Auth::check() && Auth::user()->is_admin) {
         return view('admin.dashboard'); // Ensure this view exists
     }
 
     // If not an admin, redirect to the user dashboard or show an error
-    return redirect()->route('user.dashboard')->with('error', 'You do not have access to this page.');
+    return redirect()->route('user.dashboard')->with('alert', 'You do not have access to this page.');
 })->name('admin.dashboard');
 
 // Google Sign-in
