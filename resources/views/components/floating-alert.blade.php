@@ -2,8 +2,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
-                icon: 'info', // You can change this to 'success', 'error', etc.
-                title: 'Notification',
+                icon: 'warning', // You can change this to 'success', 'error', etc.
+                title: 'Warning',
                 text: '{{ $message }}',
                 confirmButtonText: 'OK'
             });

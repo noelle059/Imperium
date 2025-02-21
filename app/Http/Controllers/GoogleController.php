@@ -49,7 +49,7 @@ class GoogleController extends Controller
         if ($user->is_admin) {
             return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
         } else {
-            return redirect()->route('dashboard'); // Change 'dashboard' to your desired route
+            return redirect()->route('user.dashboard'); // Change 'dashboard' to your desired route
         }
 
     } catch (Exception $e) {
