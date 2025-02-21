@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController; // Adjust this to your actual controller
@@ -15,7 +16,7 @@ Route::get('/user/home', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route::get('/landingpage', function () {
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Authentication routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 

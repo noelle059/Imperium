@@ -17,11 +17,28 @@
                         <a href="{{ route('login') }}" class="login-button">Login</a>
                     </li>
                 </ul>
+
+                
             </div>
         </div>
         <a href="{{ route('login') }}" class="login-button d-none d-lg-block">LOGIN</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        
+        <div class="mt-3">
+            <a href="{{ route('profile.edit') }}" class="dropdown-item">Profile</a>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <a href="{{ route('logout') }}"
+                    class="dropdown-item"
+                    onclick="event.preventDefault(); this.closest('form').submit();">
+                    Log Out
+                </a>
+            </form>
+        </div>
+
     </div>
 </nav>

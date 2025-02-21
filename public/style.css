@@ -1,0 +1,129 @@
+/* Basic Reset and Styling */
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Card Styles */
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex; /* Use flexbox for horizontal layout */
+    align-items: center; /* Vertically align items in the card */
+    justify-content: space-between; /* Space out label and switch */
+}
+
+.card label {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #555;
+    margin-right: 15px; /* Space between label and switch */
+    flex-grow: 1; /* Allow label to take available space */
+}
+
+/* Switch Styles (Customizable) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px; /* Rounded corners */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%; /* Circular "button" */
+}
+
+input:checked + .slider {
+    background-color: #0e9b21b4; /* Active color */
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #063320;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* BUTTON  */
+
+/* Your CSS styles (as provided earlier) */
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    filter: brightness(1.1);
+}
+
+.button.active {
+    background-color: #cccccc;
+    filter: none;
+}
+
+.power-on-button {
+    background-color: #4caf50;
+}
+
+.power-off-button {
+    background-color: #f44336;
+}
+
+.power-off-button:hover:not(.active) {
+    filter: brightness(1.1);
+}
+
+.power-on-button:hover:not(.active) {
+    filter: brightness(1.1);
+}
