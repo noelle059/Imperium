@@ -1,3 +1,5 @@
+
+<x-floating-alert :message="session('alert')" />
 <!DOCTYPE html>
 <html lang="en">
 
