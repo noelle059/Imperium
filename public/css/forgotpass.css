@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap');
+
+body {
+    margin-top: 20px;
+    background-color: #f2f3f8;
+    position: relative;
+    min-height: 100vh;
+    background-image: url("../../images/CLASSROOM_BACKGROUND.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #F6FCF5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-family: Poppins, sans-serif !important;
+}
+
+/* Responsive Card */
+.card {
+    background-image: linear-gradient(to bottom, #a7d1ab, #c5ebac, #80a184);
+    margin-top: 0.1rem;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.08);
+    max-width: 500px;
+    width: 100%;
+    height: 410px !important; /* Fixed height */
+}
+
+.h2 {
+    font-family: Poppins, sans-serif !important;
+    margin-top: 25px;
+    font-size: 30px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 2px !important;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 5px;
+    color: #555 !important;
+}
+
+.form-control {
+    font-family: Poppins, sans-serif !important;
+    position: relative !important;
+    width: 100% !important;
+    padding: 8px !important;
+    background: #f5f5f5 !important;
+    color: #333 !important;
+    border-radius: 7px !important;
+    font-size: 15px !important;
+    letter-spacing: 1px !important;
+    font-weight: 300 !important;
+}
+
+/* Responsive Button */
+.btn-primary {
+    display: inline-block !important;
+    width: 100% !important;
+    background: #9ABA2F !important;
+    text-align: center !important;
+    color: #fff !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    transition: 0.5s !important;
+    border-radius: 15px !important;
+    border: none !important;
+    padding: 10px 15px !important;
+    text-decoration: none !important;
+    margin-bottom: 5px;
+}
+
+.btn-primary:hover {
+    background: #f5f5f5 !important;
+    color: #809927 !important;
+}
+
+/* Responsive Login Button */
+.login-button {
+    color: #555 !important;
+    text-decoration: none !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+.login-button:hover {
+    text-decoration: underline !important;
+    color: #f5f5f5 !important;
+}
+
+/* Responsive Design for Different Screen Sizes */
+@media screen and (max-width: 768px) {
+    .card {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .h2 {
+        font-size: 25px !important;
+    }
+
+    .form-control {
+        font-size: 14px !important;
+    }
+
+    .btn-primary {
+        font-size: 13px !important;
+        padding: 8px 12px !important;
+    }
+
+    .login-button {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .h2 {
+        font-size: 22px !important;
+    }
+
+    .form-control {
+        font-size: 13px !important;
+        padding: 6px !important;
+    }
+
+    .btn-primary {
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+
+    .login-button {
+        font-size: 13px !important;
+    }
+}
