@@ -17,7 +17,7 @@ Route::get('/forgotpass', function () {
     return view('forgotpass');
 });
 
-Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::get('/login', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/login', [RegisteredUserController::class, 'store'])->name('register.store');
 
 Route::get('/confirmpass', function () {
