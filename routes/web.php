@@ -7,7 +7,7 @@ use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\RegisteredUserController; //kaya ayaw gumana walang register sa routing HAHAHHAHAAHA
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -17,9 +17,8 @@ Route::get('/forgotpass', function () {
     return view('forgotpass');
 });
 
-Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
-
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/login', [RegisteredUserController::class, 'store'])->name('register.store');
 
 Route::get('/confirmpass', function () {
     return view('confirmpass');
@@ -72,6 +71,10 @@ Route::get('/user/dashboard', function () {
         return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
     }
 
+    if (!Auth::user()->hasVerifiedEmail()) {
+        return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
+    }
+
     // If the user is authenticated, return the user dashboard view
     return view('user.dashboard'); // Ensure this view exists
 })->name('user.dashboard');
@@ -87,6 +90,10 @@ Route::get('/admin/dashboard', function () {
     
     if (Auth::check() && Auth::user()->is_admin) {
         return view('admin.dashboard'); // Ensure this view exists
+    }
+
+    if (!Auth::user()->hasVerifiedEmail()) {
+        return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
     }
 
     // If not an admin, redirect to the user dashboard or show an error
