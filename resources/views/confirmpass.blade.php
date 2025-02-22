@@ -23,35 +23,34 @@
                             </p>
                         </div>
 
-                        <div class="card-body mb-4">
-                            <div class="m-sm-4">
-                                <form id="confirmPasswordForm">
-                                    <div class="form-group">
-                                        <label>New Password</label>
-                                        <div class="input-group">
-                                            <input id="password" class="form-control form-control-lg password-field" type="password" name="password" placeholder="Enter your new password" oninput="validateEnterNewPassword(this)" required>
-                                            <i class="fas fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
-                                        </div>
-                                        <span id="signupPasswordError" class="error-message"></span>
-                                    </div>
+                        <form id="confirmPasswordForm" action="{{ route('password.store') }}" method="POST">
+    @csrf
+    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+    <input type="hidden" name="email" value="{{ $request->email }}">
 
-                                    <div class="form-group">
-                                        <label>Confirm New Password</label>
-                                        <div class="input-group">
-                                            <input id="confirm-password" class="form-control form-control-lg password-field" type="password" name="confirm-password" placeholder="Re-enter your new password" oninput="validateConfirmNewPassword(this)" required>
-                                            <i class="fas fa-eye toggle-password" onclick="togglePassword('confirm-password', this)"></i>
-                                        </div>
-                                        <span id="signupConfirmPasswordError" class="error-message"></span>
-                                    </div>
+    <div class="form-group">
+        <label>New Password</label>
+        <div class="input-group">
+            <input id="password" class="form-control form-control-lg password-field" type="password" name="password" placeholder="Enter your new password" oninput="validateEnterNewPassword(this)" required>
+            <i class="fas fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+        </div>
+        <span id="signupPasswordError" class="error-message"></span>
+    </div>
 
-                                    <div class="text-center mt-3">
-                                        <button type="submit" id="confirmPasswordBtn" class="btn btn-lg btn-primary" disabled>Confirm Password</button>
-                                        <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
-                                    </div>
+    <div class="form-group">
+        <label>Confirm New Password</label>
+        <div class="input-group">
+            <input id="confirm-password" class="form-control form-control-lg password-field" type="password" name="password_confirmation" placeholder="Re-enter your new password" oninput="validateConfirmNewPassword(this)" required>
+            <i class="fas fa-eye toggle-password" onclick="togglePassword('confirm-password', this)"></i>
+        </div>
+        <span id="signupConfirmPasswordError" class="error-message"></span>
+    </div>
 
-                                </form>
-                            </div>
-                        </div>
+    <div class="text-center mt-3">
+        <button type="submit" id="confirmPasswordBtn" class="btn btn-lg btn-primary">Confirm Password</button>
+        <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
+    </div>
+</form>
                     </div>
                 </div>
             </div>

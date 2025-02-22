@@ -100,7 +100,7 @@
                         <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
                         <div id="recaptcha-warning" class="text-red-500 mt-2 hidden"></div>
                     </div>
-                    <input type="submit" value="Register" class="btn" />
+                    <input type="submit" value="Register" class="btn" /> 
                     <p class="signup">
                             Already have an account ?
                             <a href="#" onclick="toggleForm();">Sign in.</a>

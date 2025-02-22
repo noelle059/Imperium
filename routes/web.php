@@ -6,6 +6,8 @@ use App\Http\Controllers\AdminController; // Adjust this to your actual controll
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController; //kaya ayaw gumana walang register sa routing HAHAHHAHAAHA
 
 Route::get('/', function () {
     return view('homepage');
@@ -14,6 +16,10 @@ Route::get('/', function () {
 Route::get('/forgotpass', function () {
     return view('forgotpass');
 });
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+
 
 Route::get('/confirmpass', function () {
     return view('confirmpass');
@@ -27,6 +33,8 @@ Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register'); //try nyo magregister muna
+Route::post('/register', [RegisteredUserController::class, 'store']); //nastostore na sya 
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
