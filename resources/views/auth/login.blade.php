@@ -58,7 +58,7 @@
 
         <div class="user signupBx">
             <div class="formBx">
-            <form action="{{ route('login') }}" method="POST" onsubmit="return validateSignupForm()">
+            <form action="{{ route('register.store') }}" method="POST" onsubmit="return validateSignupForm()">
             @csrf
                     <h2>Create an account</h2>
                     <div class="form-group">
