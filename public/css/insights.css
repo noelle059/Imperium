@@ -29,6 +29,13 @@
     text-align: center;
 }
 
+.more-info-btn:hover{
+    background-color: #f8f8f8;
+    color: #47773f;
+    border: 2px solid #47773f;
+    text-decoration: none;
+}
+
 /* Responsiveness */
 @media (max-width: 1280px) {
     .more-info-btn {
