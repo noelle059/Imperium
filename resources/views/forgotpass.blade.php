@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset('css/forgotpass.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('scripts/forgotpass.js') }}" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="container h-100">
@@ -22,21 +24,6 @@
 
                         <div class="card-body">
                             <div class="m-sm-4">
-                            @if (session('status'))
-                                        <div class="alert alert-success">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
-
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
                                 <form id="emailForm" method="POST" action="{{ route('password.email') }}">
                                     @csrf
                                     <div class="form-group">
@@ -56,5 +43,31 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if (session('status'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('status') }}',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        @if ($errors->any())
+            let errorMessages = '';
+            @foreach ($errors->all() as $error)
+                errorMessages += 'We cant find a user with that email address.';
+            @endforeach
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessages,
+                confirmButtonText: 'OK'
+            });
+        @endif
+    });
+</script>
 </body>
 </html>

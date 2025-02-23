@@ -85,6 +85,6 @@ class GoogleController extends Controller
         Auth::login($user);
 
         // Redirect to the desired route after login
-        return redirect()->route('main'); // Change 'dashboard' to your desired route
+        return redirect()->route('user.dashboard'); // Change 'dashboard' to your desired route
     }
 }
