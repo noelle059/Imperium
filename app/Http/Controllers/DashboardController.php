@@ -12,15 +12,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Check if the user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
         }
 
-        // Fetch all rooms from the database
-        $rooms = Room::all();
+        if (!Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
+        }
 
-        // Pass the rooms data to the view
+        $rooms = Room::all(); // Fetch rooms if needed
         return view('user.dashboard', compact('rooms'));
     }
 
