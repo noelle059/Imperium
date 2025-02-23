@@ -79,6 +79,18 @@
             color: #809927 !important;
         }
 
+        .login-button {
+            color: #555 !important;
+            text-decoration: none !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+        }
+
+        .login-button:hover {
+            text-decoration: underline !important;
+            color: #f5f5f5 !important;
+        }
+
         @media screen and (max-width: 768px) {
             .card {
                 width: 90%;
@@ -110,6 +122,7 @@
                 @enderror
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
+            <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
         </form>
     </div>
 </body>

@@ -88,6 +88,19 @@
             text-decoration: underline;
             color: #fff !important;
         }
+
+
+        .login-button {
+            color: #555 !important;
+            text-decoration: none !important;
+            font-size: 15px !important;
+            font-weight: 400 !important;
+        }
+
+        .login-button:hover {
+            text-decoration: underline !important;
+            color: #f5f5f5 !important;
+        }
     </style>
 </head>
 <body>
@@ -110,6 +123,7 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button class="logout-btn" type="submit">Log Out</button>
+            <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
         </form>
     </div>
 </body>
