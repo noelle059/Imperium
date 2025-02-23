@@ -52,7 +52,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <p>Copyright Design Sherif Hamdy © 2019. All rights reserved.</p>
+                        <p>Copyright Imperium Classroom © 2025. All rights reserved.</p>
                     </div>
                 </div>
             </div>

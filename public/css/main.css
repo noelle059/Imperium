@@ -39,14 +39,12 @@ body {
 }
 
 
-
-/* Login button styles */
 .login-button {
     background-color: #47773f;
     color: #fff;
     font-size: 20px;
     font-weight: 500;
-    padding: 8px 20px;
+    padding: 4px 15px;
     border-radius: 10px;
     text-decoration: none;
     margin-right: 100px;
@@ -55,11 +53,11 @@ body {
     text-align: center;
 }
 
-/* Hover effect */
 .login-button:hover {
     background-color: #f8f8f8;
     color: #47773f;
     border: 3px solid #47773f;
+    text-decoration: none;
 }
 
 .offcanvas .login-button {
@@ -79,6 +77,11 @@ body {
 .btn-close:focus {
     box-shadow: none;
     outline: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,0,0,0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+    background-size: contain;
 }
 
 

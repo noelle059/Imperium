@@ -16,17 +16,12 @@
                     <li class="nav-item d-lg-none">
                         <a href="{{ route('login') }}" class="login-button">Login</a>
                     </li>
-                </ul>
-
-                
+                </ul>  
             </div>
         </div>
-        <a href="{{ route('login') }}" class="login-button d-none d-lg-block">LOGIN</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        
-
+            <a href="{{ route('login') }}" class="login-button d-none d-lg-block">LOGIN</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>  
     </div>
 </nav>

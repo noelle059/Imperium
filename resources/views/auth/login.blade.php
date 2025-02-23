@@ -58,8 +58,8 @@
 
         <div class="user signupBx">
             <div class="formBx">
-                <form action="{{ route('register') }}" method="POST" onsubmit="return validateSignupForm()">
-                    @csrf
+            <form action="{{ route('register.store') }}" method="POST" onsubmit="return validateSignupForm()">
+            @csrf
                     <h2>Create an account</h2>
                     <div class="form-group">
                         <input type="text" id="signupName" name="name" placeholder="First Name" oninput="validateSignupName(this)" required>
@@ -100,7 +100,7 @@
                         <x-input-error :messages="$errors->get('recaptcha')" class="mt-2" />
                         <div id="recaptcha-warning" class="text-red-500 mt-2 hidden"></div>
                     </div>
-                    <input type="submit" value="Register" class="btn" />
+                    <input type="submit" value="Register" class="btn" /> 
                     <p class="signup">
                             Already have an account ?
                             <a href="#" onclick="toggleForm();">Sign in.</a>

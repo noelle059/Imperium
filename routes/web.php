@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -16,6 +18,9 @@ Route::get('/', function () {
 Route::get('/forgotpass', function () {
     return view('forgotpass');
 });
+
+Route::get('/login', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register.store', [RegisteredUserController::class, 'store'])->name('register.store');
 
 Route::get('/confirmpass', function () {
     return view('confirmpass');
@@ -29,6 +34,8 @@ Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register'); //try nyo magregister muna
+Route::post('/register', [RegisteredUserController::class, 'store']); //nastostore na sya
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -74,6 +81,10 @@ Route::get('/admin/dashboard', function () {
 
     if (Auth::check() && Auth::user()->is_admin) {
         return view('admin.dashboard'); // Ensure this view exists
+    }
+
+    if (!Auth::user()->hasVerifiedEmail()) {
+        return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
     }
 
     // If not an admin, redirect to the user dashboard or show an error
