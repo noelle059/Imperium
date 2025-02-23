@@ -31,7 +31,7 @@ Route::get('/user/home', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('user.dashboard');
+    return redirect()->route('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register'); //try nyo magregister muna
@@ -68,6 +68,7 @@ Route::get('/login', function () {
 
 // User dashboard route
 Route::get('/user/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
     ->name('user.dashboard');
 
 

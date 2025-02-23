@@ -20,7 +20,7 @@ class DashboardController extends Controller
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
 
-        $rooms = Room::all(); // Fetch rooms if needed
+        $rooms = Room::all();
         return view('user.dashboard', compact('rooms'));
     }
 
