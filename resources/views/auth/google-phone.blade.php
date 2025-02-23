@@ -1,64 +1,116 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Phone</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin-top: 20px;
+            background-color: #F6FCF5;
+            position: relative;
+            min-height: 100vh;
+            background-image: url("../../images/CLASSROOM_BACKGROUND.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif !important;
+        }
 
-@section('content')
+        .card {
+            background-image: linear-gradient(to bottom, #a7d1ab, #c5ebac, #80a184);
+            border-radius: 10px !important;
+            box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.08);
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            text-align: center;
+            padding: 20px;
+        }
 
-<style>
-    .form-control {
-        background-color: #343a40;
-        color: #ffffff;
-        border: 1px solid #495057;
-    }
+        .h2 {
+            font-size: 24px !important;
+            font-weight: 600 !important;
+            text-transform: uppercase;
+            letter-spacing: 2px !important;
+            color: #555 !important;
+            margin-bottom: 15px;
+        }
 
-    .form-control:focus {
-        background-color: #495057;
-        color: #ffffff;
-        border-color: #ffffff;
-    }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-    .btn-light {
-        background-color: #ffffff;
-        color: #000;
-    }
+        .form-control {
+            width: 90% !important;
+            padding: 8px !important;
+            background: #f5f5f5 !important;
+            color: #333 !important;
+            border-radius: 7px !important;
+            font-size: 14px !important;
+            text-align: center;
+        }
 
-    .btn-light:hover {
-        background-color: #e2e2e2;
-    }
+        .btn-primary {
+            width: 90% !important;
+            background: #9ABA2F !important;
+            color: #fff !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            letter-spacing: 1px !important;
+            transition: 0.5s !important;
+            border-radius: 15px !important;
+            border: none !important;
+            padding: 10px 15px !important;
+            margin-top: 10px;
+        }
 
-    .card {
-        max-width: 350px;
-        width: 100%;
-        border-radius: 15px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    }
+        .btn-primary:hover {
+            background: #f5f5f5 !important;
+            color: #809927 !important;
+        }
 
-    .card-header {
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-        padding: 15px;
-    }
-</style>
+        @media screen and (max-width: 768px) {
+            .card {
+                width: 90%;
+            }
+            .h2 { font-size: 22px !important; }
+            .form-control { font-size: 14px !important; }
+            .btn-primary { font-size: 13px !important; padding: 8px 12px !important; }
+        }
 
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card text-white bg-dark shadow-lg border-0">
-        <div class="card-header bg-primary text-white text-center">
-            <h4 class="mb-0">Verify Phone</h4>
-        </div>
-        <div class="card-body p-4 text-center">
-            <form method="POST" action="{{ route('google.phone.store') }}">
-                @csrf
-                <input type="hidden" name="user" value="{{ $user->id }}">
-                
-                <div class="mb-3">
-                    <label for="contact_number" class="form-label">Phone Number</label>
-                    <input type="text" id="contact_number" name="contact_number" class="form-control rounded bg-dark text-white border-light text-center" placeholder="Enter your phone" required>
-                    @error('contact_number')
-                        <span class="text-danger small">{{ $message }}</span>
-                    @enderror
-                </div>
-                
-                <button type="submit" class="btn btn-primary w-100 rounded-pill">Submit</button>
-            </form>
-        </div>
+        @media screen and (max-width: 480px) {
+            .card { width: 100%; padding: 15px; }
+            .h2 { font-size: 20px !important; }
+            .form-control { font-size: 13px !important; padding: 6px !important; }
+            .btn-primary { font-size: 12px !important; padding: 6px 10px !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 class="h2">Verify Phone</h2>
+        <form method="POST" action="{{ route('google.phone.store') }}">
+            @csrf
+            <input type="hidden" name="user" value="{{ $user->id }}">
+            <div class="form-group">
+                <label for="contact_number" class="form-label">Phone Number</label>
+                <input type="text" id="contact_number" name="contact_number" class="form-control" placeholder="Enter your phone" required>
+                @error('contact_number')
+                    <span class="text-danger small">{{ $message }}</span>
+                @enderror
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-</div>
-@endsection
+</body>
+</html>
