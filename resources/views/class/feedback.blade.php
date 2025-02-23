@@ -107,9 +107,12 @@
                             <img src="/images/jason.png" class="img-fluid w-50" alt="Interview Image">
                             
                             <!-- Footer Information -->
-                            <div class="text-center p-3">
-                                <h6 class="mb-1">DATE OF INTERVIEW</h6>
-                                <p class="mb-0">OTHER INFORMATION OF THE CLIENT</p>
+                            <div class="text-center p-3 interview-info">
+                                <img src="/images/CSD_ICON.svg" alt="Icon" class="info-icon">
+                                <div>
+                                    <h6 class="mb-1">DATE OF INTERVIEW</h6>
+                                    <p class="mb-0">OTHER INFORMATION OF THE CLIENT</p>
+                                </div>
                             </div>
                         </div>
                     </div>

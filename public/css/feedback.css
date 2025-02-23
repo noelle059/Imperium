@@ -3,7 +3,8 @@
 #feedback {
     text-align: center;
     padding: 50px 20px;
-    background-color: #f6fcf5;
+    background-color: #bdd3b97d;
+    min-height: auto;
 }
 
 .testimonial-title {
@@ -106,7 +107,20 @@
     background-color: #ffffff;
     color: #47773f;
     border: 2px solid #47773f;
-    transform: scale(1.0); 
+
+}
+
+
+.interview-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Adjust spacing between icon and text */
+}
+
+.info-icon {
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
 }
 
 
@@ -153,5 +167,115 @@
         width: 30px;
         height: 30px;
         font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .testimonial-track-wrapper {
+        width: 100%;
+    }
+
+    .testimonial-card {
+        min-width: 100%;
+        padding: 15px;
+    }
+
+    .testimonial-title {
+        font-size: 2rem;
+    }
+
+    .testimonial-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .prev-btn, .next-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+        top: 55%;
+    }
+}
+
+/* Fully responsive for 400px down to 300px */
+@media (max-width: 400px) {
+    .testimonial-title {
+        font-size: 1.8rem;
+    }
+
+    .testimonial-subtitle {
+        font-size: 1rem;
+    }
+
+    .testimonial-card {
+        padding: 10px;
+        min-width: 100%;
+    }
+
+    .quote-icon {
+        font-size: 30px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .testimonial-profile img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .testimonial-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .testimonial-info p {
+        font-size: 0.8rem;
+    }
+
+    .see-more {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .prev-btn, .next-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 10px;
+        top: 60%;
+    }
+}
+
+@media (max-width: 320px) {
+    .testimonial-title {
+        font-size: 1.6rem;
+    }
+
+    .testimonial-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .testimonial-card {
+        padding: 8px;
+    }
+
+    .quote-icon {
+        font-size: 25px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .testimonial-profile img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .see-more {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .prev-btn, .next-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 9px;
+        top: 62%;
     }
 }

@@ -139,11 +139,11 @@ body {
 
 
 /* PREV & NEXT BUTTON */
-/* .carousel-control-prev-icon,
+.carousel-control-prev-icon,
 .carousel-control-next-icon {
     filter: brightness(0); 
     left: -10px;
-} */
+} 
 
 .carousel-indicators button {
     filter: brightness(0.3);
@@ -158,4 +158,25 @@ body {
 #carouselExampleIndicators {
     padding-top: 50px;
     padding-bottom: 10px;
+}
+
+
+@media screen and (max-width: 768px) {
+    #carouselExampleIndicators img {
+        max-height: 50vh;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 20px;
+        height: 20px;
+    }
 }

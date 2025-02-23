@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('css/about.css') }}">
     <link rel="stylesheet" href="{{ asset('css/feedback.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/insights.css') }}">
     <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mediaquery.css') }}">
     <script src="{{ asset('scripts/feedback.js') }}" defer></script>
@@ -41,6 +42,7 @@
     @include('class.carousel')
     @include('class.about')
     @include('class.feedback')
+    @include('class.insights')
     @include('class.contact')
 
 
