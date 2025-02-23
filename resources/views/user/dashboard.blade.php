@@ -2,8 +2,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Dashoard</title>
-    
+
     <link rel="stylesheet" href="/bootstrap-5.3.3-dist/css/bootstrap.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +23,6 @@
     <!-- Navbar-->
     @include('layouts.navigation')
 
-
 <div class="container mt-5">
     <h2>Classroom</h2>
     <table class="table table-bordered">
@@ -30,27 +31,31 @@
                 <th>Room</th>
                 <th>Professor Name</th>
                 <th>Status</th>
-                <th>Time</th>
+                <th>Time-in</th>
                 <th>Controller</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>CL1</td>
-                <td>Dr. Smith</td>
-                <td>Available</td>
-                <td>09:00 - 10:00</td>
-                <td>
-                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#controlModal">Remote</button>
-                </td>
-            </tr>
-            
-
-
-            
+            @foreach ($rooms as $room)
+                <tr id="room-{{ $room->id }}">
+                    <td>{{ $room->room_name }}</td>
+                    <td>{{ $room->professor_name ?? 'N/A' }}</td>
+                    <td>{{ $room->status }}</td>
+                    <td>{{ $room->time_in ?? 'N/A' }}</td>
+                    <td>
+                        <button class="btn btn-{{ $room->controller ? 'success' : 'danger' }} btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#controlModal"
+                                {{ $room->controller ? '' : 'disabled' }}>
+                            {{ $room->controller ? 'Remote' : 'Offline' }}
+                        </button>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
+<!-- sssssssssssssssssss -->
 
 <!-- CL1 CONTROLLER Modal -->
 <div class="modal fade" id="controlModal" tabindex="-1" aria-labelledby="controlModalLabel" aria-hidden="true">
@@ -107,7 +112,6 @@
         </div>
     </div>
 </div>
-
 
 
  <!--PATH: PUBLIC: BUTTON JS -->

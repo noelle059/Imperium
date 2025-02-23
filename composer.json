@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.2",
         "biscolab/laravel-recaptcha": "^6.1",
+        "kreait/firebase-php": "^7.16",
         "laravel/framework": "^11.31",
         "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.9",

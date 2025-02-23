@@ -24,19 +24,22 @@
 
 							<div class="card-body">
 								<div class="m-sm-4">
-                                    <form id="emailForm">
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input id="email" class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" required>
-                                            <div class="invalid-feedback">
-                                                Please enter a valid email address.
-                                            </div>
-                                        </div>
-                                        <div class="text-center mt-3">
-                                            <a href="index.html" class="btn btn-lg btn-primary">Reset password</a>
-                                            <a href="{{ route('login') }}" class="login-button d-lg-block">back to Login</a>
-                                        </div>
-                                    </form>
+                                <form method="POST" action="{{ route('password.email') }}">
+        @csrf
+
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button>
+                {{ __('Email Password Reset Link') }}
+            </x-primary-button>
+        </div>
+    </form>
 								</div>
 							</div>
 						</div>
@@ -45,7 +48,7 @@
 				</div>
 			</div>
 		</div>
-        
+
 </body>
 
 

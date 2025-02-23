@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController; // Adjust this to your actual controller
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\DashboardController;
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,15 +60,8 @@ Route::get('/login', function () {
 })->name('login');
 
 // User dashboard route
-Route::get('/user/dashboard', function () {
-    // Check if the user is authenticated
-    if (!Auth::check()) {
-        return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
-    }
-
-    // If the user is authenticated, return the user dashboard view
-    return view('user.dashboard'); // Ensure this view exists
-})->name('user.dashboard');
+Route::get('/user/dashboard', [DashboardController::class, 'index'])
+    ->name('user.dashboard');
 
 
 // Admin dashboard route with inline check
@@ -76,7 +71,7 @@ Route::get('/admin/dashboard', function () {
     if (!Auth::check()) {
         return redirect()->route('login')->with('alert', 'You must be logged in to access the admin dashboard.');
     }
-    
+
     if (Auth::check() && Auth::user()->is_admin) {
         return view('admin.dashboard'); // Ensure this view exists
     }
@@ -91,3 +86,12 @@ Route::get('auth/google/callback', [GoogleController::class, 'googleCallback']);
 
 Route::get('auth/google/phone', [GoogleController::class, 'showPhoneForm'])->name('google.phone');
 Route::post('auth/google/phone', [GoogleController::class, 'storePhone'])->name('google.phone.store');
+
+
+Route::post('/handle-rfid-scan', [DashboardController::class, 'handleRfidScan'])
+    ->middleware('auth')
+    ->name('handle.rfid.scan');
+
+    // Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
+    // ->middleware('auth')
+    // ->name('get.rooms');

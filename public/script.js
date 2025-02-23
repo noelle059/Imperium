@@ -24,23 +24,24 @@ const switchRef3 = ref(db, "/bulb3/state");
 const switchRef4 = ref(db, "/bulb4/state");
 const outlet = ref(db, "/outlet/state");
 
+// Reference to the RFID node in Firebase
+const rfidRef = ref(db, "/rfid/access");
 
-
-
+// Function to toggle switches
 window.toggleSwitch = function(switchId) {
     let state = document.getElementById(switchId).checked;
     let iconId;
 
     if (switchId === 'switch1') {
-        iconId = 'icon1'; // Or maybe 'icon-switch1'  - needs to match your HTML
+        iconId = 'icon1';
     } else if (switchId === 'switch2') {
-        iconId = 'icon2'; // Or maybe 'icon-switch2'
+        iconId = 'icon2';
     } else if (switchId === 'switch3') {
-        iconId = 'icon3'; // Or maybe 'icon-switch3'
+        iconId = 'icon3';
     } else if (switchId === 'switch4') {
-        iconId = 'icon4'; // Or maybe 'icon-switch4'
+        iconId = 'icon4';
     } else if (switchId === 'outlet') {
-        iconId = 'outlet-icon'; // This matches your HTML
+        iconId = 'outlet-icon';
     }
 
     if (state) {
@@ -53,11 +54,11 @@ window.toggleSwitch = function(switchId) {
         set(switchRef1, state);
     } else if (switchId === 'switch2') {
         set(switchRef2, state);
-    }else if (switchId === 'switch3') {
+    } else if (switchId === 'switch3') {
         set(switchRef3, state);
-    }else if (switchId === 'switch4') {
+    } else if (switchId === 'switch4') {
         set(switchRef4, state);
-    }else if (switchId === 'outlet') {
+    } else if (switchId === 'outlet') {
         set(outlet, state);
     }
 };
@@ -111,3 +112,70 @@ onValue(outlet, function(snapshot) {
         document.getElementById('outlet-icon').classList.replace('bi-plug-fill', 'bi-outlet');
     }
 });
+
+// RFID scanning
+let isProcessingRFID = false; // Flag to prevent multiple requests
+const accessState = ref(db, "/access/state");
+
+onValue(rfidRef, function(snapshot) {
+    const scannedRfid = snapshot.val();
+
+    if (scannedRfid && !isProcessingRFID) {
+        isProcessingRFID = true; // Set the flag to prevent re-calling
+        console.log('RFID scanned:', scannedRfid);
+
+        fetch('/handle-rfid-scan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ rfid_uid: scannedRfid })
+        })
+        .then(response => response.json())
+        .then(data => {
+                console.log("Server response:", data); // Debugging step
+                if (data.access_state !== undefined) {
+                    console.log("Updating Firebase with:", data.access_state); // Debugging step
+                    set(accessState, data.access_state);
+                } else {
+                    console.error("RFID scan failed:", data.error);
+                }
+                if (data.room) {
+                    console.log("Updating table row for:", data.room);
+                    updateTableRow(data.room);
+                }
+        })
+        .catch(error =>{
+            console.error('Error handling RFID scan:', error);
+            isProcessingRFID = false;
+        })
+        .finally(() => {
+            setTimeout(() => {
+                isProcessingRFID = false;
+            }, 5000);
+        });
+    }
+});
+
+
+// Function to update the table row for Room #1
+function updateTableRow(room) {
+    const row = document.querySelector(`#room-${room.id}`);
+    if (row) {
+        row.innerHTML = `
+            <td>${room.room_name}</td>
+            <td>${room.professor_name || 'N/A'}</td>
+            <td>${room.status}</td>
+            <td>${room.time_in || 'N/A'}</td>
+            <td>
+                <button class="btn btn-${room.controller ? 'success' : 'danger'} btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#controlModal"
+                        ${room.controller ? '' : 'disabled'}>
+                    ${room.controller ? 'Remote' : 'Offline'}
+                </button>
+            </td>
+        `;
+    }
+}

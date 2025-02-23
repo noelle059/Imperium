@@ -22,6 +22,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'rfid_uid', // FOR RFID NI CJ
+        'is_activated', // FOR RFID NI CJ
         'contact_number', // Add this line
 
     ];
@@ -46,6 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_activated' => 'boolean', // FOR RFID NI CJ
         ];
     }
 }

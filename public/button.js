@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
             powerOnAll(powerOnButton);
         });
     }
-    
+
     if (powerOffButton) {
         powerOffButton.addEventListener('click', function () {
             powerOffAll(powerOffButton);
