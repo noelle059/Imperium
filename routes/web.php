@@ -72,6 +72,23 @@ Route::get('/user/dashboard', [DashboardController::class, 'index'])
     ->name('user.dashboard');
 
 
+    Route::get('/user/dashboard', function () {
+        // Check if the user is authenticated and is an admin
+    
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
+        }
+    
+    
+        if (!Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
+        }
+    
+        // If not an admin, redirect to the user dashboard or show an error
+        return redirect()->route('login')->with('alert', 'You do not have access to this page.');
+    })->name('user.dashboard');
+
+
 // Admin dashboard route with inline check
 Route::get('/admin/dashboard', function () {
     // Check if the user is authenticated and is an admin
