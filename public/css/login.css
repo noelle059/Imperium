@@ -10,7 +10,7 @@
 section {
     position: relative;
     min-height: 100vh;
-    background-image: url("../../images/CLASSROOM_BACKGROUND.jpg");
+    background-image: url("../../images/CLASSROOM_BACKGROUND.svg");
     background-size: cover; 
     background-repeat: no-repeat;
     background-position: center center; 
