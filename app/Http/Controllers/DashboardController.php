@@ -58,7 +58,7 @@ class DashboardController extends Controller
 
                     Notification::create([ // For Notification
                         'user_id' => $user->id,
-                        'message' => 'You have left room ' . $room->room_name,
+                        'message' => 'You have left CL ' . $room->room_name,
                         'is_read' => false,
                     ]);
 
@@ -78,7 +78,7 @@ class DashboardController extends Controller
 
                     Notification::create([ // For Notification
                         'user_id' => $user->id,
-                        'message' => 'You have recently accessed room ' . $room->room_name,
+                        'message' => 'You have recently accessed CL ' . $room->room_name,
                         'is_read' => false,
                     ]);
 
