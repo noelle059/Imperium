@@ -55,7 +55,6 @@ Route::get('/login', function () {
         if (!Auth::user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
-
         // Check if the user is an admin
         if (Auth::user()->is_admin) {
             return redirect()->route('admin.dashboard')->with('alert', "Already logged in as an admin, logout to use a different account.");
@@ -70,23 +69,6 @@ Route::get('/login', function () {
 Route::get('/user/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
-
-
-    Route::get('/user/dashboard', function () {
-        // Check if the user is authenticated and is an admin
-    
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
-        }
-    
-    
-        if (!Auth::user()->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
-        }
-    
-        // If not an admin, redirect to the user dashboard or show an error
-        return redirect()->route('login')->with('alert', 'You do not have access to this page.');
-    })->name('user.dashboard');
 
 
 // Admin dashboard route with inline check
@@ -124,3 +106,13 @@ Route::post('/handle-rfid-scan', [DashboardController::class, 'handleRfidScan'])
     // Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
     // ->middleware('auth')
     // ->name('get.rooms');
+
+//notification
+use App\Http\Controllers\NotificationController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'softDelete'])->name('notifications.destroy');
+
+});
