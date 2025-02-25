@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str; // Ensure this is imported
+use App\Models\Notification; // Import Notification model
 use Exception;
 
 class GoogleController extends Controller
@@ -44,6 +45,12 @@ class GoogleController extends Controller
 
         // Log the user in if they already exist
         Auth::login($user);
+
+        Notification::create([
+            'user_id' => $user->id,
+            'message' => 'You have successfully logged in using Google.',
+            'is_read' => false,
+        ]);
 
         // Check if the user is an admin and redirect accordingly
         if ($user->is_admin) {
