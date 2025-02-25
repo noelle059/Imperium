@@ -37,6 +37,23 @@
 }
 
 /* Responsiveness */
+@media (min-width: 1500px) and (max-width: 1600px) {
+    .more-info-btn {
+        bottom: 31%;
+        left: 30%;
+        width: 15%;
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 1400px) and (max-width: 1500px) {
+    .more-info-btn {
+        bottom: 31%;
+        left: 30%;
+        width: 15%;
+        font-size: 17px;
+    }
+}
 
 @media (min-width: 1300px) and (max-width: 1400px) {
     .more-info-btn {
@@ -47,7 +64,7 @@
     }
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1290px)  and (max-width: 1300px) {
     .more-info-btn {
         bottom: 31%;
         left: 30%;
@@ -66,6 +83,48 @@
     }
 }
 
+@media (max-width: 1180px){
+    .more-info-btn {
+        bottom: 31%;
+        left: 28%;
+        width: 18%;
+        font-size: 16px;
+        padding: 6px 16px;
+    }
+}
+
+
+@media (max-width: 1130px){
+    .more-info-btn {
+        bottom: 31%;
+        left: 28%;
+        width: 18%;
+        font-size: 16px;
+        padding: 6px 16px;
+    }
+}
+
+
+@media (max-width: 1120px) {
+    .more-info-btn {
+        bottom: 31%;
+        left: 28%;
+        width: 18%;
+        font-size: 16px;
+        padding: 6px 16px;
+    }
+}
+
+@media (max-width: 1030px) {
+    .more-info-btn {
+        bottom: 31%;
+        left: 28%;
+        width: 18%;
+        font-size: 16px;
+        padding: 6px 16px;
+    }
+}
+
 @media (max-width: 1024px) {
     .more-info-btn {
         bottom: 31%;
@@ -75,6 +134,17 @@
         padding: 6px 16px;
     }
 }
+
+@media (max-width: 900px) {
+    .more-info-btn {
+        bottom: 22%;
+        left: 25%;
+        width: 22%;
+        font-size: 14px;
+        padding: 6px 14px;
+    }
+}
+
 @media (max-width: 868px) {
     .more-info-btn {
         bottom: 22%;
