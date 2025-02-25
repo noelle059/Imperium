@@ -80,7 +80,7 @@ Route::get('/admin/dashboard', function () {
     }
 
     if (Auth::check() && Auth::user()->is_admin) {
-        return view('admin.dashboard'); // Ensure this view exists
+        return view('admin.index'); // Ensure this view exists
     }
 
     if (!Auth::user()->hasVerifiedEmail()) {
@@ -103,9 +103,9 @@ Route::post('/handle-rfid-scan', [DashboardController::class, 'handleRfidScan'])
     ->middleware('auth')
     ->name('handle.rfid.scan');
 
-    // Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
-    // ->middleware('auth')
-    // ->name('get.rooms');
+// Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
+// ->middleware('auth')
+// ->name('get.rooms');
 
 //notification
 use App\Http\Controllers\NotificationController;
@@ -114,5 +114,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
     Route::delete('/notifications/{id}', [NotificationController::class, 'softDelete'])->name('notifications.destroy');
-
 });
+
+
+
+
+
+
+// ADMIN SIDE
+Route::get('/home', function () {
+    return view('admin.home');
+})->name('home');
+
+Route::get('/accounts', function () {
+    return view('admin.accounts');
+})->name('accounts');
+
+Route::get('/classroom', function () {
+    return view('admin.classroom');
+})->name('classroom');
