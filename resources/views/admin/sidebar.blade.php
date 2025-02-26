@@ -14,7 +14,7 @@
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
             <li class="active">
-                <a href="{{ route('home') }}"> <i class="icon-home"></i> Home </a>
+                <a href="{{ route('admin.dashboard') }}"> <i class="icon-home"></i> Home </a>
             </li>
             <li>
                 <a href="{{ route('accounts') }}"> <i class="icon-grid"></i>Account </a>

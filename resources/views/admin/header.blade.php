@@ -46,7 +46,7 @@
 
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <div class="navbar-header">
-                <!-- Navbar Header--><a href="{{ route('home') }}" class="navbar-brand">
+                <!-- Navbar Header--><a href="{{ route('admin.dashboard') }}" class="navbar-brand">
                     <div class="brand-text brand-big visible text-uppercase">
                         <img src="/images/colored_logo_with_text.png" alt="logo image" style="width: 180px; height: auto;">
                     </div>

@@ -80,7 +80,7 @@ Route::get('/admin/dashboard', function () {
     }
 
     if (Auth::check() && Auth::user()->is_admin) {
-        return view('admin.home'); // Ensure this view exists
+        return view('admin.dashboard'); // Ensure this view exists
     }
 
     if (!Auth::user()->hasVerifiedEmail()) {
@@ -118,13 +118,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
-
-
 // ADMIN SIDE
-Route::get('/admin/dashboard', function () {
-    return view('admin.home');
-})->name('home');
 
 Route::get('/admin/accounts', function () {
     return view('admin.accounts');
