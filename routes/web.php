@@ -80,7 +80,7 @@ Route::get('/admin/dashboard', function () {
     }
 
     if (Auth::check() && Auth::user()->is_admin) {
-        return view('admin.index'); // Ensure this view exists
+        return view('admin.home'); // Ensure this view exists
     }
 
     if (!Auth::user()->hasVerifiedEmail()) {
@@ -122,14 +122,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 // ADMIN SIDE
-Route::get('/home', function () {
+Route::get('/admin/dashboard', function () {
     return view('admin.home');
 })->name('home');
 
-Route::get('/accounts', function () {
+Route::get('/admin/accounts', function () {
     return view('admin.accounts');
 })->name('accounts');
 
-Route::get('/classroom', function () {
+Route::get('/admin/classroom', function () {
     return view('admin.classroom');
 })->name('classroom');

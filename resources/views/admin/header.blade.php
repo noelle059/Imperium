@@ -1,15 +1,18 @@
+<!DOCTYPE html>
 <!--HEADER- SIDEBAR - NAVIGATION -->
-<head>
+
+
+<head> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Imperium Admin </title>
+    <title>Imperium Admin</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
     <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS-->
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
     <!-- Custom Font Icons CSS-->
     <link rel="stylesheet" href="/css/font.css">
     <!-- Google fonts - Muli-->
@@ -23,8 +26,9 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-</head>
+  </head>
 
+<body>
 <header class="header">
     <nav class="navbar navbar-expand-lg">
         <div class="search-panel">
@@ -122,6 +126,7 @@
     </nav>
 </header>
 
+    
 
 <!-- SIDEBAR -->
  @include('admin.sidebar')
