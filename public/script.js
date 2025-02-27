@@ -101,7 +101,7 @@ function checkTimeOutWarning() {
         const timeIn = new Date(`1970-01-01T${data.time_in}Z`);
         const diffInMinutes = (now - timeIn) / (1000 * 60);
 
-        if (diffInMinutes > 1) {
+        if (diffInMinutes > 30) {
             const warningModal = new bootstrap.Modal(document.getElementById('timeoutWarningModal'));
             warningModal.show();
         }
