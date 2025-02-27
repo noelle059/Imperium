@@ -70,7 +70,7 @@ Route::get('/user/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
 
-
+    Route::get('/get-room-status', [DashboardController::class, 'getRoomStatus']);
 // Admin dashboard route with inline check
 Route::get('/admin/dashboard', function () {
     // Check if the user is authenticated and is an admin

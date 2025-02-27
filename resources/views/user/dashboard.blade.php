@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/style.css">
 
-    
+
 </head>
 <body>
 <x-floating-alert :message="session('alert')" />
@@ -44,11 +44,16 @@
                     <td>{{ $room->status }}</td>
                     <td>{{ $room->time_in ?? 'N/A' }}</td>
                     <td>
-                        <button class="btn btn-{{ $room->controller ? 'success' : 'danger' }} btn-sm"
+                        <button class="btn
+                                    @if($room->button_status == 'Remote') btn-success
+                                    @elseif($room->button_status == 'Occupied') btn-warning
+                                    @else btn-danger
+                                    @endif
+                                    btn-sm"
                                 data-bs-toggle="modal"
                                 data-bs-target="#controlModal"
-                                {{ $room->controller ? '' : 'disabled' }}>
-                            {{ $room->controller ? 'Remote' : 'Offline' }}
+                                {{ $room->button_status == 'Remote' ? '' : 'disabled' }}>
+                            {{ $room->button_status }}
                         </button>
                     </td>
                 </tr>
@@ -109,6 +114,20 @@
                     <button class="btn btn-primary power-on-button" onclick="powerOnAll(this)">Power On All</button>
                     <button class="btn btn-secondary power-off-button" onclick="powerOffAll(this)">Power Off All</button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="timeoutWarningModal" tabindex="-1" aria-labelledby="timeoutWarningModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="timeoutWarningModalLabel">Timeout Warning</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You have exceeded the allowed time in the room. Please check out.
             </div>
         </div>
     </div>

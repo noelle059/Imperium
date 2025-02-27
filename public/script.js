@@ -179,3 +179,30 @@ function updateTableRow(room) {
         `;
     }
 }
+
+function checkTimeOutWarning() {
+    fetch('/get-room-status', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const now = new Date();
+        const timeIn = new Date(`1970-01-01T${data.time_in}Z`);
+        const diffInMinutes = (now - timeIn) / (1000 * 60);
+
+        if (diffInMinutes > 1) {
+            const warningModal = new bootstrap.Modal(document.getElementById('timeoutWarningModal'));
+            warningModal.show();
+        }
+    })
+    .catch(error => {
+        console.error('Error checking room status:', error);
+    });
+}
+
+// Periodically check the time difference every 30 seconds
+setInterval(checkTimeOutWarning, 30000);
