@@ -4,55 +4,58 @@
  <!-- Account-->
  <div class="page-content">
 
-      <div class="page-header">
+    <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="h5 no-margin-bottom">Classroom Monitoring</h2>
-            <input type="text" placeholder=" Search..." style="width: 20%; border: 1px solid #ccc; background-color: #f0f0f0; padding: 0; color: #123524; height: 30px;">
+            
+            <div style="display: flex; align-items: center;">
+                <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
+                <input type="text" placeholder=" Search..." style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
+            </div>
         </div>
-      </div>
+    </div>
 
 
-<div style="overflow-x: auto; padding-left: 20px; padding-right: 20px;"> <!-- Optional padding for the container -->
-    <table id="uniqueTable" style="width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; padding: 10px;"> <!-- Remove padding here -->
-        <thead style="background-color: #47773f; color: white;">
-            <tr>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Room No.</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Professor's Name</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Status</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Account No.</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">CL1</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Prof. James Mitchell</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-warning">Unavailable</button>
-                    <td style="padding: 15px; border: 1px solid #ccc;">12345678</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-primary">Remote</button></td>
-            </tr>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">CL2</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">-</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-success">Available</button></td>
-                <td style="padding: 15px; border: 1px solid #ccc;">-</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-primary">Remote</button></td>
-                </td>
-            </tr>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">CL3</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Dr. Emily Roberts</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-warning">Unavailable</button>
-                <td style="padding: 15px; border: 1px solid #ccc;">12345678</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-primary">Remote</button></td>
-            </tr>
-        </tbody>
-    </table>
-
-
-</div>
-
-
+    <div class="table-container">
+        <table id="uniqueTable" class="styled-table">
+            <thead>
+                <tr>
+                    <th>Room No.</th>
+                    <th>Professor's Name</th>
+                    <th>Status</th>
+                    <th>Account No.</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-row">
+                    <td>CL1</td>
+                    <td>Prof. James Mitchell</td>
+                    <td class="status-cell">In use</td>
+                    <td>12345678</td>
+                    <td>10:00 AM</td>
+                    <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
+                </tr>
+                <tr class="table-row">
+                    <td>CL2</td>
+                    <td>Not Applicable</td>
+                    <td class="status-cell">Vacant</td>
+                    <td>Not Applicable</td>
+                    <td>Not Applicable</td>
+                    <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
+                </tr>
+                <tr class="table-row">
+                    <td>CL3</td>
+                    <td>Dr. Emily Roberts</td>
+                    <td class="status-cell">In use</td>
+                    <td>12345678</td>
+                    <td>3:00 PM</td>
+                    <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 
 

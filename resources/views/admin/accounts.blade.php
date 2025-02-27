@@ -3,61 +3,62 @@
  <!-- Account-->
  <div class="page-content">
 
-      <div class="page-header">
+    <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="h5 no-margin-bottom">Account Registration</h2>
-            <input type="text" placeholder=" Search..." style="width: 20%; border: 1px solid #ccc; background-color: #f0f0f0; padding: 0; color: #123524; height: 30px;">
+            <h2 class="h5 no-margin-bottom">Professor Account Registration</h2>
+            
+            <div style="display: flex; align-items: center;">
+                <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
+                <input type="text" placeholder=" Search..." style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
+            </div>
         </div>
-      </div>
+    </div>
 
 
-    <!-- <h2 style="padding-left: 20px; color: #123524;">Registration</h2> -->
- <!--<p style="padding-left: 20px; color: #123524;">Please register the professors who do not have an account number in this section:</p>-->
-<div style="overflow-x: auto; padding-left: 20px; padding-right: 20px;"> <!-- Optional padding for the container -->
-    <table id="uniqueTable" style="width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; padding: 10px;"> <!-- Remove padding here -->
-        <thead style="background-color: #47773f; color: white;">
+<div class="table-container">
+    <table id="uniqueTable" class="styled-table">
+        <thead>
             <tr>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">No.</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Firstname</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Lastname</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Email</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Account No.</th>
-                <th style="padding: 15px; text-align: left; border: 1px solid #ccc;">Status</th>
+                <th>No.</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Account No.</th>
+                <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">1</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">John</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Doe</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">john@example.com</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">12345678</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-success">Registerd</button></td>
+            <tr class="table-row">
+                <td>1</td>
+                <td>John</td>
+                <td>Doe</td>
+                <td>john@example.com</td>
+                <td>12345678</td>
+                <td>Registered</td>
+                <td class="action-cell"><button type="button" class="btn gradient-button">Register</button></td>
             </tr>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">2</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Mary</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Moe</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">mary@example.com</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">-</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-warning">Pending</button>
-                </td>
+            <tr class="table-row">
+                <td>2</td>
+                <td>Mary</td>
+                <td>Moe</td>
+                <td>mary@example.com</td>
+                <td>Pending Activation</td>
+                <td>Pending</td>
+                <td class="action-cell"><button type="button" class="btn gradient-button">Register</button></td>
             </tr>
-            <tr style="background-color: rgba(233, 233, 233, 0.795); color: #123524;">
-                <td style="padding: 15px; border: 1px solid #ccc;">3</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">July</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">Dooley</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">july@example.com</td>
-                <td style="padding: 15px; border: 1px solid #ccc;">12345678</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid #ccc;"><button type="button" class="btn btn-success">Registerd</button></td>
+            <tr class="table-row">
+                <td>3</td>
+                <td>July</td>
+                <td>Dooley</td>
+                <td>july@example.com</td>
+                <td>12345678</td>
+                <td>Registered</td>
+                <td class="action-cell"><button type="button" class="btn gradient-button">Register</button></td>
             </tr>
         </tbody>
     </table>
-
-
 </div>
-
-
 
 
 
