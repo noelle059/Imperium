@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Verification</title>
+    <link rel="icon" type="image/svg" href="{{ asset('images/FAVICON_1.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap">
@@ -16,7 +17,7 @@
             background-color: #f2f3f8;
             position: relative;
             min-height: 100vh;
-            background-image: url("../../images/CLASSROOM_BACKGROUND.jpg");
+            background-image: url("../../images/CLASSROOM_BACKGROUND.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
@@ -118,7 +119,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Verification Link Sent',
-                text: '{{ __('A new verification link has been sent to the email address you provided during registration.') }}',
+                text: '{{ __("A new verification link has been sent to the email address you provided during registration.") }}',
                 confirmButtonText: 'OK'
             });
         });

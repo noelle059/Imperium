@@ -1,0 +1,59 @@
+/* Button - Admin - Accounts && Classroom */
+.gradient-button {
+    background: #d5a432; /* Gradient from EDBF43 to green */
+    border: none;
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* No underline */
+    display: inline-block;
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+    transition: background 0.3s; /* Smooth transition */
+}
+
+/* Darker gradient on hover */
+.gradient-button:hover {
+    background: #4caf50;
+}
+
+/*TABLE DESIGN */
+.table-container {
+    overflow-x: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 0px;
+}
+
+#uniqueTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+}
+
+#uniqueTable th {
+    background-color: #47773f;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+#uniqueTable td {
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.table-row {
+    background-color: rgba(233, 233, 233, 0.795);
+    color: #123524;
+}
+
+.action-cell {
+    text-align: center;
+    /* padding: px; */
+}

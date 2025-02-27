@@ -103,9 +103,9 @@ Route::post('/handle-rfid-scan', [DashboardController::class, 'handleRfidScan'])
     ->middleware('auth')
     ->name('handle.rfid.scan');
 
-    // Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
-    // ->middleware('auth')
-    // ->name('get.rooms');
+// Route::get('/get-rooms', [DashboardController::class, 'getRooms'])
+// ->middleware('auth')
+// ->name('get.rooms');
 
 //notification
 use App\Http\Controllers\NotificationController;
@@ -114,5 +114,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
     Route::delete('/notifications/{id}', [NotificationController::class, 'softDelete'])->name('notifications.destroy');
-
 });
+
+
+
+// ADMIN SIDE
+
+Route::get('/admin/accounts', function () {
+    return view('admin.accounts');
+})->name('accounts');
+
+Route::get('/admin/classroom', function () {
+    return view('admin.classroom');
+})->name('classroom');

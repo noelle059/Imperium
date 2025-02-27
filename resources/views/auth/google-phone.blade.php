@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Phone</title>
+    <link rel="icon" type="image/svg" href="{{ asset('images/FAVICON_1.png') }}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -11,7 +12,7 @@
             background-color: #F6FCF5;
             position: relative;
             min-height: 100vh;
-            background-image: url("../../images/CLASSROOM_BACKGROUND.jpg");
+            background-image: url("../../images/CLASSROOM_BACKGROUND.svg");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;

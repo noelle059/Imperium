@@ -44,14 +44,14 @@
                         <a href="#" onclick="toggleForm();">Register Now.</a>
                     </p>
                     <div class="flex items-center justify-end mt-4">
-    @if (Route::has('password.request'))
-        <div class="forgot-password">
-            <a href="{{ route('password.request') }}">
-                {{ __('Forgot your password?') }}
-            </a>
-        </div>
-    @endif
-</div>
+                        @if (Route::has('password.request'))
+                            <div class="forgot-password">
+                                <a href="{{ route('password.request') }}">
+                                    {{ __('Forgot your password?') }}
+                                </a>
+                            </div>
+                        @endif
+                    </div>
                 </form>
             </div>
         </div>
@@ -110,11 +110,8 @@
             <div class="imgBx"><img src="images/CSD.svg" alt="" /></div>
         </div>
     </div>
-
-
-
-
 </section>
+
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
         function validateRecaptcha() {
