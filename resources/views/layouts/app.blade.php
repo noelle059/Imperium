@@ -14,6 +14,9 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Include SweetAlert CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 
         <!-- Scripts -->
@@ -43,5 +46,50 @@
 
             </main>
         </div>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "{{ session('success') }}",
+            confirmButtonColor: '#3085d6',
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: "{{ session('error') }}",
+            confirmButtonColor: '#d33',
+        });
+    </script>
+@endif
+
+@if(session('alert'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Notice',
+            text: "{{ session('alert') }}",
+            confirmButtonColor: '#f39c12',
+        });
+    </script>
+@endif
+
+@if(session('info'))
+    <script>
+        Swal.fire({
+            icon: 'info',
+            title: 'Info',
+            text: "{{ session('info') }}",
+            confirmButtonColor: '#17a2b8',
+        });
+    </script>
+@endif
+
     </body>
 </html>

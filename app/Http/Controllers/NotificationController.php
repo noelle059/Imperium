@@ -10,24 +10,27 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $notifications = Notification::whereNull('deleted_at')->get();
+        $notifications = Notification::where('user_id', Auth::id())
+                                     ->whereNull('deleted_at')
+                                     ->get();
         return response()->json($notifications);
     }
 
     public function markAllRead()
     {
-        Notification::whereNull('deleted_at')->update(['deleted_at' => now()]);
+        Notification::where('user_id', Auth::id())
+                    ->whereNull('deleted_at')
+                    ->update(['deleted_at' => now()]);
         return response()->json(['message' => 'All notifications marked as read']);
     }
 
     public function softDelete($id)
     {
-        $notification = Notification::find($id);
+        $notification = Notification::where('id', $id)->where('user_id', Auth::id())->first();
         if ($notification) {
             $notification->delete(); // Soft delete
             return response()->json(['message' => 'Notification removed']);
         }
         return response()->json(['error' => 'Notification not found'], 404);
     }
-    
 }

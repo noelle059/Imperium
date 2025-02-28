@@ -16,10 +16,15 @@ class DashboardController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
         }
-
+    
+        if (Auth::user()->is_admin) {
+            return redirect()->route('admin.dashboard')->with('alert', 'Admins cannot access the user dashboard.');
+        }
+    
         if (!Auth::user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
+    
 
         $user = Auth::user();
         $rooms = Room::all();
