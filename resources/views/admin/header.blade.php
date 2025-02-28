@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!--HEADER- SIDEBAR - NAVIGATION -->
 
-
 <head> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +29,51 @@
     <!-- ICONS-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  </head>
+    <style>
+        /* Green modal background */
+.modal-content {
+    background-color: #28a745 !important; /* Bootstrap success green */
+    color: black; /* White text for contrast */
+    border-radius: 8px;
+}
+
+/* Green modal header */
+.modal-header {
+    background-color: #218838 !important; /* Darker green */
+    color: white;
+    border-bottom: none;
+}
+
+/* Green header */
+.header {
+    background-color: #28a745 !important;
+    color: white;
+}
+
+/* Style the close button */
+.modal-header .btn-close {
+    filter: invert(1); /* Makes it white */
+}
+
+/* Green modal footer */
+.modal-footer {
+    background-color: #218838 !important;
+    border-top: none;
+}
+
+#markAllAsRead {
+    background-color: #28a745; /* Green */
+    border-color: #218838;
+    color: white;
+}
+
+#markAllAsRead:hover {
+    background-color:red; /* Darker Green on Hover */
+    border-color: #1e7e34;
+}
+
+    </style>
+</head>
 
 <body>
 <header class="header">
@@ -47,10 +90,9 @@
             </div>
         </div>
 
-
         <div class="container-fluid d-flex align-items-center justify-content-between">
             <div class="navbar-header">
-                <!-- Navbar Header--><a href="{{ route('admin.dashboard') }}" class="navbar-brand">
+                <a href="{{ route('admin.dashboard') }}" class="navbar-brand">
                     <div class="brand-text brand-big visible text-uppercase">
                         <img src="/images/colored_logo_with_text.png" alt="logo image" style="width: 180px; height: auto;">
                     </div>
@@ -58,33 +100,146 @@
                         <img src="/images/colored_logo.png" alt="logo image" style="width: 58px; height: auto;">
                     </div>
                 </a>
-                <!-- Sidebar Toggle Btn-->
                 <button class="sidebar-toggle">
                     <i class="fa fa-long-arrow-left"></i>
                 </button>
             </div>
             <div class="right-menu list-inline no-margin-bottom">
-                
-
                 <!-- Notification Toggle Btn-->
-                <i class="fas fa-bell" style="font-size: 20px;"></i>
+                <button class="btn btn-light me-2 position-relative" type="button" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                    <i class="fas fa-bell" style="font-size: 20px;"></i>
+                    <span id="notificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                        0
+                    </span>
+                </button>
 
-                
-               
                 <!-- Log out-->
                 <div class="list-inline-item logout">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
-                    
-                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout <i class="icon-logout"></i></a>                </div>
-
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">Logout <i class="icon-logout"></i></a>
+                </div>
             </div>
         </div>
     </nav>
 </header>
 
-    
+<!-- Notification Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group" id="notificationList">
+                    <li class="list-group-item">Loading notifications...</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-primary mb-2" id="markAllAsRead">Mark All as Read</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- SIDEBAR -->
- @include('admin.sidebar')
+@include('admin.sidebar')
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+    function fetchNotifications() {
+        $.ajax({
+            url: '{{ route("notifications.index") }}', // This will call the index method in your NotificationController
+            type: 'GET',
+            success: function (notifications) {
+                console.log("Fetched Notifications:", notifications);
+
+                // Update the modal list
+                $('#notificationList').empty();
+                if (notifications.length > 0) {
+                    notifications.forEach(function (notification) {
+                        $('#notificationList').append(`
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${notification.message}
+                                <button class="btn btn-sm btn-danger remove-notification" data-id="${notification.id}">
+                                    <i class="bi bi-x">X</i>
+                                </button>
+                            </li>
+                        `);
+                    });
+
+                    // Update and show notification count
+                    $('#notificationBadge').text(notifications.length).show();
+                } else {
+                    $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
+                    $('#notificationBadge').hide();
+                }
+            },
+            error: function (xhr) {
+                console.error('Error fetching notifications:', xhr);
+            }
+        });
+    }
+
+    // Fetch notifications when the modal opens
+    $('#notificationModal').on('show.bs.modal', fetchNotifications);
+
+    // Mark all notifications as read (Soft Delete)
+    $('#markAllAsRead').click(function () {
+        $.ajax({
+            url: '{{ route("notifications.markAllRead") }}',
+            type: 'POST',
+            data: { _token: '{{ csrf_token() }}' },
+            success: function () {
+                $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
+                $('#notificationBadge').hide(); // Hide bell badge
+            },
+            error: function (xhr) {
+                console.error('Error marking notifications as read:', xhr);
+            }
+        });
+    });
+
+    // Remove individual notification (Soft Delete)
+    $(document).on('click', '.remove-notification', function () {
+        let notificationId = $(this).data('id');
+        let $notificationItem = $(this).closest('li');
+
+        $.ajax({
+            url: '{{ route("notifications.destroy", "") }}/' + notificationId,
+            type: 'DELETE',
+            data: { _token: '{{ csrf_token() }}' },
+            success: function () {
+                $notificationItem.remove();
+                let count = $('#notificationList li').length;
+                if (count === 0) {
+                    $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
+                    $('#notificationBadge').hide();
+                } else {
+                    $('#notificationBadge').text(count);
+                }
+            },
+            error: function (xhr) {
+                console.error('Error removing notification:', xhr);
+            }
+        });
+    });
+
+    // Auto-fetch notifications every 15 seconds
+    setInterval(fetchNotifications, 1000);
+
+    // Fetch notifications immediately when page loads
+    fetchNotifications();
+});
+</script>
+</body>
