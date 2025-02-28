@@ -759,7 +759,8 @@ nav#sidebar a[data-toggle="collapse"]::after {
 }
 
 nav#sidebar a[aria-expanded="true"] {
-    background: #3e7b27;
+    background: #47773f;
+    color: #ffffff;
 }
 
 nav#sidebar a[aria-expanded="true"]::after {
@@ -841,7 +842,7 @@ nav#sidebar li a i {
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
     padding-right: 20px;
-    border-right: 1px solid #454649;
+    border-right: 1px solid #123524;
 }
 
 nav#sidebar li li a {
@@ -851,11 +852,11 @@ nav#sidebar li li a {
 }
 
 nav#sidebar li li a:hover {
-    background: #123524;
+    background: #85a947;
 }
 
 nav#sidebar li li a:hover i {
-    color: #db6574;
+    color: #123524;
 }
 
 nav#sidebar li::before {
@@ -884,7 +885,7 @@ nav#sidebar li.active i {
 }
 
 nav#sidebar li li.active > a {
-    background: #292c32;
+    background: #47773f;
 }
 
 nav#sidebar.shrinked {

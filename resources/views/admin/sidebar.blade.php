@@ -16,17 +16,19 @@
         <ul class="list-unstyled">
            
            
-            <li class="active">
-                <a href="{{ route('admin.dashboard') }}"> <i class="icon-home"></i> Dashboard </a>
+            <li class="{{ (Route::is('admin.dashboard')) ? 'active' : '' }}">
+                <a href="{{ route('admin.dashboard') }}"> <i class="fa fa-bar-chart"></i> Dashboard </a>
             </li>
 
             <li>
                 <a href="#Account" aria-expanded="false" data-toggle="collapse">
-                    <i class="icon-windows"></i>Account
+                    <i class="material-icons">account_box</i> Account
                 </a>
-                <ul id="Account" class="collapse list-unstyled">
-                    <li><a href="{{ route('accounts') }}"><i class="icon-grid"></i> Professor</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Admin</a></li>
+
+                <ul id="Account" class="collapse list-unstyled {{ (Route::is('admin.accounts')) ? 'active' : '' }}">
+                    <li><a  href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
+                    <li><a href="#"><i class="fa fa-book"></i>Subject</a></li>
+                    <li><a href="#"><i class="material-icons">perm_identity</i> Admin</a></li>
                     {{-- <li><a href="#">Page</a></li> --}}
                 </ul>
             </li>
@@ -34,61 +36,46 @@
 
             <li>
                 <a href="#Classroom" aria-expanded="false" data-toggle="collapse">
-                    <i class="icon-windows"></i>Classroom
+                    <i class="fa fa-building"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('classroom') }}"><i class="icon-grid"></i> Monitor</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Device</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Add</a></li>
+                    <li><a href="{{ route('classroom') }}"><i class="fa fa-eye"></i>Monitor</a></li>
+                    <li><a href="#"><i class="material-icons">devices_other</i>Device</a></li>
+                    <li><a href="#"><i class="material-icons">add_box</i>Add</a></li>
                 </ul>
             </li>
            
-          
             <li>
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
-                    <i class="icon-windows"></i>Report
+                    <i class="material-icons">folder</i>Report
                 </a>
                 <ul id="Report" class="collapse list-unstyled">
-                    <li><a href="#"><i class="icon-grid"></i> Classroom</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Device</a></li>
-                    
+                    <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
+                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>  
+                    <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li>  
+
                 </ul>
             </li>
 
 
             <li>
                 <a href="#Homepage" aria-expanded="false" data-toggle="collapse">
-                    <i class="icon-windows"></i>Homepage
+                    <i class="fa fa-gear"></i> Homepage
                 </a>
                 <ul id="Homepage" class="collapse list-unstyled">
-                    <li><a href="#"><i class="icon-grid"></i> Slider</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Feedback</a></li>
-                    <li><a href="#"><i class="icon-grid"></i> Footer</a></li>
+                    <li><a href="#"><i class="fa fa-file-image-o"></i>Slider</a></li>
+                    <li><a href="#"><i class="fa fa-comments"></i>Feedback</a></li>
+                    <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
                 </ul>
             </li>
-           
-           
-          
-
-           
+             
         </ul>
 
-
-{{--         
-        <span class="heading">Extras</span>
-        <ul class="list-unstyled">
-            <li>
-                <a href="#"> <i class="icon-settings"></i>Demo </a>
-            </li>
-            <li>
-                <a href="#"> <i class="icon-writing-whiteboard"></i>Demo </a>
-            </li>
-            <li>
-                <a href="#"> <i class="icon-chart"></i>Demo </a>
-            </li>
-        </ul> --}}
     </nav>
-    <!-- Sidebar Navigation end-->
+
+
+
+    
 
 
    

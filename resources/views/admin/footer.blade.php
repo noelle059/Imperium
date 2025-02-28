@@ -12,6 +12,51 @@
 </footer>
 
 
+
+
+{{-- <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.list-unstyled li a');
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Remove 'active' class from all <li> elements
+            sidebarLinks.forEach(link => link.parentElement.classList.remove('active'));
+
+            // Add 'active' class to the clicked <li> element
+            this.parentElement.classList.add('active');
+        });
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.list-unstyled li a');
+
+    // Retrieve the active link from localStorage
+    const activeLink = localStorage.getItem('activeLink');
+
+    if (activeLink) {
+        document.querySelector(`.list-unstyled li a[href="${activeLink}"]`).parentElement.classList.add('active');
+    }
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Remove 'active' class from all <li> elements
+            sidebarLinks.forEach(link => link.parentElement.classList.remove('active'));
+
+            // Add 'active' class to the clicked <li> element
+            this.parentElement.classList.add('active');
+
+            // Store the active link in localStorage
+            localStorage.setItem('activeLink', this.getAttribute('href'));
+        });
+    });
+});
+</script> --}}
+
+
 </div>
 </div>
 
