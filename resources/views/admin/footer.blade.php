@@ -12,53 +12,16 @@
 </footer>
 
 
-
-
-{{-- <script>
-
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebarLinks = document.querySelectorAll('.list-unstyled li a');
-
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            // Remove 'active' class from all <li> elements
-            sidebarLinks.forEach(link => link.parentElement.classList.remove('active'));
-
-            // Add 'active' class to the clicked <li> element
-            this.parentElement.classList.add('active');
-        });
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebarLinks = document.querySelectorAll('.list-unstyled li a');
-
-    // Retrieve the active link from localStorage
-    const activeLink = localStorage.getItem('activeLink');
-
-    if (activeLink) {
-        document.querySelector(`.list-unstyled li a[href="${activeLink}"]`).parentElement.classList.add('active');
-    }
-
-    sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            // Remove 'active' class from all <li> elements
-            sidebarLinks.forEach(link => link.parentElement.classList.remove('active'));
-
-            // Add 'active' class to the clicked <li> element
-            this.parentElement.classList.add('active');
-
-            // Store the active link in localStorage
-            localStorage.setItem('activeLink', this.getAttribute('href'));
-        });
-    });
-});
-</script> --}}
-
-
 </div>
 </div>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <!-- JavaScript files -->
 <script src="/vendor/jquery/jquery.min.js"></script>
@@ -70,6 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="/js/charts-home.js"></script>
 <script src="/js/front.js"></script>
 
+
+<script>
+    window.notificationsUrl = "{{ route('notifications.index') }}";
+    window.markAllReadUrl = "{{ route('notifications.markAllRead') }}";
+    window.csrfToken = "{{ csrf_token() }}";
+</script>
+
+<script src="/scripts/admin_notifications.js"></script>
+
+
+
+ 
 
 </body>
 </html>

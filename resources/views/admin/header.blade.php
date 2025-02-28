@@ -22,70 +22,13 @@
     <link rel="stylesheet" href="/css/custom.css">
     <!-- Favicon-->
     <link rel="shortcut icon" href="/images/circle_favicon.png">
-    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-
+    
     <!-- ICONS-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-
-
-
-
-  </head>
-=======
-    <style>
-        /* Green modal background */
-.modal-content {
-    background-color: #28a745 !important; /* Bootstrap success green */
-    color: black; /* White text for contrast */
-    border-radius: 8px;
-}
-
-/* Green modal header */
-.modal-header {
-    background-color: #218838 !important; /* Darker green */
-    color: white;
-    border-bottom: none;
-}
-
-/* Green header */
-.header {
-    background-color: #28a745 !important;
-    color: white;
-}
-
-/* Style the close button */
-.modal-header .btn-close {
-    filter: invert(1); /* Makes it white */
-}
-
-/* Green modal footer */
-.modal-footer {
-    background-color: #218838 !important;
-    border-top: none;
-}
-
-#markAllAsRead {
-    background-color: #28a745; /* Green */
-    border-color: #218838;
-    color: white;
-}
-
-#markAllAsRead:hover {
-    background-color:red; /* Darker Green on Hover */
-    border-color: #1e7e34;
-}
-
-    </style>
 </head>
->>>>>>> eaad63c65b8375c45c673ebc77921d6623c96b8a
 
 <body>
 <header class="header">
@@ -161,97 +104,5 @@
 <!-- SIDEBAR -->
 @include('admin.sidebar')
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap JS -->
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-   $(document).ready(function () {
-    function fetchNotifications() {
-        $.ajax({
-            url: '{{ route("notifications.index") }}', // This will call the index method in your NotificationController
-            type: 'GET',
-            success: function (notifications) {
-                console.log("Fetched Notifications:", notifications);
-
-                // Update the modal list
-                $('#notificationList').empty();
-                if (notifications.length > 0) {
-                    notifications.forEach(function (notification) {
-                        $('#notificationList').append(`
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${notification.message}
-                                <button class="btn btn-sm btn-danger remove-notification" data-id="${notification.id}">
-                                    <i class="bi bi-x">X</i>
-                                </button>
-                            </li>
-                        `);
-                    });
-
-                    // Update and show notification count
-                    $('#notificationBadge').text(notifications.length).show();
-                } else {
-                    $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
-                    $('#notificationBadge').hide();
-                }
-            },
-            error: function (xhr) {
-                console.error('Error fetching notifications:', xhr);
-            }
-        });
-    }
-
-    // Fetch notifications when the modal opens
-    $('#notificationModal').on('show.bs.modal', fetchNotifications);
-
-    // Mark all notifications as read (Soft Delete)
-    $('#markAllAsRead').click(function () {
-        $.ajax({
-            url: '{{ route("notifications.markAllRead") }}',
-            type: 'POST',
-            data: { _token: '{{ csrf_token() }}' },
-            success: function () {
-                $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
-                $('#notificationBadge').hide(); // Hide bell badge
-            },
-            error: function (xhr) {
-                console.error('Error marking notifications as read:', xhr);
-            }
-        });
-    });
-
-    // Remove individual notification (Soft Delete)
-    $(document).on('click', '.remove-notification', function () {
-        let notificationId = $(this).data('id');
-        let $notificationItem = $(this).closest('li');
-
-        $.ajax({
-            url: '{{ route("notifications.destroy", "") }}/' + notificationId,
-            type: 'DELETE',
-            data: { _token: '{{ csrf_token() }}' },
-            success: function () {
-                $notificationItem.remove();
-                let count = $('#notificationList li').length;
-                if (count === 0) {
-                    $('#notificationList').html('<li class="list-group-item">No new notifications.</li>');
-                    $('#notificationBadge').hide();
-                } else {
-                    $('#notificationBadge').text(count);
-                }
-            },
-            error: function (xhr) {
-                console.error('Error removing notification:', xhr);
-            }
-        });
-    });
-
-    // Auto-fetch notifications every 15 seconds
-    setInterval(fetchNotifications, 1000);
-
-    // Fetch notifications immediately when page loads
-    fetchNotifications();
-});
-</script>
 </body>
