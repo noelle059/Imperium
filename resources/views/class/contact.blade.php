@@ -1,60 +1,44 @@
-<footer id="contact" class="footer-1">
-    <div class="main-footer widgets-dark typo-light">
-        <div class="container">
-            <div class="row">
+<footer id="contact" class="new-footer">
+    <div class="container">
+        <div class="footer-content">
+            
+            <div class="footer-left">
+                <img src="{{ asset('images/IMPERIUM_CONTACT.svg') }}" alt="Imperium Logo" class="footer-logo">
+                <p class="footer-desc">
+                    Empowering educators and institutions with an intelligent, energy-efficient system for seamless classroom management and security.
+                </p>
+            </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="widget subscribe no-box">
-                    <h5 class="widget-title">COMPANY NAME<span></span></h5>
-                    <p>About the company, little description will goes here.. </p>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="widget no-box">
-                        <h5 class="widget-title">Quick Links<span></span></h5>
-                        <ul class="thumbnail-widget">
-                            <li><div class="thumb-content"><a href="#.">&nbsp;Get Started</a></div>	</li>
-                            <li><div class="thumb-content"><a href="#.">&nbsp;Top Leaders</a></div>	</li>
-                            <li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="widget no-box">
-                    <h5 class="widget-title">Follow up<span></span></h5>
-                                <a href="#"> <i class="fa fa-facebook"> </i> </a>
-                                <a href="#"> <i class="fa fa-twitter"> </i> </a>
-                                <a href="#"> <i class="fa fa-youtube"> </i> </a>
-                    </div>
-                </div>
-                <br>
-                <br>
-
-                <div class="col-xs-12 col-sm-6 col-md-3">
-                    <div class="widget no-box">
-                        <h5 class="widget-title">Contact Us<span></span></h5>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-                        <div class="emailfield">
-                            <input type="text" name="email" placeholder="Email">
-                            <input name="uri" type="hidden" value="arabiantheme">
-                            <input name="loc" type="hidden" value="en_US">
-                            <input class="submitbutton ripplelink" type="submit" value="Subscribe">
-                            </form>  
-                        </div>
-                    </div>
+           
+            <div class="footer-middle">
+                <h5>Featured in</h5>
+                <div class="featured-logos">
+                    <img src="{{ asset('images/IT_ICON.svg') }}" alt="IT Department">
+                    <img src="{{ asset('images/UCC_ICON.svg') }}" alt="UCC Logo">
+                    <img src="{{ asset('images/CSD_ICON.svg') }}" alt="CSD Logo">
                 </div>
             </div>
+
+           
+            <div class="footer-address">
+                <h5>Address</h5>
+                <p>Biglang Awa Street, Cor 11th Ave<br>Catleya, Caloocan, 1400 Metro Manila, Philippines</p>
+            </div>
+
+    
+            <div class="footer-right">
+                <h5>Location</h5>
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.0383592744065!2d120.9921548750807!3d14.653441876334156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b686dd24e859%3A0xe442b57504cbf05f!2sUniversity%20of%20Caloocan%20City%20-%20South%20Campus!5e0!3m2!1sen!2sph!4v1709253000000!5m2!1sen!2sph" 
+                    loading="lazy">
+                </iframe>
+
+            </div>
         </div>
+
         
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p>Copyright Imperium Classroom © 2025. All rights reserved.</p>
-                    </div>
-                </div>
-            </div>
+        <div class="footer-bottom">
+            2025 @ Third Year College - University of Caloocan City - Imperium.
         </div>
+    </div>
 </footer>

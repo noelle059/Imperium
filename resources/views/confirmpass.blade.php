@@ -49,6 +49,7 @@
                             <div class="text-center mt-3">
                                 <button type="submit" id="confirmPasswordBtn" class="btn btn-lg btn-primary">Confirm Password</button>
                                 <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
+                                <a href="{{ url('/') }}" class="btn btn-secondary d-block mt-2">Back to Home</a>
                             </div>
                         </form>
                     </div>
