@@ -17,6 +17,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/style.css">
 
+ <style>
+        body {
+    background-image: url('/images/CLASSROOM_BACKGROUND.svg'); /* Adjust the path if necessary */
+    background-size: cover; /* Cover the entire viewport */
+    background-repeat: no-repeat; /* Prevent tiling */
+    background-position: center; /* Center the image */
+}
+
+
+
+
+    </style>
+
 
 </head>
 <body>
@@ -26,7 +39,7 @@
     @include('layouts.navigation')
 
 <div class="container mt-5">
-    <h2>Classroom</h2>
+    <h2 style ="color: white">Classroom</h2>
     <table class="table table-bordered">
         <thead class="thead-light">
             <tr>
