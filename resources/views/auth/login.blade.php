@@ -14,7 +14,18 @@
 </head>
 <body>
 <x-floating-alert :message="session('alert')" />
-
+<!-- Display SweetAlert for validation errors -->
+@if ($errors->any())
+    <script>
+        const errors = @json($errors->all());
+        Swal.fire({
+            title: 'Register error!',
+            icon: 'error',
+            html: '<ul>' + errors.map(error => '<li>' + error + '</li>').join('') + '</ul>',
+            confirmButtonText: 'Okay'
+        });
+    </script>
+@endif
 <section>
     <div class="container">
         <div class="user signinBx">
