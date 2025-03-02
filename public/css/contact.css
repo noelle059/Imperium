@@ -1,3 +1,8 @@
+#contact {
+    min-height: 35vh;
+}
+
+
 .new-footer {
     background-color: #252525;
     color: white;
@@ -106,6 +111,7 @@ h5 {
     justify-content: center;
     text-align: left;
 }
+
 
 .footer-right iframe {
     width: 100%;

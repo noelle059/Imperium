@@ -38,7 +38,8 @@
     <!-- FOOTER -->
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
+
     @include('class.navbar')
     @include('class.carousel')
     @include('class.about')
