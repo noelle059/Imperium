@@ -26,9 +26,7 @@
                         <strong>Abstract:</strong> 
                         <span id="abstract-short">
                             This paper presents a cost-effective energy-efficient Internet of Things (IoT) based device controlling system that can be 
-                            used with minimum user interaction, in the case of operating any electrical device...
-                        </span>
-                        <span id="abstract-full" style="display: none;">
+                            used with minimum user interaction, in the case of operating any electrical device.
                             The proposed prototype of “IoT Based Energy Efficient Smart Classroom” is implemented to reduce the wastage of electricity 
                             in a lecture hall in the Sabaragamuwa University of Sri Lanka. The system controls the operations of electrical devices (such as ON/OFF) by identifying the presence of human in a specific area. 
                             In the system, a Microsoft Kinect sensor is used to track the presence of humans and the system can be responded to environmental conditions such as temperature, humidity, and light intensity at the human-occupied area. 
@@ -37,8 +35,6 @@
                             Finally, the system was tested in 80 incidences using four students in a laboratory and the test results show 97.62% accuracy for the implemented prototype.
                         </span>
                     </p>
-
-                    <button id="seeMoreBtn" class="see-more-btn">See More</button>
 
                     <p class="modal-read">
                         <strong>Read full study on</strong><br>

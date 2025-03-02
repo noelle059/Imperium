@@ -108,9 +108,23 @@ h5 {
 }
 
 .footer-right iframe {
-    width: 115%;
+    width: 100%;
+    max-width: 400px; /* optional, limit max width para di sobrang lapad */
     height: 160px;
     border: none;
+}
+
+/* Para sa tablet at mobile */
+@media screen and (max-width: 768px) {
+    .footer-right iframe {
+        height: 140px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .footer-right iframe {
+        height: 120px;
+    }
 }
 
 

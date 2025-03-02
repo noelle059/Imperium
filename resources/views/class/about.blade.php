@@ -41,19 +41,15 @@
                         <span id="abstract-short">
                             With the increase of energy consumption worldwide in several domains such as industry, education, and transportation,several technologies played 
                             an influential role in energy conservation such as the Internet of Things (IoT). In this article,  we describe the design and implementation of an 
-                            IoT-based energy conservation smart classroom system that contributes to energy conservation in the education domain...
-                        </span>
-                        <span id="abstract-full" style="display: none;">
-                            The proposed system not only allows the user to access and control IoT devices (e.g., lights, projectors, and air conditions) in real-time, it also has the capability to aggregate the estimated energy consumption of an IoT device, 
-                            the smart classroom, and the building based on the energy consumption and cost model that we propose. 
+                            IoT-based energy conservation smart classroom system that contributes to energy conservation in the education domain. The proposed system not only 
+                            allows the user to access and control IoT devices (e.g., lights, projectors, and air conditions) in real-time, it also has the capability to aggregate 
+                            the estimated energy consumption of an IoT device, the smart classroom, and the building based on the energy consumption and cost model that we propose. 
                             Moreover, the proposed model aggregates the estimated energy cost according to the Saudi Electricity Company (SEC) rates. 
                             Furthermore, the model aggregates in real-time the estimated energy conservation percentage and estimated money-saving percentage compared to data collected when the system wasn't used. 
                             The feasibility and benefits of our system have been validated on a real-world scenario which is a classroom in the college of computer science and engineering, Taibah University, Yanbu branch. 
                             The results of the experimental studies are promising in energy conservation and cost-saving when using our proposed system.
                         </span>
                     </p>
-
-                    <button id="seeMoreBtn" class="see-more-btn">See More</button>
 
                     <p class="modal-read">
                         <strong>Read full study on</strong><br>

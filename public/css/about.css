@@ -454,16 +454,49 @@
     font-weight: bold;
     font-size: 14px;
     margin-top: 15px;
+    text-align: center;
+    word-break: break-word;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .modal-read {
+        font-size: 13px;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-read {
+        font-size: 12px;
+        margin-top: 8px;
+    }
 }
 
 .modal-link {
     color: #47773f;
     text-decoration: none;
+    display: inline-block;
+    word-break: break-word;
+    padding: 5px;
+    transition: color 0.3s ease;
 }
 
 .modal-link:hover {
     text-decoration: underline;
+    color: #35572e;
 }
+
+/* Para sa mobile, baka gusto mo mas madaling pindutin */
+@media screen and (max-width: 480px) {
+    .modal-link {
+        font-size: 12px;
+        padding: 3px;
+    }
+}
+
+
+
 
 /* RESPONSIVE DESIGN */
 @media screen and (max-width: 768px) {
