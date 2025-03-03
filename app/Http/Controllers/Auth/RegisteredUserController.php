@@ -49,6 +49,10 @@ class RegisteredUserController extends Controller
             'password.required' => 'The password field is required.',
             'password.confirmed' => 'The password confirmation does not match.',
             'g-recaptcha-response.required' => 'Please complete the reCAPTCHA.',
+            'id_picture.required' => 'The ID picture is required.',
+            'id_picture.image' => 'The ID picture must be an image.',
+            'id_picture.mimes' => 'The ID picture must be a file of type: jpeg, png, jpg, gif.',
+            'id_picture.max' => 'The ID picture may not be greater than 2048 kilobytes.',
         ];
     
         try {
@@ -65,16 +69,17 @@ class RegisteredUserController extends Controller
                     'max:255',
                     'regex:/^[\p{L} ]+$/u' 
                 ],
-                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User   ::class],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
                 'contact_number'=> [
                     'required',
                     'string',
                     'size:11', 
                     'regex:/^09[0-9]{9}$/',
-                    'unique:'.User   ::class,
+                    'unique:'.User ::class,
                 ],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'g-recaptcha-response' => 'required', // Validate the reCAPTCHA response
+                'id_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for ID picture
             ], $messages);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Redirect back with input and errors
@@ -96,6 +101,14 @@ class RegisteredUserController extends Controller
             return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA verification failed.']);
         }
     
+        // Handle the file upload
+        $filename = null; // Initialize filename variable
+        if ($request->hasFile('id_picture')) {
+            $file = $request->file('id_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/id_pictures'), $filename); // Save to public/uploads/id_pictures
+        }
+    
         // Proceed with user registration
         $user = User::create([
             'name' => $request->name,
@@ -103,12 +116,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'contact_number' => $request->contact_number,
+            'id_picture' => $filename, // Save the filename in the database
         ]);
     
         event(new Registered($user));
     
         Auth::login($user);
     
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route ('dashboard', absolute: false));
     }
 }

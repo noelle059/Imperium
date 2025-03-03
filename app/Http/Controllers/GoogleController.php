@@ -22,9 +22,20 @@ class GoogleController extends Controller
         try {
             // Get the user from Google
             $googleUser   = Socialite::driver('google')->user();
+            $googleAvatarUrl = $googleUser->getAvatar(); // Get Google profile picture
 
             // Check if the user already exists in the database
-            $user = User::where('email', $googleUser ->getEmail())->first();
+            $user = User::where('email', $googleUser->getEmail())->first();
+    
+            // Define local path for storing the image
+            $filename = time() . '.jpg'; // Unique filename based on timestamp
+            $filepath = public_path('uploads/id_pictures/' . $filename);
+    
+            // Download and save the Google profile picture locally
+            if ($googleAvatarUrl) {
+                $imageContents = file_get_contents($googleAvatarUrl); // Fetch image from Google
+                file_put_contents($filepath, $imageContents); // Save image locally
+            }
 
             if (!$user) {
                 // If the user does not exist, create a new user
@@ -32,8 +43,9 @@ class GoogleController extends Controller
                     'name' => $googleUser ->getName(),
                     'last_name' => $googleUser ->getName(), // You might want to split this if you have a separate last name
                     'email' => $googleUser ->getEmail(),
-                    'password' => bcrypt(Str::random(16)), // Use Str::random() to generate a random password
+                    'password' => bcrypt(Str::random(16)),// Use Str::random() to generate a random password
                     // You can add other fields if necessary
+                    'id_picture' => $googleUser->getAvatar(), //takes the google profile :O
                 ]);
 
                   // Log the user in
@@ -43,8 +55,19 @@ class GoogleController extends Controller
             return redirect()->route('google.phone', ['user' => $user->id]);
         }
 
+
+          // Update id_picture if the Google profile picture changes
+          if ($user->id_picture !== $googleUser->getAvatar()) {
+            $user->id_picture = $googleUser->getAvatar();
+            $user->save();
+        }
+
+
         // Log the user in if they already exist
         Auth::login($user);
+
+        session()->flash('success', 'You have successfully logged in!');
+
 
         Notification::create([
             'user_id' => $user->id,
