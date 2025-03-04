@@ -57,3 +57,47 @@
     text-align: center;
     /* padding: px; */
 }
+
+/*NOTIFICATION */
+
+/* Green modal background */
+.modal-content {
+    background-color: #28a745 !important; /* Bootstrap success green */
+    color: black; /* White text for contrast */
+    border-radius: 8px;
+}
+
+/* Green modal header */
+.modal-header {
+    background-color: #218838 !important; /* Darker green */
+    color: white;
+    border-bottom: none;
+}
+
+/* Green header */
+.header {
+    background-color: #28a745 !important;
+    color: white;
+}
+
+/* Style the close button */
+.modal-header .btn-close {
+    filter: invert(1); /* Makes it white */
+}
+
+/* Green modal footer */
+.modal-footer {
+    background-color: #218838 !important;
+    border-top: none;
+}
+
+#markAllAsRead {
+    background-color: #28a745; /* Green */
+    border-color: #218838;
+    color: white;
+}
+
+#markAllAsRead:hover {
+    background-color: red; /* Darker Green on Hover */
+    border-color: #1e7e34;
+}

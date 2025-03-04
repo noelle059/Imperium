@@ -31,30 +31,60 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                'regex:/^[\p{L} ]+$/u' 
-            ],
-            'last_name' => [
-                'required',
-                'string',
-                'max:255',
-                'regex:/^[\p{L} ]+$/u' 
-            ],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
-            'contact_number'=> [
-                'required',
-                'string',
-                'size:11', 
-                'regex:/^09[0-9]{9}$/',
-                'unique:'.User ::class,
-            ],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'g-recaptcha-response' => 'required', // Validate the reCAPTCHA response
-        ]);
+        // Define custom error messages
+        $messages = [
+            'name.required' => 'The name field is required.',
+            'name.regex' => 'The name may only contain letters and spaces.',
+            'last_name.required' => 'The last name field is required.',
+            'last_name.regex' => 'The last name may only contain letters and spaces.',
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.lowercase' => 'The email must be in lowercase.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+            'email.unique' => 'The email has already been taken.',
+            'contact_number.required' => 'The contact number field is required.',
+            'contact_number.size' => 'The contact number must be exactly 11 digits.',
+            'contact_number.regex' => 'The contact number must start with 09 and be followed by 9 digits.',
+            'contact_number.unique' => 'The contact number has already been taken.',
+            'password.required' => 'The password field is required.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'g-recaptcha-response.required' => 'Please complete the reCAPTCHA.',
+            'id_picture.required' => 'The ID picture is required.',
+            'id_picture.image' => 'The ID picture must be an image.',
+            'id_picture.mimes' => 'The ID picture must be a file of type: jpeg, png, jpg, gif.',
+            'id_picture.max' => 'The ID picture may not be greater than 2048 kilobytes.',
+        ];
+    
+        try {
+            $request->validate([
+                'name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    'regex:/^[\p{L} ]+$/u' 
+                ],
+                'last_name' => [
+                    'required',
+                    'string',
+                    'max:255',
+                    'regex:/^[\p{L} ]+$/u' 
+                ],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
+                'contact_number'=> [
+                    'required',
+                    'string',
+                    'size:11', 
+                    'regex:/^09[0-9]{9}$/',
+                    'unique:'.User ::class,
+                ],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'g-recaptcha-response' => 'required', // Validate the reCAPTCHA response
+                'id_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for ID picture
+            ], $messages);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Redirect back with input and errors
+            return redirect()->back()->withInput()->withErrors($e->validator);
+        }
     
         // Verify the reCAPTCHA response
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
@@ -71,6 +101,14 @@ class RegisteredUserController extends Controller
             return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA verification failed.']);
         }
     
+        // Handle the file upload
+        $filename = null; // Initialize filename variable
+        if ($request->hasFile('id_picture')) {
+            $file = $request->file('id_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/id_pictures'), $filename); // Save to public/uploads/id_pictures
+        }
+    
         // Proceed with user registration
         $user = User::create([
             'name' => $request->name,
@@ -78,12 +116,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'contact_number' => $request->contact_number,
+            'id_picture' => $filename, // Save the filename in the database
         ]);
     
         event(new Registered($user));
     
         Auth::login($user);
     
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route ('dashboard', absolute: false));
     }
 }

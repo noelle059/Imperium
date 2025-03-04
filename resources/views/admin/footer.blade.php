@@ -15,6 +15,14 @@
 </div>
 </div>
 
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <!-- JavaScript files -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/popper.js/umd/popper.min.js"></script>
@@ -25,6 +33,18 @@
 <script src="/js/charts-home.js"></script>
 <script src="/js/front.js"></script>
 
+
+<script>
+    window.notificationsUrl = "{{ route('notifications.index') }}";
+    window.markAllReadUrl = "{{ route('notifications.markAllRead') }}";
+    window.csrfToken = "{{ csrf_token() }}";
+</script>
+
+<script src="/scripts/admin_notifications.js"></script>
+
+
+
+ 
 
 </body>
 </html>

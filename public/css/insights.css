@@ -257,3 +257,190 @@
         padding: 5px 12px;
     }
 }
+
+/* Modal Custom Styling */
+.modal-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff !important;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 35px !important;
+    outline: 0;
+}
+
+.custom-modal {
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 20px;
+    max-width: 95vw;
+    width: 700px;
+}
+
+/* HEADER - Centering Logo & Fixing Layout */
+.modal-header {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center logo horizontally */
+    border-bottom: none;
+    padding: 15px 20px;
+    position: relative;
+    width: 100%;
+}
+
+/* LOGO - Perfect Center */
+.modal-logo {
+    max-height: 40px;
+    display: block;
+    margin: auto; /* Ensures it stays centered */
+}
+
+/* CLOSE BUTTON - Independent from Logo */
+.custom-close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #47773f;
+    cursor: pointer;
+}
+
+.custom-close:hover {
+    color: #2e5729;
+}
+
+/* MODAL CONTENT */
+.modal-body {
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* White Box for Content */
+.content-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    max-width: 95%;
+    margin: auto;
+}
+
+/* Title */
+.modal-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Subtitle */
+.modal-subtitle {
+    font-style: italic;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+/* Meta Information */
+.modal-meta {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Abstract */
+.modal-abstract {
+    font-size: 14px;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+/* Read More Link */
+/* Read More Link */
+.modal-read {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+    word-break: break-word;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .modal-read {
+        font-size: 13px;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-read {
+        font-size: 12px;
+        margin-top: 8px;
+    }
+}
+
+.modal-link {
+    color: #47773f;
+    text-decoration: none;
+    display: inline-block;
+    word-break: break-word;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.modal-link:hover {
+    text-decoration: underline;
+    color: #35572e;
+}
+
+/* Para sa mobile, baka gusto mo mas madaling pindutin */
+@media screen and (max-width: 480px) {
+    .modal-link {
+        font-size: 12px;
+        padding: 3px;
+    }
+}
+
+/* RESPONSIVE DESIGN */
+@media screen and (max-width: 768px) {
+    .custom-modal {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .modal-title {
+        font-size: 18px;
+    }
+
+    .modal-subtitle,
+    .modal-meta,
+    .modal-abstract,
+    .modal-read {
+        font-size: 12px;
+    }
+
+    .content-box {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-link {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-link {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}

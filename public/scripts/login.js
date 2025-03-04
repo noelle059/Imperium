@@ -256,3 +256,33 @@ const passwordInput = document.getElementById('password');
       toggleSignupConfirmPasswordIcon.classList.add('fa-eye-slash');
     }
   });
+
+  function openModal() { document.getElementById('termsModal').style.display = 'block'; }
+    function closeModal() { document.getElementById('termsModal').style.display = 'none'; }
+    
+    function enableCheckbox() {
+        var termsText = document.getElementById("termsText");
+        var checkbox = document.getElementById("termsCheckbox");
+        if (termsText.scrollHeight - termsText.scrollTop <= termsText.clientHeight + 10) {
+            checkbox.disabled = false;
+        }
+    }
+
+
+    fdocument.addEventListener("DOMContentLoaded", function() {
+      var registerBtn = document.getElementById("registerBtn");
+      registerBtn.disabled = true;
+  });
+  
+  function toggleRegisterButton() {
+      var checkbox = document.getElementById("termsCheckbox");
+      var registerBtn = document.getElementById("registerBtn");
+      
+      if (checkbox.checked) {
+          registerBtn.disabled = false;
+          registerBtn.removeAttribute("title");
+      } else {
+          registerBtn.disabled = true;
+          registerBtn.setAttribute("title", "You need to read the Terms and Conditions first.");
+      }
+  }
