@@ -7,10 +7,10 @@
     <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="h5 no-margin-bottom">Classroom Monitoring</h2>
-            
+
             <div style="display: flex; align-items: center;">
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
-                <input type="text" placeholder=" Search..." style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
+                <input type="text" id="searchInput" placeholder=" Search..." style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
             </div>
         </div>
     </div>
@@ -29,37 +29,30 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($rooms as $room)
+                    <tr class="table-row">
+                        <td>CL{{ $room->room_name }}</td>
+                        <td>{{ $room->professor_name ?? 'N/A' }}</td>
+                        <td class="status-cell">{{ $room->status === 'Available' ? 'Vacant' : 'In Use' }}</td>
+                        <td>{{ $room->account_no ?? 'N/A' }}</td>
+                        <td>{{ $room->time_in ?? 'N/A' }}</td>
+                        <td class="action-cell">
+                            <button type="button" class="btn gradient-button">Remote</button>
+                        </td>
+                    </tr>
+                @endforeach
                 <tr class="table-row">
-                    <td>CL1</td>
+                    <td>CL2</td>
                     <td>Prof. James Mitchell</td>
                     <td class="status-cell">In use</td>
                     <td>12345678</td>
                     <td>10:00 AM</td>
                     <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
                 </tr>
-                <tr class="table-row">
-                    <td>CL2</td>
-                    <td>Not Applicable</td>
-                    <td class="status-cell">Vacant</td>
-                    <td>Not Applicable</td>
-                    <td>Not Applicable</td>
-                    <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
-                </tr>
-                <tr class="table-row">
-                    <td>CL3</td>
-                    <td>Dr. Emily Roberts</td>
-                    <td class="status-cell">In use</td>
-                    <td>12345678</td>
-                    <td>3:00 PM</td>
-                    <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
-                </tr>
             </tbody>
+
         </table>
     </div>
-
-
-
-
 
 
 <script>
@@ -75,6 +68,24 @@
     });
 </script>
 
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#uniqueTable tbody tr');
+
+        rows.forEach(row => {
+            let roomNo = row.cells[0].textContent.toLowerCase();
+            let professor = row.cells[1].textContent.toLowerCase();
+            let accountNo = row.cells[3].textContent.toLowerCase();
+
+            if (roomNo.includes(filter) || professor.includes(filter) || accountNo.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
 
 
  <!-- Footer-->

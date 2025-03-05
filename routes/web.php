@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\AdminController; // Adjust this to your actual controller
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 
@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+
+use App\Models\Room;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('homepage');
@@ -120,12 +123,14 @@ Route::middleware(['auth'])->group(function () {
 
 // ADMIN SIDE
 
-Route::get('/admin/accounts', function () {
-    return view('admin.accounts');
-})->name('accounts');
+Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
 
 Route::get('/admin/classroom', function () {
-    return view('admin.classroom');
+    $rooms = Room::leftJoin('users', 'rooms.professor_name', '=', 'users.name')
+        ->select('rooms.*', 'users.rfid_uid as account_no')
+        ->get();
+
+    return view('admin.classroom', compact('rooms'));
 })->name('classroom');
 
 
