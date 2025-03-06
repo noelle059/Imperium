@@ -14,7 +14,7 @@ $(document).ready(function () {
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 ${notification.message}
                                 <button class="btn btn-sm btn-danger remove-notification" data-id="${notification.id}">
-                                    <i class="bi bi-x">X</i>
+                                    <i class="bi bi-x"></i>
                                 </button>
                             </li>
                         `);

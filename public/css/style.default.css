@@ -1558,28 +1558,71 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
     color: #70737a;
 }
 
+/* SWEET ALERT */
+.sweetalert-popup {
+    z-index: 10500 !important; /* A higher value than your modal */
+}
+
+/* Ensure SweetAlert2 is always on top of modals */
+.swal2-container {
+    z-index: 99999 !important; /* Very high value to make sure it appears above everything else */
+}
+.swal2-popup {
+    z-index: 99999 !important; /* Same high value for the SweetAlert dialog */
+}
+.swal2-overlay {
+    z-index: 99998 !important; /* Ensure overlay is behind the SweetAlert */
+}
+
 /* Modal */
 .modal-open .modal {
     z-index: 9999;
 }
 
+.modal-lg {
+    max-width: 70%;
+}
+
+.modal-xl {
+    max-width: 70%;
+}
+
+.modal-fullscreen {
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 767px) {
+    .modal-lg,
+    .modal-xl,
+    .modal-fullscreen {
+        max-width: 100%;
+        margin: 0;
+        padding: 5px;
+    }
+}
+
 .modal-open .modal .modal-content {
     border-radius: 0;
-    background: #2d3035;
+    background: #ffffff;
 }
 
 .modal-open .modal .modal-header,
 .modal-open .modal .modal-footer {
-    border-color: #3d4148;
+    border-color: #47773f;
+    background-color: #47773f;
 }
 
 .modal-open .modal .close {
-    color: #8a8d93;
+    color: #123524;
     opacity: 1;
 }
 
 .modal-open .modal .modal-title {
     font-size: 1.25rem;
+    color: #ffffff;
 }
 
 /*
@@ -1708,35 +1751,35 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 */
 .form-control {
     height: calc(2.4rem + 2px);
-    border: 1px solid #444951;
+    border: 1px solid #47773f;
     background: transparent;
     border-radius: 0;
-    color: #979a9f;
+    color: #123524;
     padding: 0.45rem 0.75rem;
 }
 
 .form-control::-moz-placeholder {
     font-size: 0.9rem;
     font-family: "Muli", sans-serif;
-    color: #787b82;
+    color: #123524;
 }
 
 .form-control::-webkit-input-placeholder {
     font-size: 0.9rem;
     font-family: "Muli", sans-serif;
-    color: #787b82;
+    color: #123524;
 }
 
 .form-control:-ms-input-placeholder {
     font-size: 0.9rem;
     font-family: "Muli", sans-serif;
-    color: #787b82;
+    color: #123524;
 }
 
 .form-control:focus {
-    color: #979a9f;
+    color: #123524;
     background-color: transparent;
-    border-color: #db6574;
+    border-color: #123524;
     outline: none;
     -webkit-box-shadow: 0 0 0 0.2rem rgba(219, 101, 116, 0.25);
     box-shadow: 0 0 0 0.2rem rgba(219, 101, 116, 0.25);
@@ -1871,7 +1914,7 @@ input[type="submit"] {
 
 form label {
     font-size: 0.9rem;
-    color: #8a8d93;
+    color: #123524;
 }
 
 .checkbox-template,
@@ -2933,7 +2976,7 @@ body {
 }
 
 a {
-    color: #db6574;
+    color: #123524;
     text-decoration: none;
 }
 
@@ -3191,7 +3234,8 @@ a.bg-warning:hover {
 }
 
 .bg-danger {
-    background-color: #bb414d !important;
+    background-color: #ffffff !important;
+    color: #123524 !important;
 }
 
 a.bg-danger:focus,

@@ -4,20 +4,31 @@
         <div class="container-fluid text-center">
             <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
             <p class="no-margin-bottom">
-                2025 &copy; Third Year College - University of Caloocan City. 
-                <a target="_blank" href="https://templateshub.net" style="color: #47773f " >  Imperium  </a>.
+                2025 &copy; Third Year College - University of Caloocan City.
+                <a target="_blank" href="https://templateshub.net" style="color: #47773f "> Imperium </a>.
             </p>
         </div>
     </div>
 </footer>
 
-
 </div>
 </div>
 
 
 
+<!-- Add this script tag in the <head> or before closing </body> tag -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+{{-- SWEET ALERTS --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+
+{{-- INCLUDE SUBJECT MODAL FILE --}}
+@include('admin.modal.subjectModals')
+
+{{-- SWEETALERT INCLUDE FILE --}}
+@include('admin.sweetAlerts.subjectAlert')
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -34,17 +45,15 @@
 <script src="/js/front.js"></script>
 
 
+
+</body>
+
+</html>
+
+
 <script>
     window.notificationsUrl = "{{ route('notifications.index') }}";
     window.markAllReadUrl = "{{ route('notifications.markAllRead') }}";
     window.csrfToken = "{{ csrf_token() }}";
 </script>
-
 <script src="/scripts/admin_notifications.js"></script>
-
-
-
- 
-
-</body>
-</html>

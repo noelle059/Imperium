@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\SubjectController;
+
 
 use App\Models\Room;
 use App\Models\User;
@@ -73,7 +75,7 @@ Route::get('/user/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
 
-    Route::get('/get-room-status', [DashboardController::class, 'getRoomStatus']);
+Route::get('/get-room-status', [DashboardController::class, 'getRoomStatus']);
 // Admin dashboard route with inline check
 Route::get('/admin/dashboard', function () {
     // Check if the user is authenticated and is an admin
@@ -123,6 +125,17 @@ Route::middleware(['auth'])->group(function () {
 
 // ADMIN SIDE
 
+// Admin dashboard Subject Route
+Route::resource('/admin/subjects', SubjectController::class);
+
+// Update a subject
+Route::put('admin/subjects/{id}', [SubjectController::class, 'update'])->name('subjects.update');
+
+// Archive a subject
+Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])->name('subjects.remove');
+
+
+
 Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
 
 Route::get('/admin/classroom', function () {
@@ -134,6 +147,7 @@ Route::get('/admin/classroom', function () {
 })->name('classroom');
 
 
+
 // slider route 
 use App\Http\Controllers\SliderController;
 
@@ -141,7 +155,6 @@ use App\Http\Controllers\SliderController;
 Route::get('/admin/slider', [SliderController::class, 'index'])->name('admin.slider.sliderchanger');
 
 Route::get('/carousel', [SliderController::class, 'carousel'])->name('carousel');
-
 
 Route::get('/', [SliderController::class, 'homepage'])->name('home'); // Homepage
 
@@ -159,13 +172,8 @@ use App\Http\Controllers\FeedbackController;
 Route::get('/', [FeedbackController::class, 'homepage'])->name('home');
 
 // Admin Feedback Management Routes (Similar to Slider)
-Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback.feedbackchanger'); 
+Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback.feedbackchanger');
 Route::post('/admin/feedback', [FeedbackController::class, 'store'])->name('admin.feedback.store'); // Store New Feedback
 Route::delete('/admin/feedback/{id}', [FeedbackController::class, 'destroy'])->name('admin.feedback.destroy'); // Delete Feedback
 Route::get('/admin/feedback/edit/{id}', [FeedbackController::class, 'edit'])->name('admin.feedback.edit'); // Edit Feedback Page
 Route::put('/admin/feedback/{id}', [FeedbackController::class, 'update'])->name('admin.feedback.update'); // Update Feedback
-
-
-
-
-

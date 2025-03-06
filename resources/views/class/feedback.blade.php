@@ -5,25 +5,24 @@
         <button class="prev-btn">&#10094;</button>
         <div class="testimonial-track-wrapper">
             <div class="testimonial-track">
-                @foreach($feedbacks as $feedback)
-                <div class="testimonial-card">
-                    <div class="quote-icon">&#8220;</div>
-                    <p class="testimonial-text">{{ $feedback->message }}</p>
-                    <div class="testimonial-profile">
-                        <img src="{{ asset('uploads/' . $feedback->image) }}" alt="Profile">
-                        <div class="testimonial-info">
-                            <h4>{{ $feedback->name }}</h4>
-                            <p>{{ $feedback->position }}</p>
+                @foreach ($feedbacks as $feedback)
+                    <div class="testimonial-card">
+                        <div class="quote-icon">&#8220;</div>
+                        <p class="testimonial-text">{{ $feedback->message }}</p>
+                        <div class="testimonial-profile">
+                            <img src="{{ asset('uploads/' . $feedback->image) }}" alt="Profile">
+                            <div class="testimonial-info">
+                                <h4>{{ $feedback->name }}</h4>
+                                <p>{{ $feedback->position }}</p>
+                            </div>
                         </div>
+                        <button class="see-more" data-bs-toggle="modal" data-bs-target="#modal-{{ $feedback->id }}">
+                            See more
+                        </button>
+
                     </div>
-                    <button class="see-more" data-bs-toggle="modal" data-bs-target="#modal-{{ $feedback->id }}">
-    See more
-</button>
 
-                </div>
-
-                <!-- Bootstrap Modal for each feedback -->
-                
+                    <!-- Bootstrap Modal for each feedback -->
                 @endforeach
             </div>
         </div>

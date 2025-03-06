@@ -2,31 +2,35 @@
     <!-- Sidebar Navigation-->
     <nav id="sidebar">
         <!-- Sidebar Header-->
-       <!-- Sidebar Header -->
-<div class="sidebar-header d-flex align-items-center">
-<div class="avatar">
-    @if(Auth::check())
-        @if(Str::startsWith(Auth::user()->id_picture, 'http')) 
-            <!-- If id_picture is a Google URL -->
-            <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
-        @else 
-            <!-- If id_picture is a local upload -->
-            <img src="{{ asset('uploads/' . Auth::user()->id_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle">
-        @endif
-    @else
-        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
-    @endif
-</div>
+        <!-- Sidebar Header -->
+        <div class="sidebar-header d-flex align-items-center">
+            <div class="avatar">
+                @if (Auth::check())
+                    @if (Str::startsWith(Auth::user()->id_picture, 'http'))
+                        <!-- If id_picture is a Google URL -->
+                        <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
+                    @else
+                        <!-- If id_picture is a local upload -->
+                        <img src="{{ asset('uploads/' . Auth::user()->id_picture) }}" alt="Profile Picture"
+                            class="img-fluid rounded-circle">
+                    @endif
+                @else
+                    <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
+                        class="img-fluid rounded-circle">
+                @endif
+            </div>
 
 
-    <div class="title">
-        @if(Auth::check())
-            <h1 class="h5">{{ Auth::user()->name }}</h1>
-        @else
-            <h1 class="h5">Guest</h1>
-        @endif
-    </div>
-</div>
+            <div class="title">
+                @if (Auth::check())
+                    <h1 class="h5" style="font-size: 15px; color: #123524;">{{ Auth::user()->name }}</h1>
+                @else
+                    <h1 class="h5">Guest</h1>
+                @endif
+
+                <h6 style="color: #47773f; text-align: center;">Administrator</h6>
+            </div>
+        </div>
 
         <!-- Sidebar Navidation Menus-->
         <span class="heading">Main</span>
@@ -44,7 +48,7 @@
 
                 <ul id="Account" class="collapse list-unstyled {{ Route::is('admin.accounts') ? 'active' : '' }}">
                     <li><a href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
-                    <li><a href="#"><i class="fa fa-book"></i>Subject</a></li>
+                    <li><a href="{{ route('subjects.index') }}"><i class="fa fa-book"></i>Subject</a></li>
                     <li><a href="#"><i class="material-icons">perm_identity</i> Admin</a></li>
                     {{-- <li><a href="#">Page</a></li> --}}
                 </ul>
@@ -80,9 +84,11 @@
                     <i class="fa fa-gear"></i> Homepage
                 </a>
                 <ul id="Homepage" class="collapse list-unstyled">
-                <li><a href="{{ route('admin.slider.sliderchanger') }}"><i class="fa fa-file-image-o"></i>Slider</a></li>
-                <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i class="fa fa-comments"></i>Feedback</a></li>
-                <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
+                    <li><a href="{{ route('admin.slider.sliderchanger') }}"><i
+                                class="fa fa-file-image-o"></i>Slider</a></li>
+                    <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i
+                                class="fa fa-comments"></i>Feedback</a></li>
+                    <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
                 </ul>
             </li>
 
