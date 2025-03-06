@@ -63,6 +63,9 @@ window.toggleSwitch = function(switchId) {
     }
 };
 
+
+
+
 // Monitor the switches' states from Firebase (to sync UI with ESP32)
 onValue(switchRef1, function(snapshot) {
     document.getElementById('switch1').checked = snapshot.val();
@@ -112,4 +115,8 @@ onValue(outlet, function(snapshot) {
         document.getElementById('outlet-icon').classList.replace('bi-plug-fill', 'bi-outlet');
     }
 });
+
+
+
+
 

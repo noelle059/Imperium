@@ -14,9 +14,9 @@
         <!-- Sidebar Navidation Menus-->
         <span class="heading">Main</span>
         <ul class="list-unstyled">
-           
-           
-            <li class="{{ (Route::is('admin.dashboard')) ? 'active' : '' }}">
+
+
+            <li class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}"> <i class="fa fa-bar-chart"></i> Dashboard </a>
             </li>
 
@@ -25,8 +25,8 @@
                     <i class="material-icons">account_box</i> Account
                 </a>
 
-                <ul id="Account" class="collapse list-unstyled {{ (Route::is('admin.accounts')) ? 'active' : '' }}">
-                    <li><a  href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
+                <ul id="Account" class="collapse list-unstyled {{ Route::is('admin.accounts') ? 'active' : '' }}">
+                    <li><a href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
                     <li><a href="#"><i class="fa fa-book"></i>Subject</a></li>
                     <li><a href="#"><i class="material-icons">perm_identity</i> Admin</a></li>
                     {{-- <li><a href="#">Page</a></li> --}}
@@ -41,18 +41,18 @@
                 <ul id="Classroom" class="collapse list-unstyled">
                     <li><a href="{{ route('classroom') }}"><i class="fa fa-eye"></i>Monitor</a></li>
                     <li><a href="#"><i class="material-icons">devices_other</i>Device</a></li>
-                    <li><a href="#"><i class="material-icons">add_box</i>Add</a></li>
+                    {{-- <li><a href="#"><i class="material-icons">add_box</i>Add</a></li> --}}
                 </ul>
             </li>
-           
+
             <li>
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
                     <i class="material-icons">folder</i>Report
                 </a>
                 <ul id="Report" class="collapse list-unstyled">
                     <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
-                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>  
-                    <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li>  
+                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>
+                    <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li>
 
                 </ul>
             </li>
@@ -68,14 +68,7 @@
                     <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
                 </ul>
             </li>
-             
+
         </ul>
 
     </nav>
-
-
-
-    
-
-
-   
