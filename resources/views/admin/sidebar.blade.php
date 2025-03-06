@@ -2,15 +2,32 @@
     <!-- Sidebar Navigation-->
     <nav id="sidebar">
         <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-            <div class="avatar">
-                <img src="/images/avatar-6.jpg" alt="..." class="img-fluid rounded-circle" />
-            </div>
-            <div class="title">
-                <h1 class="h5">Vincent Davac</h1>
-                <p>Web Designer</p>
-            </div>
-        </div>
+       <!-- Sidebar Header -->
+<div class="sidebar-header d-flex align-items-center">
+<div class="avatar">
+    @if(Auth::check())
+        @if(Str::startsWith(Auth::user()->id_picture, 'http')) 
+            <!-- If id_picture is a Google URL -->
+            <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
+        @else 
+            <!-- If id_picture is a local upload -->
+            <img src="{{ asset('uploads/' . Auth::user()->id_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle">
+        @endif
+    @else
+        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
+    @endif
+</div>
+
+
+    <div class="title">
+        @if(Auth::check())
+            <h1 class="h5">{{ Auth::user()->name }}</h1>
+        @else
+            <h1 class="h5">Guest</h1>
+        @endif
+    </div>
+</div>
+
         <!-- Sidebar Navidation Menus-->
         <span class="heading">Main</span>
         <ul class="list-unstyled">
@@ -63,9 +80,9 @@
                     <i class="fa fa-gear"></i> Homepage
                 </a>
                 <ul id="Homepage" class="collapse list-unstyled">
-                    <li><a href="#"><i class="fa fa-file-image-o"></i>Slider</a></li>
-                    <li><a href="#"><i class="fa fa-comments"></i>Feedback</a></li>
-                    <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
+                <li><a href="{{ route('admin.slider.sliderchanger') }}"><i class="fa fa-file-image-o"></i>Slider</a></li>
+                <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i class="fa fa-comments"></i>Feedback</a></li>
+                <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
                 </ul>
             </li>
 

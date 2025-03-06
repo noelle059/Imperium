@@ -132,3 +132,40 @@ Route::get('/admin/classroom', function () {
 
     return view('admin.classroom', compact('rooms'));
 })->name('classroom');
+
+
+// slider route 
+use App\Http\Controllers\SliderController;
+
+// Route to display the slider management page
+Route::get('/admin/slider', [SliderController::class, 'index'])->name('admin.slider.sliderchanger');
+
+Route::get('/carousel', [SliderController::class, 'carousel'])->name('carousel');
+
+
+Route::get('/', [SliderController::class, 'homepage'])->name('home'); // Homepage
+
+
+// Route to store a new slider image
+Route::post('/admin/slider', [SliderController::class, 'store'])->name('admin.slider.store');
+
+// Route to soft delete a slider image
+Route::delete('/admin/slider/{id}', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
+
+
+//feedback
+use App\Http\Controllers\FeedbackController;
+
+Route::get('/', [FeedbackController::class, 'homepage'])->name('home');
+
+// Admin Feedback Management Routes (Similar to Slider)
+Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback.feedbackchanger'); 
+Route::post('/admin/feedback', [FeedbackController::class, 'store'])->name('admin.feedback.store'); // Store New Feedback
+Route::delete('/admin/feedback/{id}', [FeedbackController::class, 'destroy'])->name('admin.feedback.destroy'); // Delete Feedback
+Route::get('/admin/feedback/edit/{id}', [FeedbackController::class, 'edit'])->name('admin.feedback.edit'); // Edit Feedback Page
+Route::put('/admin/feedback/{id}', [FeedbackController::class, 'update'])->name('admin.feedback.update'); // Update Feedback
+
+
+
+
+

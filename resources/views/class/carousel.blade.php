@@ -1,24 +1,21 @@
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+@if(isset($images) && $images->count() > 0)
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="active" aria-label="Slide 3" aria-current="true"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            @foreach($images as $index => $image)
+                <button type="button" data-bs-target="#carouselExampleIndicators" 
+                        data-bs-slide-to="{{ $index }}" 
+                        @if($index == 0) class="active" @endif 
+                        aria-label="Slide {{ $index + 1 }}">
+                </button>
+            @endforeach
         </div>
 
         <div class="carousel-inner c-img">
-            <div class="carousel-item">
-                <img src="/images/SLIDER_1.gif" class="d-block w-100" alt="Slide 1">
-            </div>
-            <div class="carousel-item">
-                <img src="/images/SLIDER_1.gif" class="d-block w-100" alt="Slide 2"> 
-            </div>
-            <div class="carousel-item active">
-                <img src="/images/SLIDER_1.gif" class="d-block w-100" alt="Slide 3">
-            </div>
-            <div class="carousel-item">
-                <img src="/images/SLIDER_1.gif" class="d-block w-100" alt="Slide 4">
-            </div>
+            @foreach($images as $index => $image)
+                <div class="carousel-item @if($index == 0) active @endif">
+                    <img src="{{ asset('images/' . $image->filename) }}" class="d-block w-100" alt="Slide {{ $index + 1 }}">
+                </div>
+            @endforeach
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -28,5 +25,8 @@
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
-        </button> 
+        </button>
     </div>
+@else
+    <p>No images available.</p>
+@endif
