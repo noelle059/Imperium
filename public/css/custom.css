@@ -27,7 +27,7 @@
     padding-bottom: 0px;
 }
 
-#SubjectsTable {
+#uniqueTable {
     width: 100%;
     border-collapse: collapse;
     border-radius: 10px;
@@ -35,7 +35,7 @@
     padding: 5px;
 }
 
-#SubjectsTable th {
+#uniqueTable th {
     background-color: #47773f;
     color: white;
     padding: 15px;
@@ -43,7 +43,7 @@
     border: 1px solid #ccc;
 }
 
-#SubjectsTable td {
+#uniqueTable td {
     text-align: center;
     border: 1px solid #ccc;
 }

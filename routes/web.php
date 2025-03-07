@@ -57,7 +57,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/login', function () {
     if (Auth::check()) {
         // Check if the user is verified
-        if (!Auth::user()->hasVerifiedEmail()) {
+        if (!Auth::user()->hasVerifiedEmail) {
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
         // Check if the user is an admin
@@ -88,7 +88,7 @@ Route::get('/admin/dashboard', function () {
         return view('admin.dashboard'); // Ensure this view exists
     }
 
-    if (!Auth::user()->hasVerifiedEmail()) {
+    if (!Auth::user()->hasVerifiedEmail) {
         return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
     }
 
@@ -125,6 +125,19 @@ Route::middleware(['auth'])->group(function () {
 
 // ADMIN SIDE
 
+
+// Round in the Account of users
+Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
+
+// Update Professors Account No
+Route::put('admin/accounts/{id}', [AdminController::class, 'update'])->name('accounts.update');
+
+// Archive a account
+Route::patch('admin/accounts/remove/{id}', [AdminController::class, 'remove'])->name('accounts.remove');
+
+
+
+
 // Admin dashboard Subject Route
 Route::resource('/admin/subjects', SubjectController::class);
 
@@ -136,7 +149,8 @@ Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])
 
 
 
-Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
+
+
 
 Route::get('/admin/classroom', function () {
     $rooms = Room::leftJoin('users', 'rooms.professor_name', '=', 'users.name')

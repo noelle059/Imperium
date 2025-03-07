@@ -17,7 +17,7 @@
 
 
     <div class="table-container">
-        <table id="SubjectsTable" class="styled-table">
+        <table id="uniqueTable" class="styled-table">
             <thead>
                 <tr>
                     <th>No.</th>
@@ -45,6 +45,7 @@
                                 data-subject_units="{{ $subject->units }}">
                                 UPDATE
                             </button>
+
                             <!-- Removing the subject from the list -->
                             <button class="btn gradient-button" type="button" data-id="{{ $subject->id }}"
                                 id="RemoveSubjectButton">

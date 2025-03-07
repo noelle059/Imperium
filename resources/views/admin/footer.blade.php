@@ -19,15 +19,19 @@
 <!-- Add this script tag in the <head> or before closing </body> tag -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-{{-- SWEET ALERTS --}}
+{{-- SWEET ALERTS CDN LINK --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
 
-{{-- INCLUDE SUBJECT MODAL FILE --}}
+{{-- INCLUDE ADMIN MODAL FILE --}}
 @include('admin.modal.subjectModals')
+@include('admin.modal.accountModals')
 
 {{-- SWEETALERT INCLUDE FILE --}}
 @include('admin.sweetAlerts.subjectAlert')
+@include('admin.sweetAlerts.accountAlert')
 
+
+{{-- INCLUDE NOTIFICATION MODAL --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 
 

@@ -27,7 +27,7 @@
                      </div>
 
                  </div>
-                 <div class="modal-footer">
+                 <div class="modal-footer" style="padding: 10px;">
                      <button type="submit" class="btn gradient-button" id="AddSubjectButton">Add Subject</button>
                      <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
                  </div>
@@ -70,7 +70,7 @@
                              placeholder="Enter units" required>
                      </div>
                  </div>
-                 <div class="modal-footer">
+                 <div class="modal-footer" style="padding: 10px;">
                      <button type="submit" class="btn gradient-button" id="UpdateSubjectButton">Update Subject</button>
                      <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
                  </div>
@@ -78,6 +78,7 @@
          </div>
      </div>
  </div>
+
 
  <script>
      // JavaScript to populate modal fields when the update button is clicked

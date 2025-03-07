@@ -1613,6 +1613,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 .modal-open .modal .modal-footer {
     border-color: #47773f;
     background-color: #47773f;
+    display: flex;
 }
 
 .modal-open .modal .close {
@@ -1792,7 +1793,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 
 .form-control:disabled,
 .form-control[readonly] {
-    background: #b7d163;
+    background: rgba(232, 255, 222, 0.88);
 }
 
 .form-control-sm {
