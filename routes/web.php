@@ -201,3 +201,11 @@ use App\Http\Controllers\FooterController;
 Route::get('/admin/footer', [FooterController::class, 'index'])->name('admin.footer.index');
 Route::put('/admin/footer', [FooterController::class, 'update'])->name('admin.footer.update');
 
+
+//about us
+use App\Http\Controllers\AboutUsController;
+
+Route::get('/admin/about', [AboutUsController::class, 'index'])->name('admin.about.index');
+Route::put('/admin/about', [AboutUsController::class, 'update'])->name('admin.about.update');
+
+
