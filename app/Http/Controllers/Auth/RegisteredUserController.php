@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -54,28 +55,28 @@ class RegisteredUserController extends Controller
             'id_picture.mimes' => 'The ID picture must be a file of type: jpeg, png, jpg, gif.',
             'id_picture.max' => 'The ID picture may not be greater than 2048 kilobytes.',
         ];
-    
+
         try {
             $request->validate([
                 'name' => [
                     'required',
                     'string',
                     'max:255',
-                    'regex:/^[\p{L} ]+$/u' 
+                    'regex:/^[\p{L} ]+$/u'
                 ],
                 'last_name' => [
                     'required',
                     'string',
                     'max:255',
-                    'regex:/^[\p{L} ]+$/u' 
+                    'regex:/^[\p{L} ]+$/u'
                 ],
-                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User ::class],
-                'contact_number'=> [
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'contact_number' => [
                     'required',
                     'string',
-                    'size:11', 
+                    'size:11',
                     'regex:/^09[0-9]{9}$/',
-                    'unique:'.User ::class,
+                    'unique:' . User::class,
                 ],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'g-recaptcha-response' => 'required', // Validate the reCAPTCHA response
@@ -85,22 +86,22 @@ class RegisteredUserController extends Controller
             // Redirect back with input and errors
             return redirect()->back()->withInput()->withErrors($e->validator);
         }
-    
+
         // Verify the reCAPTCHA response
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
             'secret' => env('RECAPTCHA_SECRET_KEY'),
             'response' => $request->input('g-recaptcha-response'),
         ]);
-    
+
         $responseBody = json_decode($response->getBody());
-    
+
         // Log the response for debugging
-        \Log::info('reCAPTCHA response:', (array) $responseBody);
-    
+        Log::info('reCAPTCHA response:', (array) $responseBody);
+
         if (!$responseBody->success) {
             return redirect()->back()->withErrors(['recaptcha' => 'reCAPTCHA verification failed.']);
         }
-    
+
         // Handle the file upload
         $filename = null; // Initialize filename variable
         if ($request->hasFile('id_picture')) {
@@ -108,7 +109,7 @@ class RegisteredUserController extends Controller
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/id_pictures'), $filename); // Save to public/uploads/id_pictures
         }
-    
+
         // Proceed with user registration
         $user = User::create([
             'name' => $request->name,
@@ -118,11 +119,11 @@ class RegisteredUserController extends Controller
             'contact_number' => $request->contact_number,
             'id_picture' => $filename, // Save the filename in the database
         ]);
-    
+
         event(new Registered($user));
-    
+
         Auth::login($user);
-    
-        return redirect(route ('dashboard', absolute: false));
+
+        return redirect(route('dashboard', absolute: false));
     }
 }
