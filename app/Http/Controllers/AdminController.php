@@ -64,6 +64,11 @@ class AdminController extends Controller
                 $account->rfid_uid = $validated['rfid_uid'];
                 $isUpdated = true;
             }
+
+            // Set is_activated to 1 (indicating account is activated)
+            $account->is_activated = 1;  // Mark account as activated
+            $isUpdated = true;  // Mark as updated because we're changing the activation status
+
             // If nothing was updated, set a warning session message
             if (!$isUpdated) {
                 return redirect()->route('accounts')
@@ -81,6 +86,7 @@ class AdminController extends Controller
                 ->with('error', 'An error occurred while updating the subject: ' . $e->getMessage());
         }
     }
+
 
     /**
      * Archive a user account.

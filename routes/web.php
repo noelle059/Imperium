@@ -126,7 +126,7 @@ Route::middleware(['auth'])->group(function () {
 // ADMIN SIDE
 
 
-// Round in the Account of users
+// Round in the Professor Account 
 Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
 
 // Update Professors Account No
