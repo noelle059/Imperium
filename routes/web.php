@@ -191,3 +191,13 @@ Route::post('/admin/feedback', [FeedbackController::class, 'store'])->name('admi
 Route::delete('/admin/feedback/{id}', [FeedbackController::class, 'destroy'])->name('admin.feedback.destroy'); // Delete Feedback
 Route::get('/admin/feedback/edit/{id}', [FeedbackController::class, 'edit'])->name('admin.feedback.edit'); // Edit Feedback Page
 Route::put('/admin/feedback/{id}', [FeedbackController::class, 'update'])->name('admin.feedback.update'); // Update Feedback
+
+
+
+//footer
+
+use App\Http\Controllers\FooterController;
+
+Route::get('/admin/footer', [FooterController::class, 'index'])->name('admin.footer.index');
+Route::put('/admin/footer', [FooterController::class, 'update'])->name('admin.footer.update');
+
