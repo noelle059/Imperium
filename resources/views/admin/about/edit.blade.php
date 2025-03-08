@@ -28,7 +28,7 @@
 
         <div class="mb-3">
     <label>Background Image</label>
-    <input type="file" name="image" class="form-control">
+<input type="file" name="image" class="form-control" accept="image/*">
     @if(isset($aboutUs) && $aboutUs->image)
         <img src="{{ asset('storage/' . $aboutUs->image) }}" width="100">
     @endif
@@ -36,7 +36,7 @@
 
 <div class="mb-3">
     <label>Featured Image 1</label>
-    <input type="file" name="featured_1" class="form-control">
+    <input type="file" name="featured_1" class="form-control" accept="image/*">
     @if(isset($aboutUs) && $aboutUs->featured_1)
         <img src="{{ asset('storage/' . $aboutUs->featured_1) }}" width="100">
     @endif
@@ -44,7 +44,7 @@
 
 <div class="mb-3">
     <label>Featured Image 2</label>
-    <input type="file" name="featured_2" class="form-control">
+    <input type="file" name="featured_2" class="form-control" accept="image/*">
     @if(isset($aboutUs) && $aboutUs->featured_2)
         <img src="{{ asset('storage/' . $aboutUs->featured_2) }}" width="100">
     @endif
@@ -52,7 +52,7 @@
 
 <div class="mb-3">
     <label>Featured Image 3</label>
-    <input type="file" name="featured_3" class="form-control">
+    <input type="file" name="featured_3" class="form-control" accept="image/*">
     @if(isset($aboutUs) && $aboutUs->featured_3)
         <img src="{{ asset('storage/' . $aboutUs->featured_3) }}" width="100">
     @endif

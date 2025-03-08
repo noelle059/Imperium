@@ -21,7 +21,7 @@
         <!-- Featured Images -->
         <div class="mb-3">
             <label>Featured Image 1</label>
-            <input type="file" name="featured_1" class="form-control">
+            <input type="file" name="featured_1" class="form-control"  accept="image/*">
             @if(!empty($footerContent->featured_1))
                 <img src="{{ asset('storage/' . $footerContent->featured_1) }}" width="100" class="mt-2">
             @endif
@@ -29,7 +29,7 @@
 
         <div class="mb-3">
             <label>Featured Image 2</label>
-            <input type="file" name="featured_2" class="form-control">
+            <input type="file" name="featured_2" class="form-control" accept="image/*">
             @if(!empty($footerContent->featured_2))
                 <img src="{{ asset('storage/' . $footerContent->featured_2) }}" width="100" class="mt-2">
             @endif
@@ -37,7 +37,7 @@
 
         <div class="mb-3">
             <label>Featured Image 3</label>
-            <input type="file" name="featured_3" class="form-control">
+            <input type="file" name="featured_3" class="form-control" accept="image/*">
             @if(!empty($footerContent->featured_3))
                 <img src="{{ asset('storage/' . $footerContent->featured_3) }}" width="100" class="mt-2">
             @endif
