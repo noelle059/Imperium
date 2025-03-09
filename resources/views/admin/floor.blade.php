@@ -4,10 +4,10 @@
 
  <div class="page-content">
 
-     {{-- CLASSROOM --}}
+     {{-- FLOOR --}}
      <div class="page-header">
          <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
-             <h2 class="h5 no-margin-bottom">Classroom Monitoring</h2>
+             <h2 class="h5 no-margin-bottom">Floor Building Monitoring</h2>
 
              <div style="display: flex; align-items: center;">
                  <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
@@ -22,23 +22,41 @@
          <table id="uniqueTable" class="styled-table">
              <thead>
                  <tr>
-                     <th>Room No.</th>
-                     <th>Professor's Name</th>
-                     <th>Status</th>
-                     <th>Account No.</th>
-                     <th>Time</th>
+                     <th> No.</th>
+                     <th>Floor Level</th>
+                     <th>Room Count</th>
+                     <th>Date and Time</th>
                      <th>Action</th>
                  </tr>
              </thead>
              <tbody>
-                 <tr class="table-row">
-                     <td>CL2</td>
-                     <td>Prof. James Mitchell</td>
-                     <td class="status-cell">In use</td>
-                     <td>12345678</td>
-                     <td>10:00 AM</td>
-                     <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
-                 </tr>
+                 @foreach ($show_floor as $floor)
+                     <tr class="table-row">
+                         <td>{{ $loop->iteration }}</td>
+                         <td>{{ $floor->floor_name }}</td>
+                         <td>10</td>
+
+                         <td>{{ \Carbon\Carbon::parse($floor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                         </td>
+
+
+                         <td class="action-cell">
+                             <!-- Pass subject data via data- attributes -->
+                             <button class="btn gradient-button" data-bs-toggle="modal"
+                                 data-bs-target="#update_floor_modal" data-id="" data-subject_code=""
+                                 data-subject_name="" data-subject_units="">
+                                 UPDATE
+                             </button>
+
+                             <!-- Removing the subject from the list -->
+                             <button class="btn gradient-button" type="button" data-id="" id="RemoveFloortButton">
+                                 REMOVE
+                             </button>
+                         </td>
+
+                     </tr>
+                 @endforeach
+
              </tbody>
 
          </table>
@@ -47,8 +65,8 @@
 
      <div style="display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 20px;">
          <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-             data-bs-toggle="modal" data-bs-target="#add_subject_modal">
-             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Room
+             data-bs-toggle="modal" data-bs-target="#add_floor_modal">
+             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Floor
          </button>
      </div>
 

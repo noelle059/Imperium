@@ -56,18 +56,36 @@
             </li>
 
 
-
+            {{-- CLASSROOM --}}
             <li>
                 <a href="#Classroom" aria-expanded="false" data-toggle="collapse">
                     <i class="fa fa-building"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('classroom') }}"><i class="fa fa-eye"></i>Room</a></li>
+                    <li><a href="{{ route('show_floor') }}"><i class="fa-solid fa-stairs"></i>Floor</a></li>
+                    <li><a href="{{ route('classroom') }}"><i class="fa-solid fa-building"></i>Room</a></li>
                     <li><a href="{{ route('show_devices') }}"><i class="material-icons">devices_other</i>Device</a>
                     </li>
                     <li><a href="#"><i class="material-icons">add_box</i>Schedule</a></li>
                 </ul>
             </li>
+
+
+
+            {{-- ARCHIVE --}}
+            <li>
+                <a href="#Archive" aria-expanded="false" data-toggle="collapse">
+                    <i class="fa fa-archive"></i>Archive
+                </a>
+                <ul id="Archive" class="collapse list-unstyled">
+                    <li><a href="#"><i class="fa-solid fa-stairs"></i>Floor</a></li>
+                    <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
+                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>
+
+                </ul>
+            </li>
+
+
 
             <li>
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
@@ -76,7 +94,7 @@
                 <ul id="Report" class="collapse list-unstyled">
                     <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
                     <li><a href="#"><i class="material-icons">devices</i>Device</a></li>
-                    <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li>
+                    {{-- <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li> --}}
 
                 </ul>
             </li>
@@ -91,13 +109,12 @@
                                 class="fa fa-file-image-o"></i>Slider</a></li>
                     <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i
                                 class="fa fa-comments"></i>Feedback</a></li>
-                                <li><a href="{{ route('admin.about.index') }}"><i
-                                class="fa fa-comments"></i>About Us </a></li>
-                                <li>
-    <a href="{{ route('admin.footer.index') }}">
-        <i class="fa fa-window-maximize"></i> Footer
-    </a>
-</li>
+                    <li><a href="{{ route('admin.about.index') }}"><i class="fa fa-comments"></i>About Us </a></li>
+                    <li>
+                        <a href="{{ route('admin.footer.index') }}">
+                            <i class="fa fa-window-maximize"></i> Footer
+                        </a>
+                    </li>
 
                 </ul>
             </li>

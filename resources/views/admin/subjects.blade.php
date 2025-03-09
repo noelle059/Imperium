@@ -35,7 +35,8 @@
                         <td>{{ $subject->subject_code }}</td>
                         <td>{{ $subject->subject_name }}</td>
                         <td>{{ $subject->units }}</td>
-                        <td>{{ \Carbon\Carbon::parse($subject->created_at)->format('F j, Y h:i A') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($subject->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        </td>
                         <td class="action-cell">
                             <!-- Pass subject data via data- attributes -->
                             <button class="btn gradient-button" data-bs-toggle="modal"

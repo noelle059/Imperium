@@ -26,6 +26,7 @@
                      <th>Email</th>
                      <th>Account No.</th>
                      <th>Status</th>
+                     <th>Date and Time</th>
                      <th>Action</th>
                  </tr>
              </thead>
@@ -48,6 +49,9 @@
                          <td>{{ $professor->email }}</td>
                          <td>{{ $professor->rfid_uid ?? 'N/A' }}</td>
                          <td>{{ $professor->is_activated ? 'Registered' : 'Pending Activation' }}</td>
+                         <td>{{ \Carbon\Carbon::parse($professor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                         </td>
+
                          <td class="action-cell">
                              <!-- Adding ID from the professor list -->
                              <button class="btn gradient-button" type="button" data-id="{{ $professor->id }}"

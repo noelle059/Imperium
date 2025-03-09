@@ -21,7 +21,6 @@ class AdminController extends Controller
     }
 
 
-
     public function showAdminAccount()
     {
         // Get professors (admin users) where archive_status = 1 and paginate 10

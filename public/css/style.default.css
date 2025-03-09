@@ -1592,6 +1592,8 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
     height: 100%;
     margin: 0;
     padding: 0;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 @media (max-width: 767px) {
@@ -1605,13 +1607,13 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 }
 
 .modal-open .modal .modal-content {
-    border-radius: 15px; /* Adjust the value for more or less curve */
+    border-radius: 10px; /* Adjust the value for more or less curve */
     background: #ffffff;
 }
 
 .modal-open .modal .modal-header,
 .modal-open .modal .modal-footer {
-    border-radius: 15px; /* Adjust the value for more or less curve */
+    border-radius: 10px; /* Adjust the value for more or less curve */
     border-color: #47773f;
     background-color: #47773f;
     display: flex;

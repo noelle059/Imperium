@@ -12,10 +12,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
+//notification
+use App\Http\Controllers\NotificationController;
 
-// ADDING SUBJECT
+// FLOOR
+use App\Http\Controllers\FloorController;
+
+
+// SUBJECT
 use App\Http\Controllers\SubjectController;
-// ADDING ROOM AND DEVICE
+//  ROOM AND DEVICE
 use App\Http\Controllers\DeviceController;
 
 use App\Models\Room;
@@ -117,8 +123,7 @@ Route::post('/handle-rfid-scan', [DashboardController::class, 'handleRfidScan'])
 // ->middleware('auth')
 // ->name('get.rooms');
 
-//notification
-use App\Http\Controllers\NotificationController;
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
@@ -173,6 +178,13 @@ Route::post('/admin/add-devices', [DeviceController::class, 'addDevice'])->name(
 Route::put('admin/update-device/{id}', [DeviceController::class, 'update'])->name('devices.update');
 // Archive device
 Route::patch('admin/device/remove/{id}', [DeviceController::class, 'remove'])->name('device.remove');
+
+
+
+// Show Floor
+Route::get('/admin/floor', [FloorController::class, 'showFloor'])->name('show_floor');
+// Add Floor
+Route::post('/admin/add-floor-level', [FloorController::class, 'addFloor'])->name('add_floor_level');
 
 
 

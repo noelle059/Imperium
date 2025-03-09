@@ -46,7 +46,8 @@
 
                         <td>{{ $admin_account->name }}</td>
                         <td>{{ $admin_account->email }}</td>
-                        <td>{{ \Carbon\Carbon::parse($admin_account->created_at)->format('F j, Y \a\t h:i A') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($admin_account->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        </td>
 
                         <td class="action-cell">
 

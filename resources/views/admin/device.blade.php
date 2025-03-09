@@ -22,7 +22,7 @@
                 <tr>
                     <th>No.</th>
                     <th>Device Name</th>
-                    <th>Classroom No.</th>
+                    <th>Classroom Name</th>
                     <th>Status</th>
                     <th>Date & Time</th>
                     <th>Action</th>
@@ -43,7 +43,8 @@
                             @endif
                         </td>
 
-                        <td>{{ \Carbon\Carbon::parse($device->created_at)->format('F j, Y \a\t h:i A') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($floor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        </td>
 
                         <td class="action-cell">
 

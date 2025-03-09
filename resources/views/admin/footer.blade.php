@@ -23,6 +23,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
 
 {{-- INCLUDE ADMIN MODAL FILE --}}
+@include('admin.modal.floorModals')
 @include('admin.modal.deviceModals')
 @include('admin.modal.subjectModals')
 @include('admin.modal.accountModals')
@@ -31,6 +32,7 @@
 
 
 {{-- SWEETALERT INCLUDE FILE --}}
+@include('admin.sweetAlerts.floorAlert')
 @include('admin.sweetAlerts.deviceAlert')
 @include('admin.sweetAlerts.subjectAlert')
 @include('admin.sweetAlerts.accountAlert')
