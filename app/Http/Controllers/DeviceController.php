@@ -77,6 +77,20 @@ class DeviceController extends Controller
     }
 
 
+    /**
+     * Archive a device.
+     */
+    public function remove($id, Request $request)
+    {
+        $device = Device::findOrFail($id); // Find the subject by ID
+
+        $device->archive_status = 0; // Set archive_status to 0 (mark as removed)
+        $device->save(); // Save changes
+
+        return response()->json(['success' => true]); // Send success response
+    }
+
+
 
 
     public function getDevices($classroomId)
@@ -86,5 +100,50 @@ class DeviceController extends Controller
         $devices = $this->firebaseService->getData($path);
 
         return response()->json($devices);
+    }
+
+
+
+    // Update device method
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'classroom_id' => 'required|numeric',
+            'device_name' => 'required|string|max:255',
+            'state' => 'required|boolean',  // State should be boolean
+        ]);
+
+        // Find the device by ID
+        $device = Device::find($id);
+
+        if (!$device) {
+            return redirect()->back()->with('error', 'Device not found.');
+        }
+
+        // Update the device in the local database
+        $device->classroom_id = $request->input('classroom_id');
+        $device->device_name = $request->input('device_name');
+        $device->state = $request->input('state');
+        $device->save();  // Save the updated data to the database
+
+        // Update the device in Firebase
+        $classroomId = $request->input('classroom_id');
+        $deviceName = $request->input('device_name');
+        $state = $request->input('state');
+
+        // Map state values to true or false
+        $firebaseState = ($state == 1) ? true : false;
+
+        $path = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
+        $firebaseData = [
+            'state' => $firebaseState,
+        ];
+
+        // Use the FirebaseService to set the updated data in Firebase
+        $this->firebaseService->setData($path, $firebaseData);
+
+        // Redirect with a success message
+        return redirect('/admin/show-devices')->with('success', 'Device updated successfully.');
     }
 }

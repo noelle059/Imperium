@@ -167,14 +167,12 @@ Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])
 
 // Show Devices
 Route::get('/admin/show-devices', [DeviceController::class, 'showAddDevices'])->name('show_devices');
-
 // Add Devices
 Route::post('/admin/add-devices', [DeviceController::class, 'addDevice'])->name('admin.addDevices');
-
-
-
-
-
+// Update dvice
+Route::put('admin/update-device/{id}', [DeviceController::class, 'update'])->name('devices.update');
+// Archive device
+Route::patch('admin/device/remove/{id}', [DeviceController::class, 'remove'])->name('device.remove');
 
 
 
@@ -235,5 +233,3 @@ use App\Http\Controllers\AboutUsController;
 
 Route::get('/admin/about', [AboutUsController::class, 'index'])->name('admin.about.index');
 Route::put('/admin/about', [AboutUsController::class, 'update'])->name('admin.about.update');
-
-
