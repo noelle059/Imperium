@@ -28,17 +28,16 @@
 
 
                    </div>
-                   {{-- Id in Button --}}
-                   <div class="modal-footer" style="padding: 10px;">
-                       <button type="submit" class="btn gradient-button" id="AddDeviceButton">Add Device</button>
-                       <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                   </div>
                </form>
+               {{-- Id in Button --}}
+               <div class="modal-footer" style="padding: 10px;">
+                   <button type="submit" class="btn gradient-button" id="AddDeviceButton">Add Device</button>
+                   <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+               </div>
+
            </div>
        </div>
    </div>
-
-
 
 
 
@@ -76,13 +75,14 @@
                            </select>
                        </div>
                    </div>
-
-                   <div class="modal-footer" style="padding: 10px;">
-                       <button type="submit" class="btn gradient-button" id="UpdateDeviceButton">Update Device</button>
-                       <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                   </div>
                </form>
+
+               <div class="modal-footer" style="padding: 10px;">
+                   <button type="submit" class="btn gradient-button" id="UpdateDeviceButton">Update Device</button>
+                   <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+               </div>
            </div>
+
        </div>
    </div>
 
@@ -111,5 +111,9 @@
                    form.action = form.action.replace(':id', id);
                });
            });
+       });
+
+       document.getElementById('UpdateDeviceButton').addEventListener('click', function() {
+           document.getElementById('UpdateDeviceForm').submit();
        });
    </script>

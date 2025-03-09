@@ -121,6 +121,16 @@ class DeviceController extends Controller
             return redirect()->back()->with('error', 'Device not found.');
         }
 
+        // Check if a device with the same name exists in the same classroom (excluding the current device)
+        $existingDevice = Device::where('classroom_id', $request->input('classroom_id'))
+            ->where('device_name', $request->input('device_name'))
+            ->where('id', '!=', $id) // Exclude the current device
+            ->first();
+
+        if ($existingDevice) {
+            return redirect()->back()->with('error', 'A device with this name already exists in the same classroom.');
+        }
+
         // Update the device in the local database
         $device->classroom_id = $request->input('classroom_id');
         $device->device_name = $request->input('device_name');

@@ -27,11 +27,12 @@
                      </div>
 
                  </div>
-                 <div class="modal-footer" style="padding: 10px;">
-                     <button type="submit" class="btn gradient-button" id="AddSubjectButton">Add Subject</button>
-                     <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                 </div>
              </form>
+             <div class="modal-footer" style="padding: 10px;">
+                 <button type="submit" class="btn gradient-button" id="AddSubjectButton">Add Subject</button>
+                 <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+             </div>
+
 
          </div>
      </div>
@@ -70,11 +71,12 @@
                              placeholder="Enter units" required>
                      </div>
                  </div>
-                 <div class="modal-footer" style="padding: 10px;">
-                     <button type="submit" class="btn gradient-button" id="UpdateSubjectButton">Update Subject</button>
-                     <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                 </div>
              </form>
+
+             <div class="modal-footer" style="padding: 10px;">
+                 <button type="submit" class="btn gradient-button" id="UpdateSubjectButton">Update Subject</button>
+                 <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+             </div>
          </div>
      </div>
  </div>
@@ -102,5 +104,9 @@
                  form.action = form.action.replace(':id', subjectId);
              });
          });
+     });
+
+     document.getElementById('UpdateSubjectButton').addEventListener('click', function() {
+         document.getElementById('UpdateSubjectForm').submit();
      });
  </script>

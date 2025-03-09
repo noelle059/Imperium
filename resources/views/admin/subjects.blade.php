@@ -80,12 +80,11 @@
     @include('admin.footer')
 
 
-
     <!-- Add your search script below -->
     <script>
         document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
-            let table = document.getElementById('SubjectsTable');
+            let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');
 
             for (let i = 1; i < rows.length; i++) {

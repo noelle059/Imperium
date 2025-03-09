@@ -1605,15 +1605,21 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 }
 
 .modal-open .modal .modal-content {
-    border-radius: 0;
+    border-radius: 15px; /* Adjust the value for more or less curve */
     background: #ffffff;
 }
 
 .modal-open .modal .modal-header,
 .modal-open .modal .modal-footer {
+    border-radius: 15px; /* Adjust the value for more or less curve */
     border-color: #47773f;
     background-color: #47773f;
     display: flex;
+    padding: 25px 25px;
+}
+
+.modal-open .modal .modal-footer {
+    margin-bottom: 0; /* Ensure no space below the footer */
 }
 
 .modal-open .modal .close {
@@ -1751,10 +1757,10 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 * ==========================================================
 */
 .form-control {
+    border-radius: 10px; /* Adjust the value for more or less curve */
     height: calc(2.4rem + 2px);
     border: 1px solid #47773f;
     background: transparent;
-    border-radius: 0;
     color: #123524;
     padding: 0.45rem 0.75rem;
 }
@@ -1793,7 +1799,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 
 .form-control:disabled,
 .form-control[readonly] {
-    background: rgba(232, 255, 222, 0.88);
+    background: rgba(219, 219, 219, 0.69);
 }
 
 .form-control-sm {
@@ -2972,7 +2978,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #8a8d93;
+    color: #123524;
     background-color: #fff;
 }
 

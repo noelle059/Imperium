@@ -35,21 +35,31 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming request
         $this->validate($request, [
             'subject_code' => 'required',
             'subject_name' => 'required',
             'subject_units' => 'required',
         ]);
 
-        $subjects = new Subject();
-        $subjects->subject_code = $request->input('subject_code');
-        $subjects->subject_name = $request->input('subject_name');
-        $subjects->units = $request->input('subject_units');
+        // Check if a subject with the same subject code already exists
+        $existingSubject = Subject::where('subject_code', $request->input('subject_code'))->first();
 
-        $subjects->save();
+        if ($existingSubject) {
+            return redirect()->back()->with('error', 'A subject with this code already exists.');
+        }
+
+        // Create and save the new subject
+        $subject = new Subject();
+        $subject->subject_code = $request->input('subject_code');
+        $subject->subject_name = $request->input('subject_name');
+        $subject->units = $request->input('subject_units');
+
+        $subject->save();
 
         return redirect('/admin/subjects')->with('success', 'Subject Added Successfully');
     }
+
 
     /**
      * Display the specified resource.
@@ -67,6 +77,8 @@ class SubjectController extends Controller
         //
     }
 
+
+
     /**
      * Update the specified resource in storage.
      */
@@ -83,37 +95,30 @@ class SubjectController extends Controller
                 'subject_units' => 'required|integer|min:1',
             ]);
 
-            // Check if anything has changed before updating
-            $isUpdated = false;
-
-            // Check each field and compare with the current subject values
+            // Check if the subject_code has changed and if the new subject_code already exists in another subject
             if ($subject->subject_code !== $validated['subject_code']) {
+                $existingSubject = Subject::where('subject_code', $validated['subject_code'])->first();
+                if ($existingSubject) {
+                    return redirect()->back()->with('error', 'A subject with this code already exists.');
+                }
                 $subject->subject_code = $validated['subject_code'];
-                $isUpdated = true;
             }
+
+            // Check if subject name or units have changed and update them
             if ($subject->subject_name !== $validated['subject_name']) {
                 $subject->subject_name = $validated['subject_name'];
-                $isUpdated = true;
             }
             if ($subject->units !== (int) $validated['subject_units']) {
-                $subject->units = (int) $validated['subject_units']; // Make sure units is cast to integer
-                $isUpdated = true;
+                $subject->units = (int) $validated['subject_units']; // Ensure units is an integer
             }
 
-            // If nothing was updated, set a warning session message
-            if (!$isUpdated) {
-                return redirect()->route('subjects.index')
-                    ->with('warning', 'No changes were made to the subject.');
-            }
-
-            // Save the changes to the database
+            // Save the updated subject
             $subject->save();
 
-            // Redirect back to the subjects list with a success message
-            return redirect()->route('subjects.index')
-                ->with('success', 'Subject updated successfully!');
+            // Redirect with a success message
+            return redirect()->route('subjects.index')->with('success', 'Subject updated successfully!');
         } catch (\Exception $e) {
-            // In case of any error, set an error session message
+            // In case of an error, return with an error message
             return redirect()->route('subjects.index')
                 ->with('error', 'An error occurred while updating the subject: ' . $e->getMessage());
         }

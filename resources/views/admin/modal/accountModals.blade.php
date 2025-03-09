@@ -32,37 +32,41 @@
                             placeholder="Scan your RFID Card">
                     </div>
 
-
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn gradient-button" id="UpdateAccountButton">Update
-                            Account</button>
-                        <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                    </div>
+                </div>
             </form>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn gradient-button" id="UpdateAccountButton">Update
+                    Account</button>
+                <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+            </div>
+
         </div>
     </div>
-</div>
 
 
 
-<script>
-    // Attach event listener to each Update button
-    document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
-        button.addEventListener('click', function() {
-            const professorId = this.getAttribute('data-id'); // Get professor ID
-            const professorName = this.getAttribute('data-name');
-            const professorEmail = this.getAttribute('data-email');
-            const professorRfidUid = this.getAttribute('data-rfid_uid');
+    <script>
+        // Attach event listener to each Update button
+        document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const professorId = this.getAttribute('data-id'); // Get professor ID
+                const professorName = this.getAttribute('data-name');
+                const professorEmail = this.getAttribute('data-email');
+                const professorRfidUid = this.getAttribute('data-rfid_uid');
 
-            // Update the form action to include the professor's ID
-            const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
-            document.getElementById('UpdateAccountForm').action = formAction;
+                // Update the form action to include the professor's ID
+                const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
+                document.getElementById('UpdateAccountForm').action = formAction;
 
-            // Populate the modal fields with the professor's data
-            document.getElementById('account_name').value = professorName;
-            document.getElementById('account_email').value = professorEmail;
-            document.getElementById('rfid_uid').value = professorRfidUid;
+                // Populate the modal fields with the professor's data
+                document.getElementById('account_name').value = professorName;
+                document.getElementById('account_email').value = professorEmail;
+                document.getElementById('rfid_uid').value = professorRfidUid;
+            });
         });
-    });
-</script>
+
+        document.getElementById('UpdateAccountButton').addEventListener('click', function() {
+            document.getElementById('UpdateAccountForm').submit();
+        });
+    </script>
