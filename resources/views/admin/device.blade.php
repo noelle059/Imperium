@@ -48,17 +48,17 @@
                         <td class="action-cell">
 
 
-                            <!-- Adding ID from the professor list -->
+                            <!-- Updating Device from ID -->
                             <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
-                                data-name="{{ $device->name }}" data-email="{{ $device->email }}"
-                                data-rfid_uid="{{ $device->rfid_uid }}" data-is_activated="{{ $device->is_activated }}"
-                                data-bs-toggle="modal" data-bs-target="#register_account_id_modal">
+                                data-device_name="{{ $device->device_name }}"
+                                data-classroom_id="{{ $device->classroom_id }}" data-state="{{ $device->state }}"
+                                data-bs-toggle="modal" data-bs-target="#update_device__modal">
                                 UPDATE
                             </button>
 
                             <!-- Removing the subject from the list -->
                             <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
-                                id="RemoveAccountButton">
+                                id="RemoveDevicetButton">
                                 REMOVE
                             </button>
                         </td>
@@ -67,7 +67,6 @@
             </tbody>
         </table>
     </div>
-
 
 
 
