@@ -40,7 +40,7 @@
 
     <div class="mb-3">
         <label for="image" class="form-label">Upload Group Photo/Proof of Documentation</label>
-        <input type="file" class="form-control" id="image" name="image">
+        <input type="file" class="form-control" id="image" name="image" accept="image/*">
     </div>
 
     <button type="submit" class="btn btn-primary">Add Feedback</button>

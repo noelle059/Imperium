@@ -46,7 +46,7 @@
             <!-- Profile Picture -->
             <div class="mb-3">
                 <label for="image" class="form-label">Upload Group Photo/Proof of Documentation</label>
-                <input type="file" class="form-control" id="image" name="image">
+                <input type="file" class="form-control" id="image" name="image"  accept="image/*">
                 @if($feedback->image)
                     <img src="{{ asset('uploads/' . $feedback->image) }}" class="mt-3 rounded" width="150">
                 @endif

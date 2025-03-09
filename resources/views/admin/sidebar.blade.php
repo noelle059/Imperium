@@ -91,7 +91,14 @@
                                 class="fa fa-file-image-o"></i>Slider</a></li>
                     <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i
                                 class="fa fa-comments"></i>Feedback</a></li>
-                    <li><a href="#"><i class="fa fa-window-maximize"></i>Footer</a></li>
+                                <li><a href="{{ route('admin.about.index') }}"><i
+                                class="fa fa-comments"></i>About Us </a></li>
+                                <li>
+    <a href="{{ route('admin.footer.index') }}">
+        <i class="fa fa-window-maximize"></i> Footer
+    </a>
+</li>
+
                 </ul>
             </li>
 

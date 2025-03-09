@@ -1,13 +1,10 @@
 <div id="insights" class="insights">
     <img class="img-fluid" src="{{ asset('images/INSIGHT_BG.svg') }}" alt="INSIGHTS_BG.svg" />
-    <button class="more-info-btn" data-bs-toggle="modal" data-bs-target="#insightsModal">More Information</button>
+    <button class="more-info-btn" data-bs-toggle="modal" data-bs-target="#insightsModalInsights">More Information</button>
 </div>
 
-
-
-
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="insightsModal" tabindex="-1" aria-labelledby="insightsModalLabel" aria-hidden="true">
+<!-- Bootstrap Modal (INSIGHTS) -->
+<div class="modal fade" id="insightsModalInsights" tabindex="-1" aria-labelledby="insightsModalInsightsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content custom-modal">
 
@@ -22,7 +19,7 @@
                     <p class="modal-subtitle"><em>Journal of Multidisciplinary Engineering Science Studies (MESS)</em></p>
                     <p class="modal-meta"><strong>ISSN: 2458-925X | Vol. 6 Issue 12 | December 2020</strong></p>
 
-                    <p class="modal-abstract">
+                    <p class="modal-abstract text-center">
                         <strong>Abstract:</strong> 
                         <span id="abstract-short">
                             This paper presents a cost-effective energy-efficient Internet of Things (IoT) based device controlling system that can be 
@@ -48,21 +45,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById("seeMoreBtn").addEventListener("click", function() {
-        let shortText = document.getElementById("abstract-short");
-        let fullText = document.getElementById("abstract-full");
-        let btn = document.getElementById("seeMoreBtn");
-
-        if (fullText.style.display === "none") {
-            shortText.style.display = "none";
-            fullText.style.display = "inline";
-            btn.innerText = "See Less";
-        } else {
-            shortText.style.display = "inline";
-            fullText.style.display = "none";
-            btn.innerText = "See More";
-        }
-    });
-</script>
