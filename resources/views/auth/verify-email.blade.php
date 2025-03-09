@@ -134,7 +134,6 @@
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button class="logout-btn" type="submit">Log Out</button>
-            <a href="{{ route('login') }}" class="login-button d-lg-block">Back to Login</a>
         </form>
     </div>
 </body>

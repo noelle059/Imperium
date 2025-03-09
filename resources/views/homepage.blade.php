@@ -44,13 +44,8 @@
     @include('class.navbar')
     @include('class.carousel', ['images' => $images])
     @include('class.about')
-
-
     @include('class.feedback')
-
     @include('class.feedbackModal')
-
-
     @include('class.insights')
     @include('class.contact')
 
