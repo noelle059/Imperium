@@ -24,8 +24,6 @@ const switchRef3 = ref(db, "/bulb3/state");
 const switchRef4 = ref(db, "/bulb4/state");
 const outlet = ref(db, "/outlet/state");
 
-// Reference to the RFID node in Firebase
-const rfidRef = ref(db, "/rfid/access");
 
 // Function to toggle switches
 window.toggleSwitch = function(switchId) {
@@ -62,8 +60,6 @@ window.toggleSwitch = function(switchId) {
         set(outlet, state);
     }
 };
-
-
 
 
 // Monitor the switches' states from Firebase (to sync UI with ESP32)

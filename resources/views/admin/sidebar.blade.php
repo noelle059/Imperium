@@ -49,10 +49,12 @@
                 <ul id="Account" class="collapse list-unstyled {{ Route::is('admin.accounts') ? 'active' : '' }}">
                     <li><a href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
                     <li><a href="{{ route('subjects.index') }}"><i class="fa fa-book"></i>Subject</a></li>
-                    <li><a href="#"><i class="material-icons">perm_identity</i> Admin</a></li>
+                    <li><a href="{{ route('show_admin_accounts') }}"><i class="material-icons">perm_identity</i>
+                            Admin</a></li>
                     {{-- <li><a href="#">Page</a></li> --}}
                 </ul>
             </li>
+
 
 
             <li>
@@ -60,9 +62,10 @@
                     <i class="fa fa-building"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('classroom') }}"><i class="fa fa-eye"></i>Monitor</a></li>
-                    <li><a href="#"><i class="material-icons">devices_other</i>Device</a></li>
-                    {{-- <li><a href="#"><i class="material-icons">add_box</i>Add</a></li> --}}
+                    <li><a href="{{ route('classroom') }}"><i class="fa fa-eye"></i>Room</a></li>
+                    <li><a href="{{ route('show_devices') }}"><i class="material-icons">devices_other</i>Device</a>
+                    </li>
+                    <li><a href="#"><i class="material-icons">add_box</i>Schedule</a></li>
                 </ul>
             </li>
 

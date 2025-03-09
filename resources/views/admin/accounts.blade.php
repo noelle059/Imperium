@@ -21,6 +21,7 @@
              <thead>
                  <tr>
                      <th>No.</th>
+                     <th>Pictures</th>
                      <th>Name</th>
                      <th>Email</th>
                      <th>Account No.</th>
@@ -32,6 +33,17 @@
                  @foreach ($professors as $index => $professor)
                      <tr class="table-row">
                          <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                         <td>
+                             @if (filter_var($professor->id_picture, FILTER_VALIDATE_URL))
+                                 <!-- If the id_picture is a URL, just output the URL -->
+                                 <img src="{{ $professor->id_picture }}" alt="ID Picture"
+                                     style="width: 50px; height: auto;">
+                             @else
+                                 <!-- If the id_picture is a local file, use asset() to reference it -->
+                                 <img src="{{ asset('uploads/id_pictures/' . $professor->id_picture) }}"
+                                     alt="ID Picture" style="width: 50px; height: auto;">
+                             @endif
+                         </td>
                          <td>{{ $professor->name }}</td>
                          <td>{{ $professor->email }}</td>
                          <td>{{ $professor->rfid_uid ?? 'N/A' }}</td>

@@ -6,12 +6,17 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\SubjectController;
 
+
+// ADDING SUBJECT
+use App\Http\Controllers\SubjectController;
+// ADDING ROOM AND DEVICE
+use App\Http\Controllers\DeviceController;
 
 use App\Models\Room;
 use App\Models\User;
@@ -57,7 +62,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/login', function () {
     if (Auth::check()) {
         // Check if the user is verified
-        if (!Auth::user()->hasVerifiedEmail) {
+        if (!Auth::user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
         // Check if the user is an admin
@@ -88,7 +93,7 @@ Route::get('/admin/dashboard', function () {
         return view('admin.dashboard'); // Ensure this view exists
     }
 
-    if (!Auth::user()->hasVerifiedEmail) {
+    if (!Auth::user()->hasVerifiedEmail()) {
         return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
     }
 
@@ -123,29 +128,52 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
+
+
+
+
+// USER DASHBOAR
+
+Route::post('/add-device', [DeviceController::class, 'addDevice']);
+Route::get('/get-devices/{classroomId}', [DeviceController::class, 'getDevices']);
+
+
+
 // ADMIN SIDE
 
-
 // Round in the Professor Account 
-Route::get('/admin/accounts', [AdminController::class, 'showProfessors'])->name('accounts');
+Route::get('/admin/professor-accounts', [AdminController::class, 'showProfessors'])->name('accounts');
+// Round in the Professor Account 
+Route::get('/admin/admin-accounts', [AdminController::class, 'showAdminAccount'])->name('show_admin_accounts');
+
+
 
 // Update Professors Account No
 Route::put('admin/accounts/{id}', [AdminController::class, 'update'])->name('accounts.update');
-
 // Archive a account
 Route::patch('admin/accounts/remove/{id}', [AdminController::class, 'remove'])->name('accounts.remove');
 
 
 
-
 // Admin dashboard Subject Route
 Route::resource('/admin/subjects', SubjectController::class);
-
 // Update a subject
 Route::put('admin/subjects/{id}', [SubjectController::class, 'update'])->name('subjects.update');
-
 // Archive a subject
 Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])->name('subjects.remove');
+
+
+
+// Show Devices
+Route::get('/admin/show-devices', [DeviceController::class, 'showAddDevices'])->name('show_devices');
+
+// Add Devices
+Route::post('/admin/add-devices', [DeviceController::class, 'addDevice'])->name('admin.addDevices');
+
+
+
+
 
 
 

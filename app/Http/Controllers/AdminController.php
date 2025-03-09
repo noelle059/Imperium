@@ -20,6 +20,20 @@ class AdminController extends Controller
         return view('admin.users.index');
     }
 
+
+
+    public function showAdminAccount()
+    {
+        // Get professors (admin users) where archive_status = 1 and paginate 10
+        $admin_accounts = User::where('is_admin', true)  // Exclude admin users
+            ->where('archive_status', 1)  // Only those with archive_status = 1
+            ->paginate(10);  // Paginate 10 results per page
+
+        // Return the view with the professors data
+        return view('admin.adminAccounts', compact('admin_accounts'));
+    }
+
+
     public function showProfessors()
     {
         // Get professors (non-admin users) where archive_status = 1 and paginate 10
