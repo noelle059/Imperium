@@ -16,7 +16,7 @@
 .more-info-btn {
     position: absolute;
     bottom: 32%; /* Default position */
-    left: 33%; /* Centered in relation to text */
+    left: 27%; /* Centered in relation to text */
     padding: 8px 20px;
     background-color: #47773f;
     width: 14%;
@@ -39,8 +39,8 @@
 /* Responsiveness */
 @media (min-width: 1500px) and (max-width: 1600px) {
     .more-info-btn {
-        bottom: 31%;
-        left: 30%;
+        bottom: 33%;
+        left: 27%;
         width: 15%;
         font-size: 17px;
     }
@@ -48,8 +48,8 @@
 
 @media (min-width: 1400px) and (max-width: 1500px) {
     .more-info-btn {
-        bottom: 31%;
-        left: 30%;
+        bottom: 32%;
+        left: 27%;
         width: 15%;
         font-size: 17px;
     }
@@ -58,8 +58,8 @@
 @media (min-width: 1300px) and (max-width: 1400px) {
     .more-info-btn {
         bottom: 31%;
-        left: 30%;
-        width: 15%;
+        left: 27%;
+        width: 16%;
         font-size: 17px;
     }
 }
@@ -67,7 +67,7 @@
 @media (max-width: 1290px)  and (max-width: 1300px) {
     .more-info-btn {
         bottom: 31%;
-        left: 30%;
+        left: 27%;
         width: 15%;
         font-size: 17px;
     }
@@ -76,8 +76,8 @@
 
 @media (max-width: 1200px) {
     .more-info-btn {
-        bottom: 28%;
-        left: 30%;
+        bottom: 31%;
+        left: 27%;
         width: 15%;
         font-size: 17px;
     }
@@ -86,7 +86,7 @@
 @media (max-width: 1180px){
     .more-info-btn {
         bottom: 31%;
-        left: 28%;
+        left: 25%;
         width: 18%;
         font-size: 16px;
         padding: 6px 16px;
@@ -97,7 +97,7 @@
 @media (max-width: 1130px){
     .more-info-btn {
         bottom: 31%;
-        left: 28%;
+        left: 25%;
         width: 18%;
         font-size: 16px;
         padding: 6px 16px;
@@ -108,7 +108,7 @@
 @media (max-width: 1120px) {
     .more-info-btn {
         bottom: 31%;
-        left: 28%;
+        left: 25%;
         width: 18%;
         font-size: 16px;
         padding: 6px 16px;
@@ -118,7 +118,7 @@
 @media (max-width: 1030px) {
     .more-info-btn {
         bottom: 31%;
-        left: 28%;
+        left: 25%;
         width: 18%;
         font-size: 16px;
         padding: 6px 16px;
@@ -128,7 +128,7 @@
 @media (max-width: 1024px) {
     .more-info-btn {
         bottom: 31%;
-        left: 28%;
+        left: 25%;
         width: 18%;
         font-size: 16px;
         padding: 6px 16px;
@@ -137,113 +137,113 @@
 
 @media (max-width: 900px) {
     .more-info-btn {
-        bottom: 22%;
-        left: 25%;
-        width: 22%;
-        font-size: 14px;
+        bottom: 31%;
+        left: 24%;
+        width: 19%;
+        font-size: 12px;
         padding: 6px 14px;
     }
 }
 
 @media (max-width: 868px) {
     .more-info-btn {
-        bottom: 22%;
-        left: 25%;
-        width: 22%;
-        font-size: 14px;
+        bottom: 31%;
+        left: 24%;
+        width: 19%;
+        font-size: 12px;
         padding: 6px 14px;
     }
 }
 
 @media (max-width: 768px) {
     .more-info-btn {
-        bottom: 29%;
-        left: 25%;
-        width: 22%;
-        font-size: 14px;
+        bottom: 31%;
+        left: 24%;
+        width: 19%;
+        font-size: 12px;
         padding: 6px 14px;
     }
 }
 
 @media (max-width: 668px) {
     .more-info-btn {
-        bottom: 22%;
+        bottom: 31%;
         left: 25%;
-        width: 22%;
-        font-size: 14px;
+        width: 19%;
+        font-size: 10px;
         padding: 6px 14px;
     }
 }
 
 @media (max-width: 641px) {
     .more-info-btn {
-        bottom: 22%;
+        bottom: 31%;
         left: 25%;
-        width: 22%;
-        font-size: 11px;
-        padding: 6px 14px;
+        width: 19%;
+        font-size: 10px;
+        padding: 6px 12px;
     }
 }
 
 
 @media (max-width: 531px) {
     .more-info-btn {
-        bottom: 27%;
-        left: 22%;
-        width: 28%;
-        font-size: 12px;
+        bottom: 30%;
+        left: 24%;
+        width: 19%;
+        font-size: 9px;
         padding: 5px 12px;
     }
 }
 
 @media (max-width: 480px) {
     .more-info-btn {
-        bottom: 27%;
-        left: 22%;
-        width: 28%;
-        font-size: 12px;
-        padding: 5px 12px;
+        bottom: 29%;
+        left: 23%;
+        width: 22%;
+        font-size: 7px;
+        padding: 5px 8px;
     }
 }
 
 @media (max-width: 430px) {
     .more-info-btn {
-        bottom: 27%;
-        left: 24%;
-        width: 24%;
-        font-size: 8px;
-        padding: 5px 12px;
+        bottom: 29%;
+        left: 22%;
+        width: 22%;
+        font-size: 7px;
+        padding: 5px 8px;
     }
 }
 
 @media (max-width: 424px) {
     .more-info-btn {
-        bottom: 27%;
-        left: 24%;
-        width: 24%;
-        font-size: 8px;
-        padding: 5px 12px;
+        bottom: 29%;
+        left: 22%;
+        width: 22%;
+        font-size: 7px;
+        padding: 5px 8px;
     }
 }
 
 
 @media (max-width: 360px) {
     .more-info-btn {
-        bottom: 27%;
+        bottom: 29%;
         left: 22%;
-        width: 28%;
-        font-size: 6px;
-        padding: 5px 12px;
+        width: 22%;
+        font-size: 5px;
+        padding: 5px 5px;
     }
 }
 
 @media (max-width: 344px) {
     .more-info-btn {
-        bottom: 27%;
-        left: 22%;
+        bottom: 28%;
+        left: 20%;
         width: 28%;
         font-size: 6px;
-        padding: 5px 12px;
+        padding: 4px 5px;
     }
 }
 
@@ -251,10 +251,10 @@
 @media (max-width: 337px) {
     .more-info-btn {
         bottom: 27%;
-        left: 22%;
+        left: 20%;
         width: 28%;
         font-size: 6px;
-        padding: 5px 12px;
+        padding: 5px 5px;
     }
 }
 
