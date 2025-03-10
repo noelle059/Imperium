@@ -43,7 +43,7 @@
                             @endif
                         </td>
 
-                        <td>{{ \Carbon\Carbon::parse($floor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
                         </td>
 
                         <td class="action-cell">

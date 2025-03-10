@@ -32,7 +32,7 @@ public function homepage()
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:50048',
         ]);
 
         $imageName = time() . '.' . $request->image->extension();

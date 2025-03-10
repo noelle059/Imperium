@@ -7,10 +7,6 @@
         @method('PUT')
 
         <!-- Logo -->
-        <div class="mb-3">
-            <label for="logo">Logo</label>
-            <input type="text" name="logo" class="form-control" value="{{ $footerContent->logo ?? '' }}">
-        </div>
 
         <!-- Description -->
         <div class="mb-3">
