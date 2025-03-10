@@ -257,7 +257,7 @@ pre {
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 6px rgba(198, 198, 198, 0.582);
     color: #ffffff;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 .footer {
@@ -1580,11 +1580,11 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 }
 
 .modal-lg {
-    max-width: 70%;
+    max-width: 30%;
 }
 
 .modal-xl {
-    max-width: 70%;
+    max-width: 30%;
 }
 
 .modal-fullscreen {

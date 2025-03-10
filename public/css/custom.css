@@ -24,7 +24,7 @@
     overflow-x: auto;
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 0px;
+    padding-bottom: 20px;
 }
 
 #uniqueTable {
@@ -33,6 +33,7 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 5px;
+    margin-top: 5px;
 }
 
 #uniqueTable th {
@@ -46,6 +47,8 @@
 #uniqueTable td {
     text-align: center;
     border: 1px solid #ccc;
+    padding-left: 15px; /* Add left padding */
+    padding-right: 15px; /* Add right padding */
 }
 
 .table-row {

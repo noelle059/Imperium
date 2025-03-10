@@ -185,7 +185,10 @@ Route::patch('admin/device/remove/{id}', [DeviceController::class, 'remove'])->n
 Route::get('/admin/floor', [FloorController::class, 'showFloor'])->name('show_floor');
 // Add Floor
 Route::post('/admin/add-floor-level', [FloorController::class, 'addFloor'])->name('add_floor_level');
-
+// Update Floor
+Route::put('admin/update-floor/{id}', [FloorController::class, 'updateFloor'])->name('floor.update');
+// Archive Floor
+Route::patch('admin/floor/remove/{id}', [FloorController::class, 'removeFloor'])->name('floor.remove');
 
 
 
