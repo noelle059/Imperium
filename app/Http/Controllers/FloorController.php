@@ -44,4 +44,45 @@ class FloorController extends Controller
 
         return redirect('/admin/floor')->with('success', 'Floor Level Added Successfully');
     }
+
+
+    public function updateFloor(Request $request, $id)
+    {
+        // Validate the incoming request
+        $this->validate($request, [
+            'floor_name' => 'required',  // Make sure 'floor_name' is required
+        ]);
+
+        // Check if the floor_name already exists in the database
+        $existingFloor = Floor::where('floor_name', $request->input('floor_name'))->first();
+
+        if ($existingFloor) {
+            // If the floor name exists, redirect back with an error message
+            return redirect()->back()->with('error', 'A floor level with this name already exists.');
+        }
+
+        // Find the floor by id
+        $floor = Floor::find($id);
+
+        // Update the floor name
+        $floor->floor_name = $request->input('floor_name');
+        $floor->save();
+
+        return redirect('/admin/floor')->with('success', 'Floor Level Updated Successfully');
+    }
+
+
+
+    public function removeFloor($id)
+    {
+        // Find the floor by id
+        $floor = Floor::find($id);
+
+        // Set the archive_status to 0
+        $floor->archive_status = 0;
+        $floor->save();
+
+        // Return a success response in JSON format
+        return response()->json(['success' => true, 'message' => 'Floor Level Removed Successfully']);
+    }
 }

@@ -18,6 +18,15 @@
      </div>
 
 
+     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
+         <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+             data-bs-toggle="modal" data-bs-target="#add_floor_modal">
+             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Floor
+         </button>
+     </div>
+
+
+
      <div class="table-container">
          <table id="uniqueTable" class="styled-table">
              <thead>
@@ -43,13 +52,14 @@
                          <td class="action-cell">
                              <!-- Pass subject data via data- attributes -->
                              <button class="btn gradient-button" data-bs-toggle="modal"
-                                 data-bs-target="#update_floor_modal" data-id="" data-subject_code=""
-                                 data-subject_name="" data-subject_units="">
+                                 data-bs-target="#update_floor_modal" data-id="{{ $floor->id }}"
+                                 data-floor_name="{{ $floor->floor_name }}">
                                  UPDATE
                              </button>
 
                              <!-- Removing the subject from the list -->
-                             <button class="btn gradient-button" type="button" data-id="" id="RemoveFloortButton">
+                             <button class="btn gradient-button" type="button" data-id="{{ $floor->id }}"
+                                 id="RemoveFloortButton">
                                  REMOVE
                              </button>
                          </td>
@@ -62,13 +72,6 @@
          </table>
      </div>
 
-
-     <div style="display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 20px;">
-         <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-             data-bs-toggle="modal" data-bs-target="#add_floor_modal">
-             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Floor
-         </button>
-     </div>
 
 
 

@@ -87,8 +87,6 @@
    </div>
 
 
-
-
    <script>
        // JavaScript to populate modal fields when the update button is clicked
        document.addEventListener('DOMContentLoaded', function() {

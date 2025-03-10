@@ -16,6 +16,14 @@
     </div>
 
 
+    <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
+        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+            data-bs-toggle="modal" data-bs-target="#add_device_modal">
+            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Device
+        </button>
+    </div>
+
+
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
             <thead>
@@ -43,7 +51,7 @@
                             @endif
                         </td>
 
-                        <td>{{ \Carbon\Carbon::parse($floor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
                         </td>
 
                         <td class="action-cell">
@@ -72,13 +80,6 @@
 
 
 
-
-    <div style="display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 20px;">
-        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_device_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Device
-        </button>
-    </div>
 
 
     {{-- INCLUDE FOOTER --}}

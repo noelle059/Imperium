@@ -36,20 +36,25 @@
         <span class="heading">Main</span>
         <ul class="list-unstyled">
 
-
+            {{-- DASHBOARD --}}
             <li class="{{ Route::is('admin.dashboard') ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard') }}"> <i class="fa fa-bar-chart"></i> Dashboard </a>
+                <a href="{{ route('admin.dashboard') }}"> <i class="fa fa-bar-chart"
+                        style="font-size: 20px; padding-left: 4px;"></i>
+                    Dashboard </a>
             </li>
 
             <li>
                 <a href="#Account" aria-expanded="false" data-toggle="collapse">
-                    <i class="material-icons">account_box</i> Account
+                    <i class="material-icons" style="font-size: 25px;">account_box</i> Account
                 </a>
 
                 <ul id="Account" class="collapse list-unstyled {{ Route::is('admin.accounts') ? 'active' : '' }}">
-                    <li><a href="{{ route('accounts') }}"><i class="material-icons">group</i>Professor</a></li>
-                    <li><a href="{{ route('subjects.index') }}"><i class="fa fa-book"></i>Subject</a></li>
-                    <li><a href="{{ route('show_admin_accounts') }}"><i class="material-icons">perm_identity</i>
+                    <li><a href="{{ route('accounts') }}"><i class="material-icons"
+                                style="font-size: 25px;">group</i>Professor</a></li>
+                    <li><a href="{{ route('subjects.index') }}"><i class="fa fa-book"
+                                style="font-size: 25px;"></i>Subject</a></li>
+                    <li><a href="{{ route('show_admin_accounts') }}"><i class="material-icons"
+                                style="font-size: 25px;">perm_identity</i>
                             Admin</a></li>
                     {{-- <li><a href="#">Page</a></li> --}}
                 </ul>
@@ -59,65 +64,84 @@
             {{-- CLASSROOM --}}
             <li>
                 <a href="#Classroom" aria-expanded="false" data-toggle="collapse">
-                    <i class="fa fa-building"></i>Classroom
+                    <i class="fa fa-building" style="font-size: 25px; padding-left: 5px;"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('show_floor') }}"><i class="fa-solid fa-stairs"></i>Floor</a></li>
-                    <li><a href="{{ route('classroom') }}"><i class="fa-solid fa-building"></i>Room</a></li>
-                    <li><a href="{{ route('show_devices') }}"><i class="material-icons">devices_other</i>Device</a>
+                    <li><a href="{{ route('show_floor') }}"><i class="fa-solid fa-stairs"
+                                style="font-size: 25px;"></i>Floor</a></li>
+                    <li><a href="{{ route('classroom') }}"><i class="fa-solid fa-building"
+                                style="font-size: 25px; padding-left: 8px;"></i>Room</a></li>
+                    <li><a href="{{ route('show_devices') }}"><i class="material-icons"
+                                style="font-size: 25px;">devices_other</i>Device</a>
                     </li>
-                    <li><a href="#"><i class="material-icons">add_box</i>Schedule</a></li>
+                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">add_box</i>Schedule</a>
+                    </li>
                 </ul>
             </li>
 
 
 
-            {{-- ARCHIVE --}}
-            <li>
-                <a href="#Archive" aria-expanded="false" data-toggle="collapse">
-                    <i class="fa fa-archive"></i>Archive
-                </a>
-                <ul id="Archive" class="collapse list-unstyled">
-                    <li><a href="#"><i class="fa-solid fa-stairs"></i>Floor</a></li>
-                    <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
-                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>
-
-                </ul>
-            </li>
-
-
-
+            {{-- REPORT --}}
             <li>
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
-                    <i class="material-icons">folder</i>Report
+                    <i class="material-icons" style="font-size: 25px;">folder</i>Report
                 </a>
                 <ul id="Report" class="collapse list-unstyled">
-                    <li><a href="#"> <i class="fa fa-file-pdf-o"></i>Classroom</a></li>
-                    <li><a href="#"><i class="material-icons">devices</i>Device</a></li>
+                    <li><a href="#"><i class="fa-solid fa-file-pdf"
+                                style="font-size: 25px; padding-left: 8px;"></i>Classroom</a>
+                    </li>
+                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li>
                     {{-- <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li> --}}
 
                 </ul>
             </li>
 
 
+
+
+            {{-- ARCHIVE --}}
+            <li>
+                <a href="#Archive" aria-expanded="false" data-toggle="collapse">
+                    <i class="fa fa-archive" style="font-size: 25px;"></i>Archive
+                </a>
+                <ul id="Archive" class="collapse list-unstyled">
+                    <li><a href="#"><i class="fa-solid fa-stairs" style="font-size: 25px;"></i>Floor</a></li>
+                    <li><a href="#"><i class="fa-solid fa-building"
+                                style="font-size: 25px; padding-left: 8px;"></i>Classroom</a></li>
+                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+
+
+            {{-- HOMEPAGE --}}
             <li>
                 <a href="#Homepage" aria-expanded="false" data-toggle="collapse">
-                    <i class="fa fa-gear"></i> Homepage
+                    <i class="fa fa-gear" style="font-size: 25px; padding-left: 5px;"></i> Homepage
                 </a>
                 <ul id="Homepage" class="collapse list-unstyled">
-                    <li><a href="{{ route('admin.slider.sliderchanger') }}"><i
-                                class="fa fa-file-image-o"></i>Slider</a></li>
-                    <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i
-                                class="fa fa-comments"></i>Feedback</a></li>
-                    <li><a href="{{ route('admin.about.index') }}"><i class="fa fa-comments"></i>About Us </a></li>
+                    <li><a href="{{ route('admin.slider.sliderchanger') }}"><i class="fa fa-file-image-o"
+                                style="font-size: 25px; padding-left: 6px;"></i>Slider</a></li>
+                    <li><a href="{{ route('admin.feedback.feedbackchanger') }}"><i class="fa fa-comments"
+                                style="font-size: 25px;"></i>Feedback</a></li>
+                    <li><a href="{{ route('admin.about.index') }}"><i class="fa fa-comments"
+                                style="font-size: 25px;"></i>About Us </a></li>
                     <li>
                         <a href="{{ route('admin.footer.index') }}">
-                            <i class="fa fa-window-maximize"></i> Footer
+                            <i class="fa fa-window-maximize" style="font-size: 25px;"></i> Footer
                         </a>
                     </li>
 
                 </ul>
             </li>
+
+
+
+
 
         </ul>
 

@@ -15,6 +15,14 @@
         </div>
     </div>
 
+    <div style="display: flex; justify-content: flex-end; margin-botton: 0px; padding-right: 20px;">
+        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+            data-bs-toggle="modal" data-bs-target="#add_subject_modal">
+            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Subject
+        </button>
+    </div>
+
+
 
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
@@ -63,12 +71,7 @@
     </div>
 
 
-    <div style="display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 20px;">
-        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_subject_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Subject
-        </button>
-    </div>
+
 
     <!-- Pagination links -->
     <div style="padding-left: 20px; padding-bottom: 30px;">
