@@ -67,9 +67,9 @@
                     <i class="fa fa-building" style="font-size: 25px; padding-left: 5px;"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('show_floor') }}"><i class="fa-solid fa-stairs"
-                                style="font-size: 25px;"></i>Floor</a></li>
-                    <li><a href="{{ route('classroom') }}"><i class="fa-solid fa-building"
+                    <li><a href="{{ route('show_floor') }}"><i
+                                class="fa-solid fa-stairs"style="font-size: 25px;"></i>Floor</a></li>
+                    <li><a href="{{ route('show_classroom') }}"><i class="fa-solid fa-building"
                                 style="font-size: 25px; padding-left: 8px;"></i>Room</a></li>
                     <li><a href="{{ route('show_devices') }}"><i class="material-icons"
                                 style="font-size: 25px;">devices_other</i>Device</a>

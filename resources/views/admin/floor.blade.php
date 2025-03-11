@@ -75,9 +75,14 @@
 
 
 
-
      <!-- Footer-->
      @include('admin.footer')
+
+
+     {{-- INCLUDE FLOOR MODAL AND ALERT --}}
+     @include('admin.modal.floorModals')
+     @include('admin.sweetAlerts.floorAlert')
+
 
      <!-- Add your search script below -->
      <script>

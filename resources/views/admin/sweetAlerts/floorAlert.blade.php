@@ -39,10 +39,6 @@
 
 
 
-
-
-
-
 <script>
     // Attach event listener to the "REMOVE" button
     document.querySelectorAll('#RemoveFloortButton').forEach(button => {

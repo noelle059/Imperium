@@ -11,14 +11,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-
 //notification
 use App\Http\Controllers\NotificationController;
-
+// CLASSROOM
+use App\Http\Controllers\ClassroomController;
 // FLOOR
 use App\Http\Controllers\FloorController;
-
-
 // SUBJECT
 use App\Http\Controllers\SubjectController;
 //  ROOM AND DEVICE
@@ -186,9 +184,20 @@ Route::get('/admin/floor', [FloorController::class, 'showFloor'])->name('show_fl
 // Add Floor
 Route::post('/admin/add-floor-level', [FloorController::class, 'addFloor'])->name('add_floor_level');
 // Update Floor
-Route::put('admin/update-floor/{id}', [FloorController::class, 'updateFloor'])->name('floor.update');
+Route::put('/admin/floor/{id}', [FloorController::class, 'updateFloor'])->name('floor.update');
 // Archive Floor
 Route::patch('admin/floor/remove/{id}', [FloorController::class, 'removeFloor'])->name('floor.remove');
+
+
+// Route to show classrooms (with plural form)
+Route::get('/admin/classrooms', [ClassroomController::class, 'showClassroom'])->name('show_classroom');
+
+// Route to handle classroom creation (add classroom)
+Route::post('/admin/add-classroom', [ClassroomController::class, 'addClassroom'])->name('add_classroom');
+
+
+
+
 
 
 

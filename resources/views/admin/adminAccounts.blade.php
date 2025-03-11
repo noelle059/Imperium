@@ -71,6 +71,12 @@
                 @endforeach
             </tbody>
         </table>
+
+
+        <!-- Pagination controls -->
+        <div class="pagination-container" style="margin-top: 10px;">
+            {{ $admin_accounts->links() }}
+        </div>
     </div>
 
 

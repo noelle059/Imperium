@@ -38,38 +38,8 @@
 </script>
 
 
-<!-- UPDATE SUBJECT CONFIRMATION -->
-<script>
-    // Attach event listener to the Update button
-    document.getElementById('UpdateSubjectButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the form submission immediately
 
-        // Get form input values
-        const subjectCode = document.querySelector('[name="subject_code"]').value;
-        const subjectName = document.querySelector('[name="subject_name"]').value;
-        const subjectUnits = document.querySelector('[name="subject_units"]').value;
-
-
-        // If all fields are filled, show the confirmation dialog
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to update this subject?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Update Subject',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If confirmed, submit the form
-                document.getElementById('UpdateSubjectForm').submit(); // Submit the form
-            }
-        });
-
-    });
-</script>
-
-
+{{-- REMOVE SUBJECT ALERT --}}
 <script>
     // Attach event listener to the "REMOVE" button
     document.querySelectorAll('#RemoveSubjectButton').forEach(button => {
@@ -134,40 +104,3 @@
         });
     });
 </script>
-
-
-
-
-{{-- SUCCESSFULL ALERTS --}}
-@if (session('success'))
-    <script>
-        // Ensure the SweetAlert script is loaded before calling Swal
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: '{{ session('success') }}', // Display the success message
-        });
-    </script>
-@endif
-
-{{-- WARNING ALERT --}}
-@if (session('warning'))
-    <script>
-        Swal.fire({
-            icon: 'warning',
-            title: 'Warning!',
-            text: '{{ session('warning') }}',
-        });
-    </script>
-@endif
-
-{{-- ERROR ALERT --}}
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops!',
-            text: '{{ session('error') }}',
-        });
-    </script>
-@endif

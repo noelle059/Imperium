@@ -1,36 +1,4 @@
-<!-- UPDATE ACCOUNT CONFIRMATION -->
-<script>
-    // Attach event listener to the Update button
-    document.getElementById('UpdateAccountButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the form submission immediately
-
-        // Get form input values
-        const accountRfid = document.querySelector('[name="rfid_uid"]').value;
-
-        // If all fields are filled, show the confirmation dialog
-        Swal.fire({
-            title: 'Are you sure?',
-            text: `Do you want to update Account No. ${accountRfid} to this?`, // Corrected to use backticks
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Update Account',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If confirmed, submit the form
-                document.getElementById('UpdateAccountForm').submit(); // Submit the form
-            }
-        });
-
-    });
-</script>
-
-
-
-
-
-
+<!-- REMOVE ACCOUNT CONFIRMATION -->
 <script>
     // Attach event listener to the "REMOVE" button
     document.querySelectorAll('#RemoveAccountButton').forEach(button => {

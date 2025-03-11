@@ -22,20 +22,9 @@
 {{-- SWEET ALERTS CDN LINK --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
 
-{{-- INCLUDE ADMIN MODAL FILE --}}
-@include('admin.modal.floorModals')
-@include('admin.modal.deviceModals')
-@include('admin.modal.subjectModals')
-@include('admin.modal.accountModals')
-
-{{-- INCLUDE ADMIN SCRIPT FILE --}}
 
 
-{{-- SWEETALERT INCLUDE FILE --}}
-@include('admin.sweetAlerts.floorAlert')
-@include('admin.sweetAlerts.deviceAlert')
-@include('admin.sweetAlerts.subjectAlert')
-@include('admin.sweetAlerts.accountAlert')
+
 
 
 {{-- INCLUDE NOTIFICATION MODAL --}}
@@ -56,7 +45,6 @@
 <script src="/js/front.js"></script>
 
 
-
 </body>
 
 </html>
@@ -68,3 +56,40 @@
     window.csrfToken = "{{ csrf_token() }}";
 </script>
 <script src="/scripts/admin_notifications.js"></script>
+
+
+
+
+{{-- SUCCESSFULL ALERTS --}}
+@if (session('success'))
+    <script>
+        // Ensure the SweetAlert script is loaded before calling Swal
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('success') }}', // Display the success message
+        });
+    </script>
+@endif
+
+{{-- WARNING ALERT --}}
+@if (session('warning'))
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning!',
+            text: '{{ session('warning') }}',
+        });
+    </script>
+@endif
+
+{{-- ERROR ALERT --}}
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops!',
+            text: '{{ session('error') }}',
+        });
+    </script>
+@endif

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\FooterContent;
 use Illuminate\Support\Facades\View;
 use App\Models\AboutUs;
+use App\Models\Floor;
 
 
 
@@ -31,6 +32,13 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             $view->with('aboutUs', AboutUs::first());
+        });
+
+        // Share data with the 'admin.classroom' view
+        View::composer('admin.classroom', function ($view) {
+            // Fetch all floors and pass them to the view
+            $floors = Floor::all();
+            $view->with('floors', $floors);
         });
     }
 }

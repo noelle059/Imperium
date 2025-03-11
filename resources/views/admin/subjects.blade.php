@@ -64,24 +64,28 @@
                     </tr>
                 @endforeach
             </tbody>
-
-
         </table>
 
+
+        <!-- Pagination controls -->
+        <div class="pagination-container" style="margin-top: 10px;">
+            {{ $subjects->links() }}
+        </div>
+
     </div>
 
 
-
-
-    <!-- Pagination links -->
-    <div style="padding-left: 20px; padding-bottom: 30px;">
-        {{ $subjects->links() }}
-    </div>
 
 
 
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
+
+
+    {{-- INCLUDE SUBJECT MODAL AND SUBJECT ALERT --}}
+    @include('admin.modal.subjectModals')
+    @include('admin.sweetAlerts.subjectAlert')
+
 
 
     <!-- Add your search script below -->

@@ -17,46 +17,50 @@
          </div>
      </div>
 
+     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
+         <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+             data-bs-toggle="modal" data-bs-target="#add_classroom_modal">
+             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Classroom
+         </button>
+     </div>
 
      <div class="table-container">
          <table id="uniqueTable" class="styled-table">
              <thead>
                  <tr>
                      <th>Room No.</th>
-                     <th>Professor's Name</th>
-                     <th>Status</th>
-                     <th>Account No.</th>
+                     <th>Clssroom Name</th>
+                     <th>Floor Level</th>
                      <th>Time</th>
                      <th>Action</th>
                  </tr>
              </thead>
              <tbody>
                  <tr class="table-row">
-                     <td>CL2</td>
-                     <td>Prof. James Mitchell</td>
-                     <td class="status-cell">In use</td>
-                     <td>12345678</td>
-                     <td>10:00 AM</td>
+                     <td>1</td>
+                     <td>CL1</td>
+                     <td>First floor</td>
+                     <td>Date and Time</td>
                      <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
                  </tr>
              </tbody>
 
          </table>
-     </div>
 
 
-     <div style="display: flex; justify-content: flex-end; margin-top: 20px; padding-right: 20px;">
-         <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-             data-bs-toggle="modal" data-bs-target="#add_subject_modal">
-             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Room
-         </button>
+
      </div>
 
 
 
+     {{-- INCLUDE CLASSROOM MODALS --}}
+     @include('admin.modal.classroomModals')
+     @include('admin.sweetAlerts.classroomAlert')
 
      <!-- Footer-->
      @include('admin.footer')
+
+
 
      <!-- Add your search script below -->
      <script>

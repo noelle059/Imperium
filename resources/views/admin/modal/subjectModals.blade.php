@@ -74,7 +74,7 @@
              </form>
 
              <div class="modal-footer" style="padding: 10px;">
-                 <button type="submit" class="btn gradient-button" id="UpdateSubjectButton">Update Subject</button>
+                 <button type="button" class="btn gradient-button" id="UpdateSubjectButton">Update Subject</button>
                  <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
              </div>
          </div>
@@ -82,6 +82,7 @@
  </div>
 
 
+ {{-- UPDATE SUBJECT SCRIPT --}}
  <script>
      // JavaScript to populate modal fields when the update button is clicked
      document.addEventListener('DOMContentLoaded', function() {
@@ -102,11 +103,36 @@
                  // Update the form action URL to include the subject ID for the PUT request
                  const form = document.getElementById('UpdateSubjectForm');
                  form.action = form.action.replace(':id', subjectId);
+
+                 // Store the subject name in a global variable for use in the confirmation dialog
+                 window.subjectName = subjectName;
              });
          });
      });
 
-     document.getElementById('UpdateSubjectButton').addEventListener('click', function() {
-         document.getElementById('UpdateSubjectForm').submit();
+     // Confirmation before form submission
+     document.getElementById('UpdateSubjectButton').addEventListener('click', function(event) {
+         event.preventDefault(); // Prevent the form submission immediately
+
+         // Get form input values
+         const subjectCode = document.querySelector('[name="subject_code"]').value;
+         const subjectName = document.getElementById('subject_name').value; // Get updated subject name
+         const subjectUnits = document.querySelector('[name="subject_units"]').value;
+
+         // If all fields are filled, show the confirmation dialog
+         Swal.fire({
+             title: 'Are you sure?',
+             text: `Do you want to update the subject: ${subjectName}?`, // This now uses the correctly fetched subjectName
+             icon: 'warning',
+             showCancelButton: true,
+             confirmButtonText: 'Yes, Update Subject',
+             cancelButtonText: 'Cancel',
+             reverseButtons: true,
+         }).then((result) => {
+             if (result.isConfirmed) {
+                 // If confirmed, submit the form
+                 document.getElementById('UpdateSubjectForm').submit(); // Submit the form
+             }
+         });
      });
  </script>

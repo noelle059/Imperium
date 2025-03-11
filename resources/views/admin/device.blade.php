@@ -86,6 +86,9 @@
     @include('admin.footer')
 
 
+    {{-- INCLUDE ADMIN MODAL AND ALERT --}}
+    @include('admin.modal.deviceModals')
+    @include('admin.sweetAlerts.deviceAlert')
 
     <!-- Add your search script below -->
     <script>

@@ -19,7 +19,6 @@
                             placeholder="Enter account name" disabled>
                     </div>
 
-
                     <div class="mb-3">
                         <label for="account_email" class="form-label">Account Email</label>
                         <input type="email" id="account_email" name="account_email" class="form-control"
@@ -36,37 +35,57 @@
             </form>
 
             <div class="modal-footer">
-                <button type="submit" class="btn gradient-button" id="UpdateAccountButton">Update
-                    Account</button>
+                <button type="button" class="btn gradient-button" id="UpdateAccountButton">Update Account</button>
                 <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
             </div>
 
         </div>
     </div>
+</div>
 
 
+<script>
+    // Attach event listener to each Update button to populate the modal and set form action
+    document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const professorId = this.getAttribute('data-id'); // Get professor ID
+            const professorName = this.getAttribute('data-name');
+            const professorEmail = this.getAttribute('data-email');
+            const professorRfidUid = this.getAttribute('data-rfid_uid');
 
-    <script>
-        // Attach event listener to each Update button
-        document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
-            button.addEventListener('click', function() {
-                const professorId = this.getAttribute('data-id'); // Get professor ID
-                const professorName = this.getAttribute('data-name');
-                const professorEmail = this.getAttribute('data-email');
-                const professorRfidUid = this.getAttribute('data-rfid_uid');
+            // Update the form action to include the professor's ID
+            const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
+            document.getElementById('UpdateAccountForm').action = formAction;
 
-                // Update the form action to include the professor's ID
-                const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
-                document.getElementById('UpdateAccountForm').action = formAction;
-
-                // Populate the modal fields with the professor's data
-                document.getElementById('account_name').value = professorName;
-                document.getElementById('account_email').value = professorEmail;
-                document.getElementById('rfid_uid').value = professorRfidUid;
-            });
+            // Populate the modal fields with the professor's data
+            document.getElementById('account_name').value = professorName;
+            document.getElementById('account_email').value = professorEmail;
+            document.getElementById('rfid_uid').value = professorRfidUid;
         });
+    });
 
-        document.getElementById('UpdateAccountButton').addEventListener('click', function() {
-            document.getElementById('UpdateAccountForm').submit();
+    // Update Account Button click handler
+    document.getElementById('UpdateAccountButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission initially
+
+        // Get form input values
+        const accountRfid = document.querySelector('[name="rfid_uid"]').value;
+
+        // Show confirmation dialog before submitting the form
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to update Account No. ${accountRfid} to this?`, // Corrected to use backticks
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Update Account',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the form
+                document.getElementById('UpdateAccountForm')
+                    .submit(); // Submit the form after confirmation
+            }
         });
-    </script>
+    });
+</script>

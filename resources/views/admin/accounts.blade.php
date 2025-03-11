@@ -72,11 +72,22 @@
                  @endforeach
              </tbody>
          </table>
+
+         <!-- Pagination controls -->
+         <div class="pagination-container" style="margin-top: 10px;">
+             {{ $professors->links() }}
+         </div>
      </div>
+
+
+
 
 
      {{-- INCLUDE FOOTER --}}
      @include('admin.footer')
+
+     @include('admin.modal.accountModals')
+     @include('admin.sweetAlerts.accountAlert')
 
 
 
