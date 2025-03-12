@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Floor;
+use App\Models\Room;
 
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -11,15 +12,19 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 class FloorController extends Controller
 {
     use ValidatesRequests;
+
+
     public function showFloor()
     {
-        // Get professors (admin users) where archive_status = 1 and paginate 10
-        $show_floor = Floor::where('archive_status', 1)  // Only those with archive_status = 1
+        // Get floors with the related rooms (classrooms) and paginate 10 results per page
+        $show_floor = Floor::withCount('classrooms') // Use withCount to get the room count
+            ->where('archive_status', 1)  // Only those with archive_status = 1
             ->paginate(10);  // Paginate 10 results per page
 
-        // Return the view with the professors data
+        // Return the view with the floors data
         return view('admin.floor', compact('show_floor'));
     }
+
 
 
     public function addFloor(Request $request)

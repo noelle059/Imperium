@@ -24,4 +24,10 @@ class Classroom extends Model
     {
         return $this->belongsTo(Floor::class, 'floor_id');
     }
+
+
+    public function devices()
+    {
+        return $this->hasMany(Device::class, 'classroom_id');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\FirebaseService;
 use Illuminate\Http\Request;
 use App\Models\Device;
+use App\Models\Classroom;
 
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -23,14 +24,16 @@ class DeviceController extends Controller
 
     public function showAddDevices()
     {
-        // Get professors (admin users) where archive_status = 1 and paginate 10
-        $show_devices = Device::where('archive_status', 1)  // Only those with archive_status = 1
+        // Get devices where archive_status = 1 and paginate 10
+        $show_devices = Device::where('archive_status', 1)
             ->paginate(10);  // Paginate 10 results per page
 
-        // Return the view with the professors data
-        return view('admin.device', compact('show_devices'));
-    }
+        // Get all classrooms
+        $classrooms = Classroom::all();
 
+        // Return the view with the devices and classrooms data
+        return view('admin.device', compact('show_devices', 'classrooms'));
+    }
 
 
 
@@ -47,7 +50,15 @@ class DeviceController extends Controller
         $classroomId = $request->input('classroom_id');
         $deviceName = $request->input('device_name');
 
-        // Check if the device already exists in Firebase
+        // Retrieve the classroom by its ID to get the classroom_name
+        $classroom = Classroom::find($classroomId);
+
+        // If the classroom doesn't exist, return with an error
+        if (!$classroom) {
+            return redirect('/admin/show-devices')->with('error', 'Classroom not found.');
+        }
+
+        // Check if the device already exists in Firebase under the same classroom
         $path = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
         $existingDevice = $this->firebaseService->getData($path);
 
@@ -64,16 +75,20 @@ class DeviceController extends Controller
         $device->archive_status = 1;  // Default archive status
         $device->save();  // Save to the local database
 
-        // Prepare the data for Firebase (state is always false as you set it)
+        // Firebase path for the device
+        $firebasePath = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
+
+        // Save the device data to Firebase (without archive_status)
         $firebaseData = [
+            'device_name' => $deviceName,
             'state' => false,  // Default state is false
         ];
 
         // Use the FirebaseService to set the data in Firebase
-        $this->firebaseService->setData($path, $firebaseData);
+        $this->firebaseService->setData($firebasePath, $firebaseData);
 
         // Redirect back with success message
-        return redirect('/admin/show-devices')->with('success', 'Device Added Successfully');
+        return redirect('/admin/show-devices')->with('success', 'Device Added Successfully to classroom: ' . $classroom->classroom_name);
     }
 
 
@@ -82,7 +97,7 @@ class DeviceController extends Controller
      */
     public function remove($id, Request $request)
     {
-        $device = Device::findOrFail($id); // Find the subject by ID
+        $device = Device::findOrFail($id); // Find the subject by 
 
         $device->archive_status = 0; // Set archive_status to 0 (mark as removed)
         $device->save(); // Save changes
@@ -104,7 +119,6 @@ class DeviceController extends Controller
 
 
 
-    // Update device method
     public function update(Request $request, $id)
     {
         // Validate the incoming request
@@ -131,13 +145,21 @@ class DeviceController extends Controller
             return redirect()->back()->with('error', 'A device with this name already exists in the same classroom.');
         }
 
+        // Retrieve the classroom by its ID to get the classroom_name
+        $classroom = Classroom::find($request->input('classroom_id'));
+
+        // If the classroom doesn't exist, return with an error
+        if (!$classroom) {
+            return redirect()->back()->with('error', 'Classroom not found.');
+        }
+
         // Update the device in the local database
         $device->classroom_id = $request->input('classroom_id');
         $device->device_name = $request->input('device_name');
         $device->state = $request->input('state');
         $device->save();  // Save the updated data to the database
 
-        // Update the device in Firebase
+        // Firebase path for the device
         $classroomId = $request->input('classroom_id');
         $deviceName = $request->input('device_name');
         $state = $request->input('state');
@@ -145,15 +167,17 @@ class DeviceController extends Controller
         // Map state values to true or false
         $firebaseState = ($state == 1) ? true : false;
 
-        $path = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
+        // Firebase path
+        $firebasePath = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
         $firebaseData = [
-            'state' => $firebaseState,
+            'device_name' => $deviceName,
+            'state' => $firebaseState,  // Update the state to the new value
         ];
 
         // Use the FirebaseService to set the updated data in Firebase
-        $this->firebaseService->setData($path, $firebaseData);
+        $this->firebaseService->setData($firebasePath, $firebaseData);
 
         // Redirect with a success message
-        return redirect('/admin/show-devices')->with('success', 'Device updated successfully.');
+        return redirect('/admin/show-devices')->with('success', 'Device updated successfully in classroom: ' . $classroom->classroom_name);
     }
 }

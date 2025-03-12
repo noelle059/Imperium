@@ -30,19 +30,46 @@
                  <tr>
                      <th>Room No.</th>
                      <th>Clssroom Name</th>
+                     <th>Device Count</th>
                      <th>Floor Level</th>
                      <th>Time</th>
                      <th>Action</th>
                  </tr>
              </thead>
              <tbody>
-                 <tr class="table-row">
-                     <td>1</td>
-                     <td>CL1</td>
-                     <td>First floor</td>
-                     <td>Date and Time</td>
-                     <td class="action-cell"><button type="button" class="btn gradient-button">Remote</button></td>
-                 </tr>
+                 @foreach ($classrooms as $index => $classroom)
+                     <tr class="table-row">
+                         <td>{{ $loop->iteration }}</td>
+                         <td>{{ $classroom->classroom_name }}</td>
+
+                         <td>{{ $classroom->devices_count }}</td> <!-- This will display the device count -->
+
+                         <td>{{ $classroom->floor ? $classroom->floor->floor_name : 'N/A' }}</td>
+                         <!-- Display floor_name -->
+
+
+                         <td>{{ \Carbon\Carbon::parse($classroom->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                         </td>
+
+                         <td class="action-cell">
+                             <!-- Updating Device from ID -->
+                             <button class="btn gradient-button" type="button" data-id="{{ $classroom->id }}"
+                                 data-classroom_name="{{ $classroom->classroom_name }}"
+                                 data-floor_id ="{{ $classroom->floor_id }}" data-bs-toggle="modal"
+                                 data-bs-target="#update_classroom_modal">
+                                 UPDATE
+                             </button>
+
+                             <!-- Removing the subject from the list -->
+                             <button class="btn gradient-button" type="button" data-id="{{ $classroom->id }}"
+                                 id="RemoveClassroomtButton">
+                                 REMOVE
+                             </button>
+                         </td>
+
+                     </tr>
+                 @endforeach
+
              </tbody>
 
          </table>
@@ -53,12 +80,15 @@
 
 
 
+     <!-- Footer-->
+     @include('admin.footer')
+
+
+
      {{-- INCLUDE CLASSROOM MODALS --}}
      @include('admin.modal.classroomModals')
      @include('admin.sweetAlerts.classroomAlert')
 
-     <!-- Footer-->
-     @include('admin.footer')
 
 
 

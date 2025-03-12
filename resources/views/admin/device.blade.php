@@ -41,7 +41,17 @@
                     <tr class="table-row">
                         <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
                         <td>{{ $device->device_name }}</td>
-                        <td>{{ $device->classroom_id }}</td>
+
+                        <td>
+                            <!-- Find the classroom name by classroom_id -->
+                            @php
+                                $classroom = $classrooms->firstWhere('id', $device->classroom_id);
+                            @endphp
+
+                            <!-- Display the classroom name if found -->
+                            {{ $classroom ? $classroom->classroom_name : 'N/A' }}
+                        </td>
+
 
                         <td>
                             @if ($device->state == 0)
@@ -81,14 +91,14 @@
 
 
 
+    {{-- INCLUDE ADMIN MODAL AND ALERT --}}
+    @include('admin.modal.deviceModals')
+    @include('admin.sweetAlerts.deviceAlert')
+
 
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
 
-
-    {{-- INCLUDE ADMIN MODAL AND ALERT --}}
-    @include('admin.modal.deviceModals')
-    @include('admin.sweetAlerts.deviceAlert')
 
     <!-- Add your search script below -->
     <script>

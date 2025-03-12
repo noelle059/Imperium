@@ -11,4 +11,11 @@ class Floor extends Model
 
     // Define the fillable fields (this is for mass assignment protection)
     protected $fillable = ['floor_name', 'archive_status'];
+
+
+    // In Floor model
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class, 'floor_id');
+    }
 }

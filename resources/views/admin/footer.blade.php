@@ -14,40 +14,29 @@
 </div>
 </div>
 
-
-
-<!-- Add this script tag in the <head> or before closing </body> tag -->
+<!-- Include jQuery (Ensure this is the first script) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-{{-- SWEET ALERTS CDN LINK --}}
+<!-- SweetAlert CDN Link -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
 
-
-
-
-
-
-{{-- INCLUDE NOTIFICATION MODAL --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
+<!-- Include Bootstrap JS (with Popper.js included in the bundle) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-<!-- JavaScript files -->
-<script src="/vendor/jquery/jquery.min.js"></script>
+<!-- Include other vendor and custom scripts -->
 <script src="/vendor/popper.js/umd/popper.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="/vendor/jquery.cookie/jquery.cookie.js"></script>
 <script src="/vendor/chart.js/Chart.min.js"></script>
 <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="/js/charts-home.js"></script>
+
+<!-- Custom JS files -->
+{{-- <script src="/js/charts-home.js"></script> --}}
 <script src="/js/front.js"></script>
 
 
-</body>
 
-</html>
+
 
 
 <script>
@@ -56,8 +45,6 @@
     window.csrfToken = "{{ csrf_token() }}";
 </script>
 <script src="/scripts/admin_notifications.js"></script>
-
-
 
 
 {{-- SUCCESSFULL ALERTS --}}
@@ -93,3 +80,12 @@
         });
     </script>
 @endif
+
+
+
+
+
+
+</body>
+
+</html>

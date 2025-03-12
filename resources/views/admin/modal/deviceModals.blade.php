@@ -10,11 +10,18 @@
                <form id="AddDeviceForm" action="{{ route('admin.addDevices') }}" method="POST">
                    @csrf
                    <div class="modal-body">
+
+
                        <div class="mb-3">
-                           <label for="ClassNo" class="form-label">Classroom No.</label>
-                           <input type="number" name="classroom_id" class="form-control"
-                               placeholder="Enter Classroom No." required>
+                           <label for="ClassroomName" class="form-label">Classroom No.</label>
+                           <select name="classroom_id" class="form-control" required>
+                               <option value="" disabled selected>Select Classroom</option>
+                               @foreach ($classrooms as $classroom)
+                                   <option value="{{ $classroom->id }}">{{ $classroom->classroom_name }}</option>
+                               @endforeach
+                           </select>
                        </div>
+
                        <div class="mb-3">
                            <label for="DeviceName" class="form-label">Device Name</label>
                            <input type="text" name="device_name" class="form-control" placeholder="Enter device name"
@@ -62,11 +69,23 @@
                            <input type="text" id="device_name" name="device_name" class="form-control"
                                placeholder="Enter device name" required>
                        </div>
+
+
                        <div class="mb-3">
-                           <label for="classroom_id" class="form-label">Classroom ID</label>
-                           <input type="number" id="classroom_id" name="classroom_id" class="form-control"
-                               placeholder="Enter classroom ID" required>
+                           <label for="classroom_id" class="form-label">Classroom</label>
+                           <select id="classroom_id" name="classroom_id" class="form-control" required>
+                               <option value="">Select Classroom</option>
+                               @foreach ($classrooms as $classroom)
+                                   <option value="{{ $classroom->id }}"
+                                       {{ old('classroom_id', $device->classroom_id) == $classroom->id ? 'selected' : '' }}>
+                                       {{ $classroom->classroom_name }}
+                                   </option>
+                               @endforeach
+                           </select>
                        </div>
+
+
+
                        <div class="mb-3">
                            <label for="state" class="form-label">State</label>
                            <select id="state" name="state" class="form-control" required>

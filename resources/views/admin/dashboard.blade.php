@@ -175,17 +175,5 @@
     </section>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                title: "Success!",
-                text: "{{ session('success') }}",
-                icon: "success",
-                confirmButtonText: "OK"
-            });
-        @endif
-    </script>
-
     <!--FOOtER -->
     @include('admin.footer')

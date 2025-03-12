@@ -43,7 +43,8 @@
                      <tr class="table-row">
                          <td>{{ $loop->iteration }}</td>
                          <td>{{ $floor->floor_name }}</td>
-                         <td>10</td>
+                         <td>{{ $floor->classrooms_count }} <!-- This will display the room count for the floor -->
+                         </td>
 
                          <td>{{ \Carbon\Carbon::parse($floor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
                          </td>

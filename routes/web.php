@@ -189,14 +189,15 @@ Route::put('/admin/floor/{id}', [FloorController::class, 'updateFloor'])->name('
 Route::patch('admin/floor/remove/{id}', [FloorController::class, 'removeFloor'])->name('floor.remove');
 
 
+
 // Route to show classrooms (with plural form)
 Route::get('/admin/classrooms', [ClassroomController::class, 'showClassroom'])->name('show_classroom');
-
 // Route to handle classroom creation (add classroom)
 Route::post('/admin/add-classroom', [ClassroomController::class, 'addClassroom'])->name('add_classroom');
-
-
-
+// Update Classroom
+Route::put('admin/update-classroom/{id}', [ClassroomController::class, 'updateClassroom'])->name('update_classroom');
+// Archive Classroom
+Route::patch('admin/classroom/remove/{id}', [ClassroomController::class, 'removeClassroom'])->name('classroom_remove');
 
 
 
@@ -230,6 +231,13 @@ Route::post('/admin/slider', [SliderController::class, 'store'])->name('admin.sl
 Route::delete('/admin/slider/{id}', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
 
 
+
+
+
+
+
+
+
 //feedback
 use App\Http\Controllers\FeedbackController;
 
@@ -244,13 +252,14 @@ Route::put('/admin/feedback/{id}', [FeedbackController::class, 'update'])->name(
 
 
 
-//footer
 
+
+
+//footer
 use App\Http\Controllers\FooterController;
 
 Route::get('/admin/footer', [FooterController::class, 'index'])->name('admin.footer.index');
 Route::put('/admin/footer', [FooterController::class, 'update'])->name('admin.footer.update');
-
 
 //about us
 use App\Http\Controllers\AboutUsController;
