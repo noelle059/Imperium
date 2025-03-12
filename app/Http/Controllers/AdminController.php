@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Room;
+use App\Services\FirebaseService;
 
 class AdminController extends Controller
 {
@@ -68,6 +69,16 @@ class AdminController extends Controller
                 'rfid_uid' => 'required|string|max:255',
             ]);
 
+            // Check if RFID UID already exists for another professor
+            $existingAccount = User::where('rfid_uid', $validated['rfid_uid'])
+            ->where('id', '!=', $id) // Exclude the current professor
+            ->first();
+
+            if ($existingAccount) {
+                return redirect()->route('accounts')
+                ->with('error', 'This RFID is already registered to another account!');
+            }
+
 
             // Check if anything has changed before updating
             $isUpdated = false;
@@ -113,4 +124,15 @@ class AdminController extends Controller
 
         return response()->json(['success' => true]); // Send success response
     }
+
+    public function fetchRFID(FirebaseService $firebaseService)
+    {
+        try {
+            $rfid = $firebaseService->getCurrentRFID();
+            return response()->json(['success' => true, 'rfid' => $rfid]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
 }

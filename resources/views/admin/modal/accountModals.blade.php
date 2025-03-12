@@ -28,7 +28,7 @@
                     <div class="mb-3">
                         <label for="rfid_uid" class="form-label">Account Number</label>
                         <input type="text" id="rfid_uid" name="rfid_uid" class="form-control"
-                            placeholder="Scan your RFID Card">
+                            placeholder="Scan your RFID Card" disabled>
                     </div>
 
                 </div>
@@ -47,11 +47,12 @@
 <script>
     // Attach event listener to each Update button to populate the modal and set form action
     document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', async function() { // Mark the function as async
             const professorId = this.getAttribute('data-id'); // Get professor ID
             const professorName = this.getAttribute('data-name');
             const professorEmail = this.getAttribute('data-email');
             const professorRfidUid = this.getAttribute('data-rfid_uid');
+            const professorActivated = this.getAttribute('data-is_activated');
 
             // Update the form action to include the professor's ID
             const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
@@ -60,7 +61,27 @@
             // Populate the modal fields with the professor's data
             document.getElementById('account_name').value = professorName;
             document.getElementById('account_email').value = professorEmail;
+
+            if (!professorRfidUid || professorActivated == "0") {
+                try {
+                    const response = await fetch("{{ route('fetch.rfid') }}");
+
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    if (data.success) {
+                        document.getElementById('rfid_uid').value = data.rfid;
+                    } else {
+                        console.error("RFID fetch failed:", data.message);
+                    }
+                } catch (error) {
+                    console.error("Error fetching RFID:", error);
+                }
+        } else {
             document.getElementById('rfid_uid').value = professorRfidUid;
+        }
         });
     });
 
@@ -83,6 +104,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // If confirmed, submit the form
+                document.getElementById('rfid_uid').removeAttribute('disabled');
                 document.getElementById('UpdateAccountForm')
                     .submit(); // Submit the form after confirmation
             }

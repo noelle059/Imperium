@@ -145,9 +145,11 @@ Route::get('/get-devices/{classroomId}', [DeviceController::class, 'getDevices']
 
 // ADMIN SIDE
 
-// Round in the Professor Account 
+// Round in the Professor Account
 Route::get('/admin/professor-accounts', [AdminController::class, 'showProfessors'])->name('accounts');
-// Round in the Professor Account 
+Route::get('/fetch-rfid', [AdminController::class, 'fetchRFID'])->name('fetch.rfid');
+
+// Round in the Professor Account
 Route::get('/admin/admin-accounts', [AdminController::class, 'showAdminAccount'])->name('show_admin_accounts');
 
 
@@ -213,7 +215,7 @@ Route::get('/admin/classroom', function () {
 
 
 
-// slider route 
+// slider route
 use App\Http\Controllers\SliderController;
 
 // Route to display the slider management page
