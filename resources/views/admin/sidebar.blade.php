@@ -6,14 +6,14 @@
         <div class="sidebar-header d-flex align-items-center">
             <div class="avatar">
                 @if (Auth::check())
-                    @if (Str::startsWith(Auth::user()->id_picture, 'http'))
-                        <!-- If id_picture is a Google URL -->
-                        <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
-                    @else
-                        <!-- If id_picture is a local upload -->
-                        <img src="{{ asset('uploads/' . Auth::user()->id_picture) }}" alt="Profile Picture"
-                            class="img-fluid rounded-circle">
-                    @endif
+                @if (Str::startsWith(Auth::user()->id_picture, 'http'))
+    <!-- If id_picture is a Google URL -->
+    <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
+@else
+    <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
+    <img src="{{ asset(Auth::user()->id_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle">
+@endif
+
                 @else
                     <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
                         class="img-fluid rounded-circle">
