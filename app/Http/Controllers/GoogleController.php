@@ -44,8 +44,14 @@ class GoogleController extends Controller
                     'email' => $googleUser->getEmail(),
                     'password' => bcrypt(Str::random(16)), // Generate random password
                     'id_picture' => 'uploads/id_pictures/' . $filename, // Save local path
+                    'is_archived' => 0, // Ensure new users are not archived by default
                 ]);
             } else {
+                // Prevent login if the user is archived
+                if ($user->is_archived == 1) {
+                    return redirect()->route('login')->with('alert', 'Your account has been deactivated and cannot log in.');
+                }
+    
                 // Check if the stored id_picture is different from the new one
                 if (!$user->id_picture || !str_contains($user->id_picture, md5($googleAvatarUrl))) {
                     $filename = md5($googleAvatarUrl) . '.jpg'; // Generate filename based on avatar hash
@@ -80,9 +86,10 @@ class GoogleController extends Controller
                 : redirect()->route('user.dashboard');
     
         } catch (Exception $e) {
-            return redirect()->route('login')->with('error', 'Unable to login using Google. Please try again.');
+            return redirect()->route('login')->with('alert', 'Unable to login using Google. Please try again.');
         }
     }
+    
     
 
     public function showPhoneForm(Request $request)
