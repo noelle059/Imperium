@@ -43,4 +43,10 @@ class FirebaseService
     {
         return $this->getReference($path)->getValue();
     }
+
+    public function getCurrentRFID()
+    {
+        return $this->getData('rfid/current');
+    }
+
 }
