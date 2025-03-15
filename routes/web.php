@@ -268,3 +268,19 @@ use App\Http\Controllers\AboutUsController;
 
 Route::get('/admin/about', [AboutUsController::class, 'index'])->name('admin.about.index');
 Route::put('/admin/about', [AboutUsController::class, 'update'])->name('admin.about.update');
+
+//phone number
+use App\Http\Controllers\PhoneVerificationController;
+
+// Phone verification routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/auth/verify-phone', function () {
+        return view('auth.verify-phone'); // Make sure this matches your file name
+    })->name('auth.verify-phone.view');
+
+    Route::post('/auth/verify-phone/send-otp', [PhoneVerificationController::class, 'sendOtp'])->name('auth.verify-phone.sendOtp');
+    Route::post('/auth/verify-phone', [PhoneVerificationController::class, 'verifyOtp'])->name('auth.verify-phone.verifyOtp');
+});
+
+
+
