@@ -32,56 +32,56 @@
                     <th>Device Name</th>
                     <th>Classroom Name</th>
                     <th>Status</th>
-                    <th>Date & Time</th>
+                    <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($show_devices as $index => $device)
-                    <tr class="table-row">
-                        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-                        <td>{{ $device->device_name }}</td>
+                                <tr class="table-row">
+                                    <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                                    <td>{{ $device->device_name }}</td>
 
-                        <td>
-                            <!-- Find the classroom name by classroom_id -->
-                            @php
-                                $classroom = $classrooms->firstWhere('id', $device->classroom_id);
-                            @endphp
+                                    <td>
+                                        <!-- Find the classroom name by classroom_id -->
+                                        @php
+                                            $classroom = $classrooms->firstWhere('id', $device->classroom_id);
+                                        @endphp
 
-                            <!-- Display the classroom name if found -->
-                            {{ $classroom ? $classroom->classroom_name : 'N/A' }}
-                        </td>
-
-
-                        <td>
-                            @if ($device->state == 0)
-                                OFF
-                            @elseif ($device->state == 1)
-                                ON
-                            @endif
-                        </td>
-
-                        <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
-                        </td>
-
-                        <td class="action-cell">
+                                        <!-- Display the classroom name if found -->
+                                        {{ $classroom ? $classroom->classroom_name : 'N/A' }}
+                                    </td>
 
 
-                            <!-- Updating Device from ID -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
-                                data-device_name="{{ $device->device_name }}"
-                                data-classroom_id="{{ $device->classroom_id }}" data-state="{{ $device->state }}"
-                                data-bs-toggle="modal" data-bs-target="#update_device__modal">
-                                UPDATE
-                            </button>
+                                    <td>
+                                        @if ($device->state == 0)
+                                            OFF
+                                        @elseif ($device->state == 1)
+                                            ON
+                                        @endif
+                                    </td>
 
-                            <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
-                                id="RemoveDevicetButton">
-                                REMOVE
-                            </button>
-                        </td>
-                    </tr>
+                                    <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone(value: 'Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                                    </td>
+
+                                    <td class="action-cell">
+
+
+                                        <!-- Updating Device from ID -->
+                                        <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
+                                            data-device_name="{{ $device->device_name }}"
+                                            data-classroom_id="{{ $device->classroom_id }}" data-state="{{ $device->state }}"
+                                            data-bs-toggle="modal" data-bs-target="#update_device__modal">
+                                            UPDATE
+                                        </button>
+
+                                        <!-- Removing the subject from the list -->
+                                        <button class="btn gradient-button" type="button" data-id="{{ $device->id }}"
+                                            id="RemoveDevicetButton">
+                                            REMOVE
+                                        </button>
+                                    </td>
+                                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -102,7 +102,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');

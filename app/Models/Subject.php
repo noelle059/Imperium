@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    // Class content goes here
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'subject_id');
+    }
+
+
 }

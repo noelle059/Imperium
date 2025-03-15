@@ -34,7 +34,7 @@
                      <th> No.</th>
                      <th>Floor Level</th>
                      <th>Room Count</th>
-                     <th>Date and Time</th>
+                     <th>Entry Date</th>
                      <th>Action</th>
                  </tr>
              </thead>
