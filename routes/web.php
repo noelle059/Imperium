@@ -21,7 +21,7 @@ use App\Http\Controllers\FloorController;
 use App\Http\Controllers\SubjectController;
 //  ROOM AND DEVICE
 use App\Http\Controllers\DeviceController;
-
+use App\Http\Controllers\ScheduleController;
 use App\Models\Room;
 use App\Models\User;
 
@@ -191,7 +191,6 @@ Route::put('/admin/floor/{id}', [FloorController::class, 'updateFloor'])->name('
 Route::patch('admin/floor/remove/{id}', [FloorController::class, 'removeFloor'])->name('floor.remove');
 
 
-
 // Route to show classrooms (with plural form)
 Route::get('/admin/classrooms', [ClassroomController::class, 'showClassroom'])->name('show_classroom');
 // Route to handle classroom creation (add classroom)
@@ -201,6 +200,9 @@ Route::put('admin/update-classroom/{id}', [ClassroomController::class, 'updateCl
 // Archive Classroom
 Route::patch('admin/classroom/remove/{id}', [ClassroomController::class, 'removeClassroom'])->name('classroom_remove');
 
+
+// Route to show Schedules (with plural form)
+Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->name('show_schedule');
 
 
 
