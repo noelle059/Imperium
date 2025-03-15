@@ -10,10 +10,10 @@
                         <!-- If id_picture is a Google URL -->
                         <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
                     @else
-                        <!-- If id_picture is a local upload -->
-                        <img src="{{ asset('uploads/' . Auth::user()->id_picture) }}" alt="Profile Picture"
-                            class="img-fluid rounded-circle">
+                        <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
+                        <img src="{{ asset(Auth::user()->id_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle">
                     @endif
+
                 @else
                     <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
                         class="img-fluid rounded-circle">
@@ -67,14 +67,15 @@
                     <i class="fa fa-building" style="font-size: 25px; padding-left: 5px;"></i>Classroom
                 </a>
                 <ul id="Classroom" class="collapse list-unstyled">
-                    <li><a href="{{ route('show_floor') }}"><i
-                                class="fa-solid fa-stairs"style="font-size: 25px;"></i>Floor</a></li>
+                    <li><a href="{{ route('show_floor') }}"><i class="fa-solid fa-stairs"
+                                style="font-size: 25px;"></i>Floor</a></li>
                     <li><a href="{{ route('show_classroom') }}"><i class="fa-solid fa-building"
                                 style="font-size: 25px; padding-left: 8px;"></i>Room</a></li>
                     <li><a href="{{ route('show_devices') }}"><i class="material-icons"
                                 style="font-size: 25px;">devices_other</i>Device</a>
                     </li>
-                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">add_box</i>Schedule</a>
+                    <li><a href="{{ route('show_schedule') }}"><i class="material-icons"
+                                style="font-size: 25px;">add_box</i>Schedule</a>
                     </li>
                 </ul>
             </li>

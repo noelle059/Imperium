@@ -10,43 +10,49 @@ use App\Models\Notification;
 class LoginController extends Controller
 {
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
-
-    $credentials = $request->only('email', 'password');
-
-    if (Auth::attempt($credentials)) {
-        // Authentication passed...
-        $user = Auth::user();
-
-        // Create a user-specific login notification
-        $message = $this->getLoginNotificationMessage($user);
-        Notification::create([
-            'user_id' => $user->id, // Ensure the notification is linked to the logged-in user
-            'message' => $message, // Use the specific message for the user
-            'is_read' => false,
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        // Set a session flash message for successful login
-        session()->flash('success', 'You have successfully logged in!');
+        $credentials = $request->only('email', 'password');
 
-        // Redirect based on user role
-        if ($user->is_admin) {
-            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
-        } else {
-            return redirect()->route('user.dashboard'); // Redirect to user dashboard
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if user is archived
+            if ($this->is_archived($user)) {
+                Auth::logout();
+                return back()->withInput($request->only('email'))->with('alert', 'Your account has been deactivated and cannot log in.');
+            }
+
+            // Create a user-specific login notification
+            $message = $this->getLoginNotificationMessage($user);
+            Notification::create([
+                'user_id' => $user->id,
+                'message' => $message,
+                'is_read' => false,
+            ]);
+
+            // Set a session flash message for successful login
+            session()->flash('success', 'You have successfully logged in!');
+
+            // Redirect based on user role
+            return $user->is_admin ? redirect()->route('admin.dashboard') : redirect()->route('user.dashboard');
         }
+
+        // If authentication fails, redirect back with an alert
+        return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.')->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+            'password' => 'The password is incorrect. Please try again.',
+        ]);
     }
 
-    // If authentication fails, redirect back with an alert
-    return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.')->withErrors([
-        'email' => 'The provided credentials do not match our records.',
-        'password' => 'The password is incorrect. Please try again.',
-    ]);
-}
+    private function is_archived($user)
+    {
+        return $user->is_archived == 1;
+    }
 
     private function getLoginNotificationMessage($user)
     {

@@ -24,7 +24,7 @@
                     <th>Picture</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Date & Time</th>
+                    <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -35,12 +35,11 @@
                         <td>
                             @if (filter_var($admin_account->id_picture, FILTER_VALIDATE_URL))
                                 <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $admin_account->id_picture }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
+                                <img src="{{ $admin_account->id_picture }}" alt="ID Picture" style="width: 50px; height: auto;">
                             @else
                                 <!-- If the id_picture is a local file, use asset() to reference it -->
-                                <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}"
-                                    alt="ID Picture" style="width: 50px; height: auto;">
+                                <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}" alt="ID Picture"
+                                    style="width: 50px; height: auto;">
                             @endif
                         </td>
 
@@ -87,7 +86,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');

@@ -32,7 +32,7 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Units</th>
-                    <th>Date and Time </th>
+                    <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>

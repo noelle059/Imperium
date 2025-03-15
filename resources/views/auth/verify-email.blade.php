@@ -130,11 +130,18 @@
             @csrf
             <button class="btn-primary" type="submit">Resend Verification Email</button>
         </form>
+
+        
         
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button class="logout-btn" type="submit">Log Out</button>
         </form>
+
+        <a href="{{ route('auth.verify-phone.view') }}">Verify using Phone</a>
+
+
+
     </div>
 </body>
 </html>
