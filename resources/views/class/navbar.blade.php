@@ -14,14 +14,19 @@
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#insights">Insights</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#contact">Contact</a></li>
                     <li class="nav-item d-lg-none">
-                        <a href="{{ route('login') }}" class="login-button">Login</a>
+                        <button type="button" class="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                        <button type="button" class="register-button" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
                     </li>
-                </ul>  
+                </ul>
             </div>
         </div>
-            <a href="{{ route('login') }}" class="login-button d-none d-lg-block">LOGIN</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="login-button d-none d-lg-block" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+            <button type="button" class="register-button d-none d-lg-block" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+        </div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>  
+            </button>
     </div>
 </nav>

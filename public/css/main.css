@@ -23,35 +23,38 @@ body {
     height: 80px;
     border-radius: 2px;
     padding: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-brand{
-    display: block; 
-    width: 170px; 
-    height: 70px; 
+    display: block;
+    width: 170px;
+    height: 70px;
     background-image: url('/images/IMPERIUM_LOGO.svg');
     background-size: contain;
     margin-left: 120px;
     background-position: center;
     background-repeat: no-repeat;
-    text-indent: -9999px; 
+    text-indent: -9999px;
 }
 
 
-.login-button {
+.login-button,
+.register-button {
     background-color: #47773f;
     color: #fff;
     font-size: 20px;
     font-weight: 500;
     padding: 4px 15px;
     border-radius: 10px;
+    border-color: #ffffff;
     text-decoration: none;
-    margin-right: 100px;
     width: 130px;
     transition: 0.3s background-color;
     text-align: center;
+    margin-right: 0;
 }
+
 
 .login-button:hover {
     background-color: #f8f8f8;
@@ -60,12 +63,25 @@ body {
     text-decoration: none;
 }
 
-.offcanvas .login-button {
+
+
+.register-button:hover {
+    background-color: #f8f8f8;
+    color: #47773f;
+    border: 3px solid #47773f;
+    text-decoration: none;
+}
+
+
+
+.offcanvas .login-button,
+.offcanvas .register-button {
     display: block;
     text-align: center;
     width: 100%;
     margin: 10px 0;
 }
+
 
 
 .navbar-toggler {
@@ -130,7 +146,7 @@ body {
         visibility: hidden;
         transition: 0.3s ease-in-out;
     }
-    
+
     .nav-link:hover::before, .nav-link.active::before {
         width: 100%;
         visibility: visible;
@@ -141,18 +157,18 @@ body {
 /* PREV & NEXT BUTTON */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: brightness(0); 
+    filter: brightness(0);
     left: -10px;
-} 
+}
 
 .carousel-indicators button {
     filter: brightness(0.3);
 }
 
 #carouselExampleIndicators img {
-    max-height: 850px; 
-    width: auto; 
-    object-fit: contain; 
+    max-height: 850px;
+    width: auto;
+    object-fit: contain;
 }
 
 #carouselExampleIndicators {

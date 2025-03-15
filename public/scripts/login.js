@@ -27,7 +27,7 @@ function validatePassword(input) {
   const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':",\\|,.<>\/?]/;
 
   if (password.length < 8 || !specialCharRegex.test(password)) {
-    errorSpan.textContent = "Password must be at least 8 characters long and contain at least one special character."; 
+    errorSpan.textContent = "Password must be at least 8 characters long and contain at least one special character.";
     errorSpan.style.display = 'block';
     input.classList.add('invalid');
     return false;
@@ -106,7 +106,7 @@ function validateSignupLastName(input) {
 
 document.getElementById('signupLastName').addEventListener('keypress', function(event) {
   const charCode = (event.which) ? event.which : event.keyCode;
-  
+
   if (charCode >= 48 && charCode <= 57) {
       event.preventDefault();
   }
@@ -143,14 +143,14 @@ function validateSignupContactNumber(input) {
   const errorSpan = document.getElementById('signupContactNumberError');
 
   const cleanedNumber = contactNumber.replace(/[^0-9]/g, '');
-  input.value = cleanedNumber; 
+  input.value = cleanedNumber;
 
   if (cleanedNumber === '') {
       errorSpan.textContent = "Contact number is required.";
       errorSpan.style.display = 'block';
       input.classList.add('invalid');
       return false;
-  } else if (cleanedNumber.length < 7) { 
+  } else if (cleanedNumber.length < 7) {
       errorSpan.textContent = "Contact number must be at least 7 digits.";
       errorSpan.style.display = 'block';
       input.classList.add('invalid');
@@ -170,7 +170,7 @@ function validateSignupPassword(input) {
   const specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':",\\|,.<>\/?]/;
 
   if (password.length < 8 || !specialCharRegex.test(password)) {
-    errorSpan.textContent = "Password must be at least 8 characters long and contain at least one special character."; 
+    errorSpan.textContent = "Password must be at least 8 characters long and contain at least one special character.";
     errorSpan.style.display = 'block';
     input.classList.add('invalid');
     return false;
@@ -184,7 +184,7 @@ function validateSignupPassword(input) {
 
 function validateSignupConfirmPassword(input) {
   const confirmPassword = input.value;
-  const password = document.getElementById('signupPassword').value; 
+  const password = document.getElementById('signupPassword').value;
   const errorSpan = document.getElementById('signupConfirmPasswordError');
 
   if (confirmPassword !== password) {
@@ -204,13 +204,13 @@ function validateSignupConfirmPassword(input) {
 // HIDE AND SHOW BUTTON ICON FOR LOG IN
 const passwordInput = document.getElementById('password');
   const togglePasswordButton = document.getElementById('togglePassword');
-  const toggleIcon = document.getElementById('toggleIcon'); 
+  const toggleIcon = document.getElementById('toggleIcon');
 
   togglePasswordButton.addEventListener('click', function() {
     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
     passwordInput.setAttribute('type', type);
 
-  
+
     if (type === 'password') {
       toggleIcon.classList.remove('fa-eye-slash');
       toggleIcon.classList.add('fa-eye');
@@ -259,7 +259,7 @@ const passwordInput = document.getElementById('password');
 
   function openModal() { document.getElementById('termsModal').style.display = 'block'; }
     function closeModal() { document.getElementById('termsModal').style.display = 'none'; }
-    
+
     function enableCheckbox() {
         var termsText = document.getElementById("termsText");
         var checkbox = document.getElementById("termsCheckbox");
@@ -269,15 +269,31 @@ const passwordInput = document.getElementById('password');
     }
 
 
-    fdocument.addEventListener("DOMContentLoaded", function() {
-      var registerBtn = document.getElementById("registerBtn");
-      registerBtn.disabled = true;
-  });
-  
+    document.addEventListener("DOMContentLoaded", function() {
+        var registerBtn = document.getElementById("registerBtn");
+        registerBtn.disabled = true;
+
+        document.querySelectorAll("[data-bs-toggle='modal']").forEach((trigger) => {
+            trigger.addEventListener("click", function () {
+                let targetModal = document.querySelector(this.getAttribute("data-bs-target"));
+                let currentModal = this.closest(".modal");
+
+                if (currentModal) {
+                    let modalInstance = bootstrap.Modal.getInstance(currentModal);
+                    modalInstance.hide();
+                    setTimeout(() => {
+                        let nextModal = new bootstrap.Modal(targetModal);
+                        nextModal.show();
+                    }, 300);
+                }
+            });
+        });
+    });
+
   function toggleRegisterButton() {
       var checkbox = document.getElementById("termsCheckbox");
       var registerBtn = document.getElementById("registerBtn");
-      
+
       if (checkbox.checked) {
           registerBtn.disabled = false;
           registerBtn.removeAttribute("title");
