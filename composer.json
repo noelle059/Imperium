@@ -11,12 +11,7 @@
     "require": {
         "php": "^8.2",
         "biscolab/laravel-recaptcha": "^6.1",
-<<<<<<< HEAD
-        "guzzlehttp/guzzle": "^7.9",
-        "kreait/firebase-php": "*",
-=======
         "kreait/firebase-php": "^7.18",
->>>>>>> 826341f27f48e87302eebd1573ef4dd88975afb3
         "kreait/laravel-firebase": "^6.0",
         "laravel/framework": "^11.31",
         "laravel/socialite": "^5.18",

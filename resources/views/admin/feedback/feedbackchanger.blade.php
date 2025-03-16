@@ -1,80 +1,62 @@
 <!--HEADER- SIDEBAR - NAVIGATION -->
-@include('admin.header') 
+@include('admin.header')
 
 <!-- DASHBOARD -->
 <div class="page-content">
-    <div class="page-header">
-        <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom">Manage Feedback</h2>
-        </div>
+    <div class="page-header text-white p-3"> 
+        <h2 class="h5 no-margin-bottom">Manage Feedback</h2>
     </div>
 
-   <!-- Add New Feedback -->
-<div class="container-fluid">
-<form action="{{ route('admin.feedback.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="mb-3">
-        <label for="name" class="form-label">Name of the Consultant</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px; color: #123524;">
+         <button class="btn gradient-button" style="display: flex; align-items: center;" type="button"
+             data-bs-toggle="modal" data-bs-target="#addFeedbackModal">
+             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Feedback
+         </button>
+     </div>
+    <!-- Include Feedback Modal -->
+    @include('admin.modal.feedbackaddModals')
+    @include('admin.modal.editFeedbackModal')
 
-    <div class="mb-3">
-        <label for="position" class="form-label">Position</label>
-        <input type="text" class="form-control" id="position" name="position" required>
-    </div>
-
-    <div class="mb-3">
-        <label for="message" class="form-label">Feedback</label>
-        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="interview_date" class="form-label">Date of Interview</label>
-        <input type="date" class="form-control" id="interview_date" name="interview_date">
-    </div>
-
-    <div class="mb-3">
-        <label for="client_info" class="form-label">Other Information of the Client</label>
-        <textarea class="form-control" id="client_info" name="client_info" rows="3"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="image" class="form-label">Upload Group Photo/Proof of Documentation</label>
-        <input type="file" class="form-control" id="image" name="image" accept="image/*">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Add Feedback</button>
-</form>
-
-</div>
 
     <!-- Current Feedback -->
-    <div class="container-fluid mt-5">
-        <h2>Existing Feedback</h2>
-        <div class="row">
-            @foreach($feedbacks as $feedback)
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ asset('uploads/' . $feedback->image) }}" class="card-img-top" alt="Profile Picture">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $feedback->name }}</h5>
-                            <p class="card-text"><strong>{{ $feedback->position }}</strong></p>
-                            <p class="card-text">"{{ $feedback->feedback }}"</p>
+    <div class="table-container">
+        <h2 class="h5" style="color: #123524;">Existing Feedback</h2>
+        <table id="uniqueTable" class="styled-table">
+            <thead class="bg-success text-white">
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Feedback</th>
+                    <th>Interview Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($feedbacks as $index => $feedback)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $feedback->name }}</td>
+                    <td>{{ $feedback->position }}</td>
+                    <td>{{ $feedback->message }}</td>
+                    <td>{{ $feedback->interview_date }}</td>
+                    <td>
 
-                            <form action="{{ route('admin.feedback.destroy', $feedback->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-
-                            <a href="{{ route('admin.feedback.edit', $feedback->id) }}" class="btn btn-warning mt-2">Edit</a>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+                    <button class="btn gradient-button"  type="button" data-bs-toggle="modal" data-bs-target="#editFeedbackModal{{ $feedback->id }}">
+    <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
+</button>
+                        <form action="{{ route('admin.feedback.destroy', $feedback->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn gradient-button">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+    @include('admin.footer')
+
 </div>
 
-<!-- FOOTER -->
-@include('admin.footer')
