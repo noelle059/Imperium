@@ -26,8 +26,9 @@ use App\Models\Room;
 use App\Models\User;
 
 Route::get('/', function () {
-    return view('homepage');
-});
+    return view('homepage',['alert' => session('alert')]);
+})->name('home');
+
 
 Route::get('/forgotpass', function () {
     return view('forgotpass');
