@@ -11,9 +11,9 @@ section {
     position: relative;
     min-height: 100vh;
     background-image: url("../../images/CLASSROOM_BACKGROUND.svg");
-    background-size: cover; 
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: center center; 
+    background-position: center center;
     background-color: #F6FCF5;
     display: flex;
     justify-content: center;
@@ -61,7 +61,7 @@ section .container .user .formBx {
     position: relative;
     width: 50%;
     height: 100%;
-    background-image: linear-gradient(to bottom, #a7d1ab, #c5ebac, #80a184 ); 
+    background-image: linear-gradient(to bottom, #a7d1ab, #c5ebac, #80a184 );
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,36 +83,36 @@ section .container .user .formBx form h2 {
 /* VALIDATION ITO */
 .form-group {
   margin-bottom: 15px;
-  position: relative; 
+  position: relative;
 }
 
 .error-message {
-  color: #d9534f; 
+  color: #d9534f;
   font-size: 12px;
   position: absolute;
-  top: calc(100% + 2px); 
+  top: calc(100% + 2px);
   left: 0;
   display: none;
-  z-index: 1; 
-  background-color: white; 
+  z-index: 1;
+  background-color: white;
   padding: 2px 5px;
   border-radius: 3px;
 }
 
 .invalid {
-  border-color: #d9534f; 
+  border-color: #d9534f;
 }
 
-.form-group .error-icon {  
+.form-group .error-icon {
   position: absolute;
   top: 50%;
-  right: 10px; 
+  right: 10px;
   transform: translateY(-50%);
   color: #d9534f;
-  display: none; 
+  display: none;
 }
 
-.invalid + .error-icon { 
+.invalid + .error-icon {
   display: block;
 }
 
@@ -120,8 +120,8 @@ section .container .user .formBx form h2 {
 .error-message::before {
   content: "";
   position: absolute;
-  top: -5px; 
-  left: 10px; 
+  top: -5px;
+  left: 10px;
   border-bottom: 5px solid #d9534f;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
@@ -149,22 +149,22 @@ section .container .user .formBx form input {
 }
 
 .form-group {
-  position: relative; 
+  position: relative;
   display: flex;
   align-items: center;
 }
 
-.form-group input[type="password"] { 
-  width: 100%; 
+.form-group input[type="password"] {
+  width: 100%;
   padding-right: 35px;
   box-sizing: border-box;
 }
 
 .form-group button {
-  position: absolute; 
-  top: 55%; 
-  right: 10px; 
-  transform: translateY(-50%); 
+  position: absolute;
+  top: 55%;
+  right: 10px;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 0;
@@ -179,7 +179,7 @@ section .container .user .formBx form input {
 
 .container .user .formBx form input[type='submit'] {
   display: inline-block;
-  width: 100%; 
+  width: 100%;
   background: #9ABA2F;
   text-align: center;
   color: #fff;
@@ -191,17 +191,17 @@ section .container .user .formBx form input {
   border-radius: 10px;
   border: none;
   padding: 10px 15px;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .container .user .formBx form input[type='submit']:hover {
-  background: #f5f5f5; 
+  background: #f5f5f5;
   color: #809927;
 }
 
 .google-btn {
   display: inline-block;
-  width: 100%; 
+  width: 100%;
   background: #9ABA2F;
   text-align: center;
   color: #fff;
@@ -213,7 +213,7 @@ section .container .user .formBx form input {
   border-radius: 15px;
   border: none;
   padding: 10px 15px;
-  text-decoration: none; 
+  text-decoration: none;
   margin-top: 10px;
 }
 
@@ -241,7 +241,7 @@ section .container .user .formBx form .signup a {
 
 section .container .user .formBx form .signup a:hover {
   color: #f5f5f5;
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
 
@@ -302,55 +302,55 @@ section .container.active .signinBx .imgBx {
 
 /* FORGOT PASSWORD BUTTON */
 .forgot-password {
-  text-align: center; 
-  margin-top: 5px; 
-  width: 100%; 
+  text-align: center;
+  margin-top: 5px;
+  width: 100%;
 }
 
 .forgot-password a {
   color: #555;
   text-decoration: none;
-  font-size: 15px; 
-  font-weight: 500; 
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .forgot-password a:hover {
-  text-decoration: underline; 
-  color: #f5f5f5; 
+  text-decoration: underline;
+  color: #f5f5f5;
 }
 
 .login-button i {
   font-size: 20px;
-  color: #809927; 
+  color: #809927;
   transition: color 0.3s ease-in-out;
 }
 
 .login-button:hover i {
-  color: #f5f5f5; 
+  color: #f5f5f5;
 }
 
 
  /* Modal Styles */
  .modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4); 
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
 /*sa modal */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; 
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; 
+  width: 80%;
 }
 
 .close {
@@ -408,3 +408,44 @@ section .container.active .signinBx .imgBx {
   text-decoration: underline;
 }
 
+.modal-dialog {
+    max-width: 500px;
+  }
+
+  .modal-content {
+    border-radius: 10px;
+  }
+
+  #registerModal .modal-dialog {
+    max-width: 600px;
+  }
+
+  /* Style for Terms modal - if needed */
+  #termsModal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  #termsModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+  }
+
+  .terms-text {
+    height: 300px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }

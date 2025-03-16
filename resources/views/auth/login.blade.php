@@ -42,17 +42,17 @@
                     <div class="form-group">
                         <input type="password" id="password" name="password" placeholder="Password" oninput="validatePassword(this)" required>
                         <span id="passwordError" class="error-message"></span>
-                        <span class="error-icon">&#9888;</span>  
+                        <span class="error-icon">&#9888;</span>
                         <button id="togglePassword" type="button">
                             <i class="fas fa-eye" id="toggleIcon"></i>
                         </button>
                     </div>
                     <input type="submit" id="loginBtn" value="Login" />
                     <div>
-                        <a href="{{ url('auth/google') }}" class="google-btn">Login using Google</a>        
+                        <a href="{{ url('auth/google') }}" class="google-btn">Login using Google</a>
                     </div>
                     <p class="signup">
-                        Don't have an account? 
+                        Don't have an account?
                         <a href="#" onclick="toggleForm();">Register Now.</a>
                     </p>
                     <div class="flex items-center justify-end mt-4">
@@ -260,7 +260,7 @@ you acknowledge that you have read and understood these terms and conditions and
 </div>
 
 
-                    
+
 <input type="submit" value="Register" class="btn" id="registerBtn" disabled title="You need to read the Terms and Conditions first." />
                     <p class="signup">
                             Already have an account ?

@@ -30,4 +30,9 @@ class Classroom extends Model
     {
         return $this->hasMany(Device::class, 'classroom_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'classroom_id');
+    }
 }

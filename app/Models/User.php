@@ -52,4 +52,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_activated' => 'boolean', // FOR RFID NI CJ
         ];
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'user_id');
+    }
 }
