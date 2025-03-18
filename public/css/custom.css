@@ -61,4 +61,71 @@
     /* padding: px; */
 }
 
-/*NOTIFICATION */
+/* ADD HOVER BUTTON */
+/* Tooltip container */
+.add:hover::after {
+    content: "Click to add";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* UPDATE HOVER BUTTON */
+/* Tooltip container */
+.update:hover::after {
+    content: "Click to update";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* ARCHIVE HOVER BUTTON */
+/* Tooltip container */
+.archive:hover::after {
+    content: "Click to archive";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}

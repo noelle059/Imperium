@@ -38,27 +38,6 @@
 
 
 
-
-<script>
-    window.notificationsUrl = "{{ route('notifications.index') }}";
-    window.markAllReadUrl = "{{ route('notifications.markAllRead') }}";
-    window.csrfToken = "{{ csrf_token() }}";
-</script>
-<script src="/scripts/admin_notifications.js"></script>
-
-
-{{-- SUCCESSFULL ALERTS --}}
-@if (session('success'))
-    <script>
-        // Ensure the SweetAlert script is loaded before calling Swal
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: '{{ session('success') }}', // Display the success message
-        });
-    </script>
-@endif
-
 {{-- WARNING ALERT --}}
 @if (session('warning'))
     <script>
@@ -66,6 +45,7 @@
             icon: 'warning',
             title: 'Warning!',
             text: '{{ session('warning') }}',
+            confirmButtonText: 'OK'
         });
     </script>
 @endif
@@ -77,11 +57,42 @@
             icon: 'error',
             title: 'Oops!',
             text: '{{ session('error') }}',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+{{-- SUCCESSFULL ALERT --}}
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'OK'
         });
     </script>
 @endif
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    window.notificationsUrl = "{{ route('notifications.index') }}";
+    window.markAllReadUrl = "{{ route('notifications.markAllRead') }}";
+    window.csrfToken = "{{ csrf_token() }}";
+</script>
+<script src="/scripts/admin_notifications.js"></script>
 
 
 

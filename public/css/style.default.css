@@ -9,7 +9,7 @@ Dark Admin Bootstrap Template by Bootstrapious.com
  */
 /*
 * ==========================================================
-*     GENERAL STYLING 
+*     GENERAL STYLING
 * ==========================================================
 */
 body {
@@ -1755,7 +1755,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 
 /*
 * ==========================================================
-*     FORMS 
+*     FORMS
 * ==========================================================
 */
 .form-control {
@@ -2169,8 +2169,8 @@ STYLE SWITCHER FOR DEMO
     z-index: 2000;
 }
 
-/* ========================================= 
-   THEMING OF BOOTSTRAP COMPONENTS           
+/* =========================================
+   THEMING OF BOOTSTRAP COMPONENTS
    ========================================= */
 /*
  * 1. NAVBAR
@@ -2973,7 +2973,7 @@ STYLE SWITCHER FOR DEMO
 }
 
 /*
- * 3. TYPE  
+ * 3. TYPE
  */
 body {
     font-family: "Muli", sans-serif;

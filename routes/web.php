@@ -203,7 +203,10 @@ Route::patch('admin/classroom/remove/{id}', [ClassroomController::class, 'remove
 
 // Route to show Schedules (with plural form)
 Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->name('show_schedule');
-
+// Route to handle schedule creation (add classroom)
+Route::post('/admin/add-schedule', [ScheduleController::class, 'addSchedule'])->name('add_schedule');
+// Update Schedule
+Route::put('admin/update-schedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('update_schedule');
 
 
 
@@ -283,6 +286,3 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/verify-phone/send-otp', [PhoneVerificationController::class, 'sendOtp'])->name('auth.verify-phone.sendOtp');
     Route::post('/auth/verify-phone', [PhoneVerificationController::class, 'verifyOtp'])->name('auth.verify-phone.verifyOtp');
 });
-
-
-
