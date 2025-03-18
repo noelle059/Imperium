@@ -1,7 +1,6 @@
-<x-floating-alert :message="session('alert')" />
 <!DOCTYPE html>
 <html lang="en">
-
+<x-floating-alert :message="session('alert')" />
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -304,6 +303,8 @@ you acknowledge that you have read and understood these terms and conditions and
         <button onclick="closeModal()">Close</button>
     </div>
     </div>
+
+    
 
     <script>
     @if ($errors->any())

@@ -138,7 +138,6 @@
             <button class="logout-btn" type="submit">Log Out</button>
         </form>
 
-        <a href="{{ route('auth.verify-phone.view') }}">Verify using Phone</a>
 
 
 

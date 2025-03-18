@@ -1,97 +1,45 @@
-@include('admin.header') 
+@include('admin.header')
 
-<div class="container mt-4" style="min-height: 100vh; padding-bottom: 100px;">
-    <h2>Edit About Us</h2>
-    <form action="{{ route('admin.about.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+<div class="page-content">
+    <div class="page-header text-white p-3">
+        <h2 class="h5 no-margin-bottom">Manage About Us</h2>
+    </div>
 
-        <div class="mb-3">
-            <label>Title</label>
-            <input type="text" name="title" class="form-control" value="{{ $aboutUs->title ?? '' }}">
-        </div>
+    <!-- About Us Table -->
+    <div class="table-container">
+        <h2 class="h5">Existing About Us</h2>
+        <table id="uniqueTable" class="styled-table">
+            <thead class="bg-success text-white">
+                <tr>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th>Abstract</th>
+                    <th>Article Link</th>
+                    <th>Background Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $aboutUs->title ?? '' }}</td>
+                    <td>{{ $aboutUs->subtitle ?? '' }}</td>
+                    <td>{{ $aboutUs->abstract ?? '' }}</td>
+                    <td><a href="{{ $aboutUs->article_link ?? '#' }}" target="_blank">View</a></td>
+                    <td>
+                        @if(isset($aboutUs) && $aboutUs->image)
+                            <img src="{{ asset('storage/' . $aboutUs->image) }}" width="100">
+                        @endif
+                    </td>
+                    <td>
+                        <button class="btn gradient-button" data-bs-toggle="modal" data-bs-target="#editAboutUsModal">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <div class="mb-3">
-            <label>Subtitle</label>
-            <input type="text" name="subtitle" class="form-control" value="{{ $aboutUs->subtitle ?? '' }}">
-        </div>
-
-        <div class="mb-3">
-            <label>Abstract</label>
-            <textarea name="abstract" class="form-control">{{ $aboutUs->abstract ?? '' }}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Article Link</label>
-            <input type="text" name="article_link" class="form-control" value="{{ $aboutUs->article_link ?? '' }}">
-        </div>
-
-        <div class="mb-3">
-    <label>Background Image</label>
-<input type="file" name="image" class="form-control" accept="image/*">
-    @if(isset($aboutUs) && $aboutUs->image)
-        <img src="{{ asset('storage/' . $aboutUs->image) }}" width="100">
-    @endif
+    <!-- Edit About Us Modal -->
+    @include('admin.modal.aboutusModals')
+    @include('admin.footer')
 </div>
 
-<div class="mb-3">
-    <label>Featured Image 1</label>
-    <input type="file" name="featured_1" class="form-control" accept="image/*">
-    @if(isset($aboutUs) && $aboutUs->featured_1)
-        <img src="{{ asset('storage/' . $aboutUs->featured_1) }}" width="100">
-    @endif
-</div>
-
-<div class="mb-3">
-    <label>Featured Image 2</label>
-    <input type="file" name="featured_2" class="form-control" accept="image/*">
-    @if(isset($aboutUs) && $aboutUs->featured_2)
-        <img src="{{ asset('storage/' . $aboutUs->featured_2) }}" width="100">
-    @endif
-</div>
-
-<div class="mb-3">
-    <label>Featured Image 3</label>
-    <input type="file" name="featured_3" class="form-control" accept="image/*">
-    @if(isset($aboutUs) && $aboutUs->featured_3)
-        <img src="{{ asset('storage/' . $aboutUs->featured_3) }}" width="100">
-    @endif
-</div>
-
-
-
-        <div class="mb-3">
-    <label>Modal Title</label>
-    <input type="text" name="modal_title" class="form-control" value="{{ $aboutUs->modal_title ?? '' }}">
-</div>
-
-<div class="mb-3">
-    <label>Modal Subtitle</label>
-    <input type="text" name="modal_subtitle" class="form-control" value="{{ $aboutUs->modal_subtitle ?? '' }}">
-</div>
-
-<div class="mb-3">
-    <label>Modal DOI</label>
-    <input type="text" name="modal_doi" class="form-control" value="{{ $aboutUs->modal_doi ?? '' }}">
-</div>
-
-<div class="mb-3">
-    <label>Modal Meta</label>
-    <input type="text" name="modal_meta" class="form-control" value="{{ $aboutUs->modal_meta ?? '' }}">
-</div>
-
-<div class="mb-3">
-    <label>Modal Abstract</label>
-    <textarea name="modal_abstract" class="form-control">{{ $aboutUs->modal_abstract ?? '' }}</textarea>
-</div>
-
-<div class="mb-3">
-    <label>Modal Article Link</label>
-    <input type="text" name="modal_article_link" class="form-control" value="{{ $aboutUs->modal_article_link ?? '' }}">
-</div>
-
-
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-</div>
-@include('admin.footer')

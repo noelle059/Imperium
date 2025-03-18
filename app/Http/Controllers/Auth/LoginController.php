@@ -43,10 +43,7 @@ class LoginController extends Controller
         }
 
         // If authentication fails, redirect back with an alert
-        return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.')->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-            'password' => 'The password is incorrect. Please try again.',
-        ]);
+        return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.');
     }
 
     private function is_archived($user)
