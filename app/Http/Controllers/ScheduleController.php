@@ -140,4 +140,22 @@ class ScheduleController extends Controller
         // Redirect back with a success message
         return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
     }
+
+
+
+
+
+
+    public function removeSchedule($id)
+    {
+        // Find the floor by id
+        $schedule = Schedule::find($id);
+
+        // Set the archive_status to 0
+        $schedule->archive_status = 0;
+        $schedule->save();
+
+        // Return a success response in JSON format
+        return response()->json(['success' => true, 'message' => 'Schedule Removed Successfully']);
+    }
 }

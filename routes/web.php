@@ -26,7 +26,7 @@ use App\Models\Room;
 use App\Models\User;
 
 Route::get('/', function () {
-    return view('homepage',['alert' => session('alert')]);
+    return view('homepage', ['alert' => session('alert')]);
 })->name('home');
 
 
@@ -208,6 +208,9 @@ Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->nam
 Route::post('/admin/add-schedule', [ScheduleController::class, 'addSchedule'])->name('add_schedule');
 // Update Schedule
 Route::put('admin/update-schedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('update_schedule');
+// Archive Schedule
+Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSchedule'])->name('remove_schedule');
+
 
 
 

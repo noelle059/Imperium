@@ -78,7 +78,7 @@
         </table>
 
         <!-- Pagination links -->
-        <div class="pagination">
+        <div class="pagination" style="margin-top: 20px">
             {{ $schedules->links() }}
         </div>
     </div>
