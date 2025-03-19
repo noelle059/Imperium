@@ -1,26 +1,20 @@
-<!-- Move modals to ensure they are inside the actual page -->
 @foreach ($feedbacks as $feedback)
-    <div class="modal fade" id="modal-{{ $feedback->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $feedback->id }}"
-        aria-hidden="true">
+    <div class="modal fade" id="modal-{{ $feedback->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $feedback->id }}" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+            <div class="feedback-modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel-{{ $feedback->id }}">{{ $feedback->name }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body text-center">
-                    <!-- Profile Image -->
                     <img src="{{ asset('uploads/' . $feedback->image) }}" class="img-fluid rounded w-50"
                         alt="Feedback Image">
 
-                    <!-- Position & Message -->
                     <p class="mt-3 fw-bold">{{ $feedback->position }}</p>
                     <p class="fst-italic">"{{ $feedback->message }}"</p>
 
-                    <!-- Interview Date & Client Info Section -->
                     <div class="text-center p-3 mt-4">
-                        <!-- DATE OF INTERVIEW -->
                         <div class="d-flex align-items-center justify-content-center">
                             <img src="{{ asset('images/CSD_ICON.svg') }}" alt="Icon" class="rounded-circle me-2"
                                 width="30">
@@ -32,7 +26,6 @@
                             </div>
                         </div>
 
-                        <!-- OTHER INFORMATION (Now Below Date of Interview) -->
                         <div class="d-flex align-items-center justify-content-center mt-3">
                             <img src="{{ asset('images/CSD_ICON.svg') }}" alt="Icon" class="rounded-circle me-2"
                                 width="30">

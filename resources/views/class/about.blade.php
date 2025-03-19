@@ -13,7 +13,7 @@
         <p class="lead">{{ $aboutUs->abstract ?? 'Empowering educators and institutions with an intelligent, energy-efficient system for seamless classroom management and security.' }}</p>
         <button class="read-more" data-bs-toggle="modal" data-bs-target="#insightsModal">READ MORE</button>
 
-        
+
         <!-- Featured In -->
         <div class="featured mt-4">
             <h4 class="fw-bold">FEATURED IN:</h4>
@@ -34,10 +34,10 @@
 
 
 <!-- Bootstrap Modal -->
-<div class="modal fade" id="insightsModal" tabindex="-1" aria-labelledby="insightsModalLabel" aria-hidden="true">
+<div class="modal fade about-modal" id="insightsModal" tabindex="-1" aria-labelledby="insightsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content custom-modal">
-        
+
             <div class="modal-header">
                 <img src="{{ asset('images/IMPERIUM_LOGO.svg') }}" alt="Imperium Logo" class="modal-logo">
                 <button type="button" class="btn-close custom-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -51,7 +51,7 @@
                     <p class="modal-meta"><strong>{{ $aboutUs->modal_meta ?? 'Article' }}</strong></p>
 
                     <p class="modal-abstract">
-                        <strong>Abstract:</strong> 
+                        <strong>Abstract:</strong>
                         <span id="abstract-short">
                             {{ $aboutUs->modal_abstract ?? 'Default abstract text...' }}
                         </span>
