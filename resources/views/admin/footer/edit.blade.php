@@ -15,7 +15,6 @@
 
     <!-- Current Footer Content -->
     <div class="container-fluid p-4">
-        <h2 h2 class="h5" style="color: #123524;">Current Footer Content</h2>
         <table id="uniqueTable" class="styled-table">
             <thead>
                 <tr>

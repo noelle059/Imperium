@@ -310,16 +310,22 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //classroom
-Route::get('/admin/reports/classrooms', function () {
-    return view('admin.classroom_report');
-})->name('report.classroom');
+Route::get('/admin/reports/schedule', function () {
+    return view('admin.schedule_report');
+})->name('report.schedule');
 
-Route::get('/admin/reports/classrooms', [ClassroomController::class, 'classroomReport'])->name('report.classroom');
-Route::get('/admin/classrooms/print/{id}', [ClassroomController::class, 'printPdf'])->name('classrooms.print');
+Route::get('/admin/reports/schedule', [ScheduleController::class, 'scheduleReport'])->name('report.schedule');
+Route::get('/admin/schedule/print/{id}', [ScheduleController::class, 'printPdf'])->name('schedule.print');
 
-Route::get('/admin/classrooms/print-all', [ClassroomController::class, 'printAll'])->name('classrooms.printAll');
+Route::get('/admin/schedule/print-all', [ScheduleController::class, 'printAll'])->name('schedule.printAll');
 
 
 
-//davac 
+//add admin
+Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+Route::put('/admin/update', [AdminController::class, 'admin_update'])->name('admin.update');
+Route::post('/admin/remove/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+
+
+
 

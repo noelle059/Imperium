@@ -180,4 +180,7 @@ class DeviceController extends Controller
         // Redirect with a success message
         return redirect('/admin/show-devices')->with('success', 'Device updated successfully in classroom: ' . $classroom->classroom_name);
     }
+
+
+    
 }

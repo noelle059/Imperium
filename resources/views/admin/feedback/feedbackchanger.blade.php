@@ -20,7 +20,6 @@
 
     <!-- Current Feedback -->
     <div class="table-container">
-        <h2 class="h5" style="color: #123524;">Existing Feedback</h2>
         <table id="uniqueTable" class="styled-table">
             <thead class="bg-success text-white">
                 <tr>
@@ -39,7 +38,7 @@
                     <td>{{ $feedback->name }}</td>
                     <td>{{ $feedback->position }}</td>
                     <td>{{ $feedback->message }}</td>
-                    <td>{{ $feedback->interview_date }}</td>
+                    <td>{{ \Carbon\Carbon::parse($feedback->interview_date)->translatedFormat('F j, Y (l) g:i A') }}</td>
                     <td>
 
                     <button class="btn gradient-button"  type="button" data-bs-toggle="modal" data-bs-target="#editFeedbackModal{{ $feedback->id }}">

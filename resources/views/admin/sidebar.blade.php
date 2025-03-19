@@ -89,7 +89,7 @@
                 </a>
                 
                 <ul id="Report" class="collapse list-unstyled">
-                    <li> <a href="{{ route('report.classroom') }}">
+                    <li> <a href="{{ route('report.schedule') }}">
                                  <i class="fa fa-building" style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
                     </li>
 

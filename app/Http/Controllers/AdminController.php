@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Room;
 use App\Services\FirebaseService;
+use Illuminate\Support\Facades\Hash;
+
 
 class AdminController extends Controller
 {
@@ -134,5 +136,67 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'error' => $e->getMessage()]);
         }
     }
+
+
+
+    public function store(Request $request)
+    {
+        // Validate inputs
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'contact_number' => 'required|string|max:20',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        // Create new admin user
+        User::create([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+            'password' => Hash::make($request->password),
+            'is_admin' => 1, 
+        ]);
+
+        return redirect()->back()->with('success', 'Admin account created successfully!');
+    }
+
+
+    public function admin_update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $request->id,
+            'contact_number' => 'required|string|max:20',
+        ]);
+    
+        $admin = User::findOrFail($request->id);
+        $admin->update([
+            'name' => $request->name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+        ]);
+    
+        return redirect()->back()->with('success', 'Admin updated successfully!');
+    }
+    
+
+
+    public function destroy(Request $request)
+    {
+        $admin = User::findOrFail($request->id);
+        
+        // Update archive_status to 0 instead of deleting
+        $admin->update(['archive_status' => 0]);
+    
+        return response()->json(['success' => true, 'message' => 'Admin archived successfully!']);
+    }
+    
+    
 
 }

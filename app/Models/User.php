@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_activated', // FOR RFID NI CJ
         'contact_number', // Add this line
         'id_picture',
+        'is_admin',
 
     ];
 
