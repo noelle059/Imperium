@@ -225,6 +225,23 @@ Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSc
 
 // Route to show Archive (with plural form)
 Route::get('/admin/archive/accounts', [ArchiveController::class, 'showArchiveAccount'])->name('show_archive_account');
+// Retrieve Account
+Route::patch('admin/accounts/retrieve/{id}', [ArchiveController::class, 'retrieveAccount'])->name('retrieve_account');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/floors', [ArchiveController::class, 'showArchiveFloor'])->name('show_archive_floor');
+// Retrieve Floor
+Route::patch('admin/floor/retrieve/{id}', [ArchiveController::class, 'retrieveFloor'])->name('retrieve_floor');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/classrooms', [ArchiveController::class, 'showArchiveClassroom'])->name('show_archive_classroom');
+// Retrieve Classroom
+Route::patch('admin/classroom/retrieve/{id}', [ArchiveController::class, 'retrieveClassroom'])->name('retrieve_classroom');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/devices', [ArchiveController::class, 'showArchiveDevice'])->name('show_archive_device');
+// Retrieve Classroom
+Route::patch('admin/device/retrieve/{id}', [ArchiveController::class, 'retrieveDevice'])->name('retrieve_device');
+
+
+
 
 
 

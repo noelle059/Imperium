@@ -1,68 +1,64 @@
+<!-- Header-->
 @include('admin.header')
 
-<!-- Account-->
+
 <div class="page-content">
 
+    {{-- CLASSROOM --}}
     <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="h5 no-margin-bottom">Archive Accounts</h2>
+            <h2 class="h5 no-margin-bottom">Archived Classroom </h2>
 
             <div style="display: flex; align-items: center;">
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
-                <input type="text" id="searchInput" placeholder="Search..."
+                <input type="text" id="searchInput" placeholder=" Search..."
                     style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
             </div>
         </div>
     </div>
 
-
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>Room No.</th>
+                    <th>Clssroom Name</th>
+                    <th>Device Count</th>
+                    <th>Floor Level</th>
                     <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($archiveUsers as $index => $archive)
+                @foreach ($archiveClassrooms as $index => $classroom)
                     <tr class="table-row">
-                        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-                        <td>
-                            @if (filter_var($archive->id_picture, FILTER_VALIDATE_URL))
-                                <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $archive->id_picture }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
-                            @else
-                                <!-- If the id_picture is a local file, use asset() to reference it -->
-                                <img src="{{ asset('uploads/id_pictures/' . $archive->id_picture) }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
-                            @endif
-                        </td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $classroom->classroom_name }}</td>
 
-                        <td>{{ $archive->name }}</td>
-                        <td>{{ $archive->email }}</td>
-                        <td>{{ \Carbon\Carbon::parse($archive->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        <td>{{ $classroom->devices_count }}</td> <!-- This will display the device count -->
+
+                        <td>{{ $classroom->floor ? $classroom->floor->floor_name : 'N/A' }}</td>
+                        <!-- Display floor_name -->
+
+
+                        <td>{{ \Carbon\Carbon::parse($classroom->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
                         </td>
 
                         <td class="action-cell">
 
-
-
-
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button retrieve" type="button" data-id="{{ $archive->id }}"
-                                id="RetrieveAccountButton">
+                            <button class="btn gradient-button retrieve" type="button" data-id="{{ $classroom->id }}"
+                                id="RetrieveClassroomtButton">
                                 <i class="fa-solid fa-trash-can-arrow-up"></i>
+
                             </button>
                         </td>
+
                     </tr>
                 @endforeach
+
             </tbody>
+
         </table>
 
 
@@ -71,15 +67,10 @@
 
 
 
-
-
     {{-- INCLUDE ADMIN MODAL AND ALERT --}}
     @include('admin.sweetAlerts.archiveAlert')
 
-
-
-
-    {{-- INCLUDE FOOTER --}}
+    <!-- Footer-->
     @include('admin.footer')
 
 
