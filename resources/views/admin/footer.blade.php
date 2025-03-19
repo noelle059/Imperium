@@ -23,6 +23,7 @@
 <!-- Include Bootstrap JS (with Popper.js included in the bundle) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+
 <!-- Include other vendor and custom scripts -->
 <script src="/vendor/popper.js/umd/popper.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -33,8 +34,6 @@
 <!-- Custom JS files -->
 {{-- <script src="/js/charts-home.js"></script> --}}
 <script src="/js/front.js"></script>
-
-
 
 
 

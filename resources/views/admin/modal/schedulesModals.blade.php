@@ -34,15 +34,15 @@
                        </div>
 
                        <!-- Subject Name -->
-                       <div class="mb-3">
-                           <label for="SubjectName" class="form-label">Subject Name</label>
-                           <select name="subject_id" class="form-control" required>
-                               <option value="" disabled selected>Select Subject</option>
-                               @foreach ($subjects as $subject)
-                                   <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
-                               @endforeach
-                           </select>
-                       </div>
+                       <div class="mb-3 position-relative">
+                            <label for="SubjectName" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control subject_search" placeholder="Search subject..." autocomplete="off">
+                            <select name="subject_id" class="form-control mt-2 subject_id" size="5" style="display: none;">
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                        <!-- Date -->
                        <div class="mb-3">
@@ -74,12 +74,6 @@
            </div>
        </div>
    </div>
-
-
-
-
-
-
 
    <!-- Update Schedule Modal -->
    <div class="modal fade" id="update_schedule_modal" tabindex="-1" aria-labelledby="update_schedule_modal">
@@ -119,15 +113,15 @@
                        </div>
 
                        <!-- Subject Name -->
-                       <div class="mb-3">
-                           <label for="SubjectName" class="form-label">Subject Name</label>
-                           <select name="subject_id" id="subject_id" class="form-control">
-                               <option value="" disabled selected>Select Subject</option>
-                               @foreach ($subjects as $subject)
-                                   <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
-                               @endforeach
-                           </select>
-                       </div>
+                       <div class="mb-3 position-relative">
+                            <label for="SubjectName" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control subject_search" placeholder="Search subject..." autocomplete="off">
+                            <select name="subject_id" class="form-control mt-2 subject_id" size="5" style="display: none;">
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                        <!-- Date -->
                        <div class="mb-3">
@@ -227,3 +221,54 @@
            });
        });
    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".modal").forEach((modal) => {
+        const searchInput = modal.querySelector(".subject_search");
+        const selectDropdown = modal.querySelector(".subject_id");
+
+        if (!searchInput || !selectDropdown) return;
+
+        searchInput.addEventListener("focus", function () {
+            selectDropdown.style.display = "block";
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!searchInput.contains(event.target) && !selectDropdown.contains(event.target)) {
+                selectDropdown.style.display = "none";
+            }
+        });
+
+        searchInput.addEventListener("input", function () {
+            const filter = searchInput.value.toLowerCase();
+            const options = selectDropdown.getElementsByTagName("option");
+
+            let hasResults = false;
+            for (let option of options) {
+                let text = option.textContent.toLowerCase();
+                if (text.includes(filter) || option.value === "") {
+                    option.style.display = "block"; // kung ano lang nag match na text sa option, yun lang lalabas
+                    hasResults = true;
+                } else {
+                    option.style.display = "none"; // kung walang match na text sa option, walang lalabas na option
+                }
+            }
+
+            selectDropdown.style.display = hasResults ? "block" : "none"; // matik pag walang match na text sa option, matatanggal dapat yung dropdown
+        });
+
+        selectDropdown.addEventListener("change", function () {
+            searchInput.value = selectDropdown.options[selectDropdown.selectedIndex].text;
+            selectDropdown.style.display = "none";
+        });
+
+        searchInput.addEventListener("click", function () {
+            for (let option of selectDropdown.options) {
+                option.style.display = "block";
+            }
+            selectDropdown.style.display = "block";
+        });
+    });
+});
+</script>

@@ -20,9 +20,16 @@
 
 
     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
-        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_schedule_modal"><i class="fa fa-plus"
-                style="margin-right: 5px;"></i></button>
+        <button class="btn gradient-button calendar" style="display: flex; align-items: center;" type="button"
+                data-bs-toggle="modal" data-bs-target="#view_calendar_modal">
+            <i class="fa fa-calendar" style="margin-right: 5px;"></i>
+        </button>
+
+
+        <button class="btn gradient-button add" style="display: flex; align-items: center;" type="button"
+                data-bs-toggle="modal" data-bs-target="#add_schedule_modal">
+            <i class="fa fa-plus" style="margin-right: 5px;"></i>
+        </button>
     </div>
 
 
@@ -83,11 +90,9 @@
         </div>
     </div>
 
-
-
-
     {{-- INCLUDE ADMIN MODAL AND ALERT --}}
     @include('admin.modal.schedulesModals')
+    @include('admin.modal.calendarModal')
     @include('admin.sweetAlerts.scheduleAlert')
 
 
@@ -196,6 +201,47 @@
             font-size: 12px;
             white-space: nowrap;
         }
+
+        .calendar:hover::after { /* For calendar to nakilagay lang */
+            content: "Click to view calendar";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333333;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        #calendar {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            min-height: 450px;
+            margin: 0 auto;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .modal-dialog {
+            max-width: 90%;
+            width: auto !important;
+        }
+
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+        }
+
+
+        #fc-dom-1{
+            color: white;
+        }
+
 
         /* Ensure the button is positioned correctly */
         .btn {

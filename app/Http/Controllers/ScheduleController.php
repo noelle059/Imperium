@@ -7,8 +7,7 @@ use App\Models\Classroom;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Schedule;
-
-
+use Carbon\Carbon;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
@@ -39,6 +38,36 @@ class ScheduleController extends Controller
         // Pass classrooms and floors to the view
         return view('admin.schedules', compact('classrooms', 'users', 'subjects', 'schedules'));
     }
+
+    public function getSchedules()
+    {
+        $schedules = Schedule::with(['classroom.floor', 'user', 'subject'])
+            ->where('archive_status', 1)
+            ->get();
+
+        $formattedSchedules = $schedules->map(function ($schedule) {
+            return [
+                'id' => $schedule->id,
+                'title' => "Room: " . $schedule->classroom->classroom_name,
+                'start' => date('Y-m-d', strtotime($schedule->schedule_day)) . 'T' . $schedule->start_time,
+                'end' => date('Y-m-d', strtotime($schedule->schedule_day)) . 'T' . $schedule->end_time,
+                'allDay' => false,
+                'extendedProps' => [
+                    'classroom_id' => $schedule->classroom->id,
+                    'classroom_name' => $schedule->classroom->classroom_name,
+                    'floor' => $schedule->classroom->floor->floor_name ?? 'Unknown Floor',
+                    'subject' => $schedule->subject->subject_name ?? 'No Subject',
+                    'professor' => $schedule->user->name ?? 'Unknown Professor',
+                    'registered_time' => Carbon::parse($schedule->start_time)->format('g:i A') . ' to ' . Carbon::parse($schedule->end_time)->format('g:i A'),
+                ]
+            ];
+        });
+
+        return response()->json($formattedSchedules);
+    }
+
+
+
 
 
     public function addSchedule(Request $request)

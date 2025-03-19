@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 //notification
@@ -26,6 +27,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ScheduleController;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Schedule;
 
 Route::get('/', function () {
     return view('homepage', ['alert' => session('alert')]);
@@ -221,6 +223,8 @@ Route::put('admin/update-schedule/{id}', [ScheduleController::class, 'updateSche
 // Archive Schedule
 Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSchedule'])->name('remove_schedule');
 
+// Route to get all schedules (calendar)
+Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
 
 
 // Route to show Archive (with plural form)
@@ -321,5 +325,5 @@ Route::get('/admin/classrooms/print-all', [ClassroomController::class, 'printAll
 
 
 
-//davac 
+//davac
 
