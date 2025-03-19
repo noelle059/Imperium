@@ -35,4 +35,10 @@ class Classroom extends Model
     {
         return $this->hasMany(Schedule::class, 'classroom_id');
     }
+
+    // In the Classroom model
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
 }

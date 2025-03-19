@@ -1,4 +1,7 @@
 @include('admin.header')
+{{-- CSS ADD --}}
+
+
 
 <!-- Account-->
 <div class="page-content">
@@ -17,10 +20,9 @@
 
 
     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
-        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_device_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Device
-        </button>
+        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
+            data-bs-toggle="modal" data-bs-target="#add_schedule_modal"><i class="fa fa-plus"
+                style="margin-right: 5px;"></i></button>
     </div>
 
 
@@ -32,67 +34,61 @@
                     <th>Classroom</th>
                     <th>Professor</th>
                     <th>Subject</th>
+                    <th>Day</th>
                     <th>Start-Time</th>
                     <th>End-Time</th>
                     <th>Entry Date</th>
                     <th>Action</th>
-
                 </tr>
             </thead>
             <tbody>
+                @foreach ($schedules as $index => $schedule)
+                    <tr class="table-row">
+                        <td>{{ $index + 1 }}</td> <!-- Auto-increment number -->
+                        <td>{{ $schedule->classroom->classroom_name ?? 'N/A' }}</td> <!-- Classroom name -->
+                        <td>{{ $schedule->user->name ?? 'N/A' }}</td> <!-- Professor (User) name -->
+                        <td>{{ $schedule->subject->subject_name ?? 'N/A' }}</td> <!-- Subject name -->
+                        <td>{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('l') }}</td>
+                        <!-- Day of the week -->
+                        <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }}</td> <!-- Start time -->
+                        <td>{{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }}</td> <!-- End time -->
+                        <td>{{ \Carbon\Carbon::parse($schedule->created_at)->format('M d, Y') }}</td>
+                        <!-- Entry Date -->
+                        <td class="action-cell">
+                            <!-- Updating Schedule -->
+                            <button class="btn gradient-button update" type="button" data-id="{{ $schedule->id }}"
+                                data-classroom_id="{{ $schedule->classroom_id }}"
+                                data-user_id="{{ $schedule->user_id }}" data-subject_id="{{ $schedule->subject_id }}"
+                                data-schedule_day="{{ $schedule->schedule_day }}"
+                                data-start_time="{{ $schedule->start_time }}"
+                                data-end_time="{{ $schedule->end_time }}" data-bs-toggle="modal"
+                                data-bs-target="#update_schedule_modal">
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                            </button>
 
-                <tr class="table-row">
-                    <td>1</td> <!-- Auto-increment number -->
-                    <td>CL1</td>
-
-                    <td>
-                        Mr Siwa
-                    </td>
-
-
-                    <td>
-                        Computer Programming
-                    </td>
-
-                    <td>
-                        7:00 AM
-                    </td>
-
-                    <td>
-                        10:00AM
-                    </td>
-
-                    <td>
-                        March 15,2025
-                    </td>
-
-
-                    <td class="action-cell">
-
-
-                        <!-- Updating Device from ID -->
-                        <button class="btn gradient-button" type="button" data-id="" data-device_name=""
-                            data-classroom_id="" data-state="" data-bs-toggle="modal"
-                            data-bs-target="#update_schedule__modal">
-                            UPDATE
-                        </button>
-
-                        <!-- Removing the subject from the list -->
-                        <button class="btn gradient-button" type="button" data-id="" id="RemoveScheduleButton">
-                            REMOVE
-                        </button>
-                    </td>
-                </tr>
-
+                            <!-- Removing Schedule -->
+                            <button class="btn gradient-button archive" type="button" data-id="{{ $schedule->id }}"
+                                id="RemoveScheduleButton">
+                                <i class="fa-solid fa-box-archive"></i>
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
+
+        <!-- Pagination links -->
+        <div class="pagination" style="margin-top: 20px">
+            {{ $schedules->links() }}
+        </div>
     </div>
 
 
 
 
-
     {{-- INCLUDE ADMIN MODAL AND ALERT --}}
+    @include('admin.modal.schedulesModals')
+    @include('admin.sweetAlerts.scheduleAlert')
 
 
     {{-- INCLUDE FOOTER --}}
@@ -101,7 +97,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');
@@ -127,3 +123,82 @@
             }
         });
     </script>
+
+
+
+    {{-- //BUTTON HOVER UPDATE --}}
+    <style>
+        /* Tooltip container */
+        .update:hover::after {
+            content: "Click to update";
+            /* Tooltip text */
+            position: absolute;
+            top: -30px;
+            /* Position above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333333;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Ensure the button is positioned correctly */
+        .btn {
+            position: relative;
+        }
+    </style>
+
+
+    {{-- BUTTON HOVER ARCHIVE --}}
+    <style>
+        /* Tooltip container */
+        .archive:hover::after {
+            content: "Click to archive";
+            /* Tooltip text */
+            position: absolute;
+            top: -30px;
+            /* Position above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333333;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Ensure the button is positioned correctly */
+        .btn {
+            position: relative;
+        }
+    </style>
+
+
+    {{-- // BUTTON HOVER ADD --}}
+    <style>
+        /* Tooltip container */
+        .add:hover::after {
+            content: "Click to add";
+            /* Tooltip text */
+            position: absolute;
+            top: -30px;
+            /* Position above the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333333;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Ensure the button is positioned correctly */
+        .btn {
+            position: relative;
+        }
+    </style>

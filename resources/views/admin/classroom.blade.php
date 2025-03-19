@@ -18,9 +18,9 @@
     </div>
 
     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
-        <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
             data-bs-toggle="modal" data-bs-target="#add_classroom_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Classroom
+            <i class="fa fa-plus" style="margin-right: 5px;"></i>
         </button>
     </div>
 
@@ -53,17 +53,19 @@
 
                         <td class="action-cell">
                             <!-- Updating Device from ID -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $classroom->id }}"
+                            <button class="btn gradient-button update" type="button" data-id="{{ $classroom->id }}"
                                 data-classroom_name="{{ $classroom->classroom_name }}"
                                 data-floor_id="{{ $classroom->floor_id }}" data-bs-toggle="modal"
                                 data-bs-target="#update_classroom_modal">
-                                UPDATE
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+
                             </button>
 
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $classroom->id }}"
+                            <button class="btn gradient-button archive" type="button" data-id="{{ $classroom->id }}"
                                 id="RemoveClassroomtButton">
-                                REMOVE
+                                <i class="fa-solid fa-box-archive"></i>
+
                             </button>
                         </td>
 
@@ -94,7 +96,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');

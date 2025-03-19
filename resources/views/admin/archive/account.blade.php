@@ -5,7 +5,7 @@
 
     <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="h5 no-margin-bottom">Subject Registration</h2>
+            <h2 class="h5 no-margin-bottom">Archive Accounts</h2>
 
             <div style="display: flex; align-items: center;">
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
@@ -15,51 +15,49 @@
         </div>
     </div>
 
-    <div style="display: flex; justify-content: flex-end; margin-botton: 0px; padding-right: 20px;">
-        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_subject_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i>
-        </button>
-    </div>
-
-
 
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Code</th>
+                    <th>Picture</th>
                     <th>Name</th>
-                    <th>Units</th>
+                    <th>Email</th>
                     <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($subjects as $subject)
+                @foreach ($archiveUsers as $index => $archive)
                     <tr class="table-row">
-                        <td> {{ $loop->iteration }}</td>
-                        <td>{{ $subject->subject_code }}</td>
-                        <td>{{ $subject->subject_name }}</td>
-                        <td>{{ $subject->units }}</td>
-                        <td>{{ \Carbon\Carbon::parse($subject->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                        <td>
+                            @if (filter_var($archive->id_picture, FILTER_VALIDATE_URL))
+                                <!-- If the id_picture is a URL, just output the URL -->
+                                <img src="{{ $archive->id_picture }}" alt="ID Picture"
+                                    style="width: 50px; height: auto;">
+                            @else
+                                <!-- If the id_picture is a local file, use asset() to reference it -->
+                                <img src="{{ asset('uploads/id_pictures/' . $archive->id_picture) }}" alt="ID Picture"
+                                    style="width: 50px; height: auto;">
+                            @endif
                         </td>
+
+                        <td>{{ $archive->name }}</td>
+                        <td>{{ $archive->email }}</td>
+                        <td>{{ \Carbon\Carbon::parse($archive->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        </td>
+
                         <td class="action-cell">
-                            <!-- Pass subject data via data- attributes -->
-                            <button class="btn gradient-button update" data-bs-toggle="modal"
-                                data-bs-target="#update_subject_modal" data-id="{{ $subject->id }}"
-                                data-subject_code="{{ $subject->subject_code }}"
-                                data-subject_name="{{ $subject->subject_name }}"
-                                data-subject_units="{{ $subject->units }}">
-                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                            </button>
+
+
+
 
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button archive" type="button" data-id="{{ $subject->id }}"
-                                id="RemoveSubjectButton">
-                                <i class="fa-solid fa-box-archive"></i>
-
+                            <button class="btn gradient-button retrieve" type="button" data-id="{{ $archive->id }}"
+                                id="RemoveAccountButton">
+                                <i class="fa-solid fa-trash-can-arrow-up"></i>
                             </button>
                         </td>
                     </tr>
@@ -68,24 +66,12 @@
         </table>
 
 
-        <!-- Pagination controls -->
-        <div class="pagination-container" style="margin-top: 10px;">
-            {{ $subjects->links() }}
-        </div>
 
     </div>
 
 
-
-
-
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
-
-
-    {{-- INCLUDE SUBJECT MODAL AND SUBJECT ALERT --}}
-    @include('admin.modal.subjectModals')
-    @include('admin.sweetAlerts.subjectAlert')
 
 
 

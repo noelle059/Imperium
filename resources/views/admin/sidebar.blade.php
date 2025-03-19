@@ -11,9 +11,9 @@
                         <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
                     @else
                         <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
-                        <img src="{{ asset(Auth::user()->id_picture) }}" alt="Profile Picture" class="img-fluid rounded-circle">
+                        <img src="{{ asset(Auth::user()->id_picture) }}" alt="Profile Picture"
+                            class="img-fluid rounded-circle">
                     @endif
-
                 @else
                     <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
                         class="img-fluid rounded-circle">
@@ -106,6 +106,9 @@
                     <i class="fa fa-archive" style="font-size: 25px;"></i>Archive
                 </a>
                 <ul id="Archive" class="collapse list-unstyled">
+                    <li><a href="{{ route('show_archive_account') }}"><i class="material-icons"
+                                style="font-size: 25px;">account_box</i></i>Account</a></li>
+
                     <li><a href="#"><i class="fa-solid fa-stairs" style="font-size: 25px;"></i>Floor</a></li>
                     <li><a href="#"><i class="fa-solid fa-building"
                                 style="font-size: 25px; padding-left: 8px;"></i>Classroom</a></li>

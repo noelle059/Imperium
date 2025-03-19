@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 
@@ -26,7 +28,7 @@ use App\Models\Room;
 use App\Models\User;
 
 Route::get('/', function () {
-    return view('homepage',['alert' => session('alert')]);
+    return view('homepage', ['alert' => session('alert')]);
 })->name('home');
 
 
@@ -144,7 +146,18 @@ Route::get('/get-devices/{classroomId}', [DeviceController::class, 'getDevices']
 
 
 
+
+
+
 // ADMIN SIDE
+
+
+// Dashboard Controller
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+
+
+
+
 
 // Round in the Professor Account
 Route::get('/admin/professor-accounts', [AdminController::class, 'showProfessors'])->name('accounts');
@@ -161,14 +174,12 @@ Route::put('admin/accounts/{id}', [AdminController::class, 'update'])->name('acc
 Route::patch('admin/accounts/remove/{id}', [AdminController::class, 'remove'])->name('accounts.remove');
 
 
-
 // Admin dashboard Subject Route
 Route::resource('/admin/subjects', SubjectController::class);
 // Update a subject
 Route::put('admin/subjects/{id}', [SubjectController::class, 'update'])->name('subjects.update');
 // Archive a subject
 Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])->name('subjects.remove');
-
 
 
 // Show Devices
@@ -179,7 +190,6 @@ Route::post('/admin/add-devices', [DeviceController::class, 'addDevice'])->name(
 Route::put('admin/update-device/{id}', [DeviceController::class, 'update'])->name('devices.update');
 // Archive device
 Route::patch('admin/device/remove/{id}', [DeviceController::class, 'remove'])->name('device.remove');
-
 
 
 // Show Floor
@@ -204,6 +214,20 @@ Route::patch('admin/classroom/remove/{id}', [ClassroomController::class, 'remove
 
 // Route to show Schedules (with plural form)
 Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->name('show_schedule');
+// Route to handle schedule creation (add classroom)
+Route::post('/admin/add-schedule', [ScheduleController::class, 'addSchedule'])->name('add_schedule');
+// Update Schedule
+Route::put('admin/update-schedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('update_schedule');
+// Archive Schedule
+Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSchedule'])->name('remove_schedule');
+
+
+
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/accounts', [ArchiveController::class, 'showArchiveAccount'])->name('show_archive_account');
+
+
+
 
 
 
@@ -285,13 +309,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/verify-phone', [PhoneVerificationController::class, 'verifyOtp'])->name('auth.verify-phone.verifyOtp');
 });
 
-//classroom
-Route::get('/admin/reports/classrooms', function () {
-    return view('admin.classroom_report');
-})->name('report.classroom');
 
-Route::get('/admin/reports/classrooms', [ClassroomController::class, 'classroomReport'])->name('report.classroom');
-Route::get('/admin/classrooms/print/{id}', [ClassroomController::class, 'printPdf'])->name('classrooms.print');
-
-Route::get('/admin/classrooms/print-all', [ClassroomController::class, 'printAll'])->name('classrooms.printAll');
 
