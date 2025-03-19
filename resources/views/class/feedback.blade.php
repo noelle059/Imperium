@@ -7,7 +7,6 @@
             <div class="testimonial-track">
                 @foreach ($feedbacks as $feedback)
                     <div class="testimonial-card">
-                        <div class="quote-icon">&#8220;</div>
                         <p class="testimonial-text">{{ $feedback->message }}</p>
                         <div class="testimonial-profile">
                             <img src="{{ asset('uploads/' . $feedback->image) }}" alt="Profile">

@@ -1,4 +1,4 @@
-.img-fluid { 
+.img-fluid {
     width: 100%;
     height: auto;
 }
@@ -259,7 +259,7 @@
 }
 
 /* Modal Custom Styling */
-.modal-content {
+.insights-modal-content {
     position: relative;
     display: -ms-flexbox;
     display: flex;
@@ -338,6 +338,7 @@
 .modal-title {
     font-size: 22px;
     font-weight: bold;
+    text-align: center;
 }
 
 /* Subtitle */
@@ -345,6 +346,7 @@
     font-style: italic;
     font-size: 14px;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 /* Meta Information */
@@ -352,6 +354,7 @@
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 /* Abstract */
