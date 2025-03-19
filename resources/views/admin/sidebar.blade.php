@@ -87,13 +87,13 @@
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
                     <i class="material-icons" style="font-size: 25px;">folder</i>Report
                 </a>
+                
                 <ul id="Report" class="collapse list-unstyled">
-                    <li><a href="#"><i class="fa-solid fa-file-pdf"
-                                style="font-size: 25px; padding-left: 8px;"></i>Classroom</a>
+                    <li> <a href="{{ route('report.classroom') }}">
+                                 <i class="fa fa-building" style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
                     </li>
-                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li>
-                    {{-- <li><a href="#"><i class="fa fa-archive"></i>Archive</a></li> --}}
 
+                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li>
                 </ul>
             </li>
 
