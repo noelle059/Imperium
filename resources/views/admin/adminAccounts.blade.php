@@ -16,6 +16,14 @@
     </div>
 
 
+    <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
+        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
+            data-bs-toggle="modal" data-bs-target="#add_admin_modal">
+            <i class="fa fa-plus" style="margin-right: 5px;"></i>
+        </button>
+    </div>
+
+
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
             <thead>
@@ -35,11 +43,12 @@
                         <td>
                             @if (filter_var($admin_account->id_picture, FILTER_VALIDATE_URL))
                                 <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $admin_account->id_picture }}" alt="ID Picture" style="width: 50px; height: auto;">
+                                <img src="{{ $admin_account->id_picture }}" alt="ID Picture"
+                                    style="width: 50px; height: auto;">
                             @else
                                 <!-- If the id_picture is a local file, use asset() to reference it -->
-                                <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
+                                <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}"
+                                    alt="ID Picture" style="width: 50px; height: auto;">
                             @endif
                         </td>
 
@@ -52,18 +61,20 @@
 
 
                             <!-- Adding ID from the professor list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $admin_account->id }}"
+                            <button class="btn gradient-button update" type="button" data-id="{{ $admin_account->id }}"
                                 data-name="{{ $admin_account->name }}" data-email="{{ $admin_account->email }}"
                                 data-rfid_uid="{{ $admin_account->rfid_uid }}"
                                 data-is_activated="{{ $admin_account->is_activated }}" data-bs-toggle="modal"
                                 data-bs-target="#register_account_id_modal">
-                                UPDATE
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+
                             </button>
 
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $admin_account->id }}"
-                                id="RemoveAccountButton">
-                                REMOVE
+                            <button class="btn gradient-button archive" type="button"
+                                data-id="{{ $admin_account->id }}" id="RemoveAccountButton">
+                                <i class="fa-solid fa-box-archive"></i>
+
                             </button>
                         </td>
                     </tr>
@@ -86,7 +97,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');

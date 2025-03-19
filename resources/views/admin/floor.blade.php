@@ -19,9 +19,9 @@
 
 
      <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
-         <button class="btn gradient-button" style="display: flex; align-items: center; " type="button"
+         <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
              data-bs-toggle="modal" data-bs-target="#add_floor_modal">
-             <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Floor
+             <i class="fa fa-plus" style="margin-right: 5px;"></i>
          </button>
      </div>
 
@@ -52,16 +52,18 @@
 
                          <td class="action-cell">
                              <!-- Pass subject data via data- attributes -->
-                             <button class="btn gradient-button" data-bs-toggle="modal"
+                             <button class="btn gradient-button update" data-bs-toggle="modal"
                                  data-bs-target="#update_floor_modal" data-id="{{ $floor->id }}"
                                  data-floor_name="{{ $floor->floor_name }}">
-                                 UPDATE
+                                 <i class="fa-solid fa-arrow-up-from-bracket"></i>
+
                              </button>
 
                              <!-- Removing the subject from the list -->
-                             <button class="btn gradient-button" type="button" data-id="{{ $floor->id }}"
+                             <button class="btn gradient-button archive" type="button" data-id="{{ $floor->id }}"
                                  id="RemoveFloortButton">
-                                 REMOVE
+                                 <i class="fa-solid fa-box-archive"></i>
+
                              </button>
                          </td>
 

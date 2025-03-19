@@ -37,7 +37,8 @@
                         <td>
                             @if (filter_var($professor->id_picture, FILTER_VALIDATE_URL))
                                 <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $professor->id_picture }}" alt="ID Picture" style="width: 50px; height: auto;">
+                                <img src="{{ $professor->id_picture }}" alt="ID Picture"
+                                    style="width: 50px; height: auto;">
                             @else
                                 <!-- If the id_picture is a local file, use asset() to reference it -->
                                 <img src="{{ asset('uploads/id_pictures/' . $professor->id_picture) }}" alt="ID Picture"
@@ -53,18 +54,18 @@
 
                         <td class="action-cell">
                             <!-- Adding ID from the professor list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $professor->id }}"
+                            <button class="btn gradient-button update" type="button" data-id="{{ $professor->id }}"
                                 data-name="{{ $professor->name }}" data-email="{{ $professor->email }}"
                                 data-rfid_uid="{{ $professor->rfid_uid }}"
                                 data-is_activated="{{ $professor->is_activated }}" data-bs-toggle="modal"
                                 data-bs-target="#register_account_id_modal">
-                                UPDATE
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
                             </button>
 
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button" type="button" data-id="{{ $professor->id }}"
+                            <button class="btn gradient-button archive" type="button" data-id="{{ $professor->id }}"
                                 id="RemoveAccountButton">
-                                REMOVE
+                                <i class="fa-solid fa-box-archive"></i>
                             </button>
                         </td>
                     </tr>
@@ -92,7 +93,7 @@
 
     <!-- Add your search script below -->
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
             let table = document.getElementById('uniqueTable');
             let rows = table.getElementsByTagName('tr');

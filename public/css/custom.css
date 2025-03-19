@@ -129,3 +129,26 @@
 .btn {
     position: relative;
 }
+
+/* ARCHIVE HOVER BUTTON */
+/* Tooltip container */
+.retrieve:hover::after {
+    content: "Click to retrieve";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
