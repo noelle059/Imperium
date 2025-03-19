@@ -309,5 +309,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/verify-phone', [PhoneVerificationController::class, 'verifyOtp'])->name('auth.verify-phone.verifyOtp');
 });
 
+//classroom
+Route::get('/admin/reports/classrooms', function () {
+    return view('admin.classroom_report');
+})->name('report.classroom');
 
+Route::get('/admin/reports/classrooms', [ClassroomController::class, 'classroomReport'])->name('report.classroom');
+Route::get('/admin/classrooms/print/{id}', [ClassroomController::class, 'printPdf'])->name('classrooms.print');
+
+Route::get('/admin/classrooms/print-all', [ClassroomController::class, 'printAll'])->name('classrooms.printAll');
+
+
+
+//davac 
 
