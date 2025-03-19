@@ -89,7 +89,7 @@
                 </a>
                 
                 <ul id="Report" class="collapse list-unstyled">
-                    <li> <a href="{{ route('report.classroom') }}">
+                    <li> <a href="{{ route('report.schedule') }}">
                                  <i class="fa fa-building" style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
                     </li>
 
@@ -109,10 +109,12 @@
                     <li><a href="{{ route('show_archive_account') }}"><i class="material-icons"
                                 style="font-size: 25px;">account_box</i></i>Account</a></li>
 
-                    <li><a href="#"><i class="fa-solid fa-stairs" style="font-size: 25px;"></i>Floor</a></li>
-                    <li><a href="#"><i class="fa-solid fa-building"
+                    <li><a href="{{ route('show_archive_floor') }}"><i class="fa-solid fa-stairs"
+                                style="font-size: 25px;"></i>Floor</a></li>
+                    <li><a href="{{ route('show_archive_classroom') }}"><i class="fa-solid fa-building"
                                 style="font-size: 25px; padding-left: 8px;"></i>Classroom</a></li>
-                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a>
+                    <li><a href="{{ route('show_archive_device') }}"><i class="material-icons"
+                                style="font-size: 25px;">devices</i>Device</a>
                     </li>
 
                 </ul>

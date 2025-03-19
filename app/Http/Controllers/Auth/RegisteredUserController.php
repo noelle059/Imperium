@@ -118,6 +118,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'contact_number' => $request->contact_number,
             'id_picture' => $filename, // Save the filename in the database
+            'is_admin' => 0,
         ]);
 
         event(new Registered($user));

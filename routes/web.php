@@ -229,6 +229,23 @@ Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
 
 // Route to show Archive (with plural form)
 Route::get('/admin/archive/accounts', [ArchiveController::class, 'showArchiveAccount'])->name('show_archive_account');
+// Retrieve Account
+Route::patch('admin/accounts/retrieve/{id}', [ArchiveController::class, 'retrieveAccount'])->name('retrieve_account');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/floors', [ArchiveController::class, 'showArchiveFloor'])->name('show_archive_floor');
+// Retrieve Floor
+Route::patch('admin/floor/retrieve/{id}', [ArchiveController::class, 'retrieveFloor'])->name('retrieve_floor');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/classrooms', [ArchiveController::class, 'showArchiveClassroom'])->name('show_archive_classroom');
+// Retrieve Classroom
+Route::patch('admin/classroom/retrieve/{id}', [ArchiveController::class, 'retrieveClassroom'])->name('retrieve_classroom');
+// Route to show Archive (with plural form)
+Route::get('/admin/archive/devices', [ArchiveController::class, 'showArchiveDevice'])->name('show_archive_device');
+// Retrieve Classroom
+Route::patch('admin/device/retrieve/{id}', [ArchiveController::class, 'retrieveDevice'])->name('retrieve_device');
+
+
+
 
 
 
@@ -314,16 +331,22 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //classroom
-Route::get('/admin/reports/classrooms', function () {
-    return view('admin.classroom_report');
-})->name('report.classroom');
+Route::get('/admin/reports/schedule', function () {
+    return view('admin.schedule_report');
+})->name('report.schedule');
 
-Route::get('/admin/reports/classrooms', [ClassroomController::class, 'classroomReport'])->name('report.classroom');
-Route::get('/admin/classrooms/print/{id}', [ClassroomController::class, 'printPdf'])->name('classrooms.print');
+Route::get('/admin/reports/schedule', [ScheduleController::class, 'scheduleReport'])->name('report.schedule');
+Route::get('/admin/schedule/print/{id}', [ScheduleController::class, 'printPdf'])->name('schedule.print');
 
-Route::get('/admin/classrooms/print-all', [ClassroomController::class, 'printAll'])->name('classrooms.printAll');
+Route::get('/admin/schedule/print-all', [ScheduleController::class, 'printAll'])->name('schedule.printAll');
 
 
 
-//davac
+//add admin
+Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+Route::put('/admin/update', [AdminController::class, 'admin_update'])->name('admin.update');
+Route::post('/admin/remove/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+
+
+
 

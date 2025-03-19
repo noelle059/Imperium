@@ -130,37 +130,6 @@ class ClassroomController extends Controller
         return response()->json(['success' => true, 'message' => 'Classroom Removed Successfully']);
     }
 
-    public function printPdf($id)
-    {
-        $classroom = Classroom::findOrFail($id);
-        $classroom = Classroom::withCount('devices')->findOrFail($id);
-
-        // Load the PDF view
-        $pdf = Pdf::loadView('admin.classroom_pdf', compact('classroom'));
-
-        // Download the PDF
-        return $pdf->download('Classroom_Report.pdf');
-    }
-
-    public function classroomReport()
-    {
-        $classrooms = Classroom::withCount('devices')->get();
-        return view('admin.reports.classroom_report', compact('classrooms'));
-    }
-
-    public function printAll(Request $request)
-{
-    $query = Classroom::withCount('devices');
-
-    if ($request->has('date')) {
-        $query->whereDate('created_at', $request->date);
-    }
-
-    $classrooms = $query->get();
-    $pdf = Pdf::loadView('admin.classroom_pdf_all', compact('classrooms'));
-    return $pdf->download('Classroom_Report_All.pdf');
-}
-
 
 
 

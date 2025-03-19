@@ -13,12 +13,12 @@
 
     <!-- Current Slider Images -->
     <div class="table-container">
-        <h2 class="h5" style="color: #123524">Current Slider Images</h2>
         <table id="uniqueTable" class="styled-table">
             <thead class="bg-success text-white">
                 <tr>
                     <th>No.</th>
                     <th>Slider Image</th>
+                    <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,12 +29,13 @@
                     <td>
                         <img src="{{ asset('images/' . $image->filename) }}" class="img-thumbnail" width="150">
                     </td>
+                    <td>{{ \Carbon\Carbon::parse($image->created_at)->format('F j, Y g:i A') }}</td>
                     <td>
-                        <form action="{{ route('admin.slider.destroy', $image->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"class="btn gradient-button">Remove</button>
-                        </form>
+                    <form action="{{ route('admin.slider.destroy', $image->id) }}" method="POST" class="delete-form d-inline">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="btn gradient-button delete-button">Remove</button>
+</form>
                     </td>
                 </tr>
                 @endforeach
@@ -46,4 +47,28 @@
     @include('admin.footer')
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".delete-button").forEach(button => {
+            button.addEventListener("click", function () {
+                let form = this.closest("form");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Submit the form if confirmed
+                    }
+                });
+            });
+        });
+    });
+</script>
 

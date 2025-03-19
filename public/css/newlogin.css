@@ -7,8 +7,8 @@
     font-family: 'Poppins', sans-serif;
   }
   .modal-body {
-    width: 100%;  /* O di kaya ay specific na width */
-    max-width: 400px; /* I-adjust depende sa design */
+    width: 100%;
+    max-width: 400px;
 }
  .modal-content{
     position: relative;
@@ -19,6 +19,7 @@
     justify-content: center;
     align-items: center;
     padding: 40px;
+    border-radius: 20px !important;
     transition: 0.5s;
 }
 

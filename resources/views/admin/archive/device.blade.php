@@ -5,7 +5,7 @@
 
     <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="h5 no-margin-bottom">Archive Accounts</h2>
+            <h2 class="h5 no-margin-bottom">Archived Devices</h2>
 
             <div style="display: flex; align-items: center;">
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
@@ -21,55 +21,54 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>Device Name</th>
+                    <th>Classroom Name</th>
+                    <th>Status</th>
                     <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($archiveUsers as $index => $archive)
+                @foreach ($archiveDevices as $index => $device)
                     <tr class="table-row">
                         <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                        <td>{{ $device->device_name }}</td>
+
                         <td>
-                            @if (filter_var($archive->id_picture, FILTER_VALIDATE_URL))
-                                <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $archive->id_picture }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
-                            @else
-                                <!-- If the id_picture is a local file, use asset() to reference it -->
-                                <img src="{{ asset('uploads/id_pictures/' . $archive->id_picture) }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
+                            <!-- Find the classroom name by classroom_id -->
+                            @php
+                                $classroom = $classrooms->firstWhere('id', $device->classroom_id);
+                            @endphp
+
+                            <!-- Display the classroom name if found -->
+                            {{ $classroom ? $classroom->classroom_name : 'N/A' }}
+                        </td>
+
+
+                        <td>
+                            @if ($device->state == 0)
+                                OFF
+                            @elseif ($device->state == 1)
+                                ON
                             @endif
                         </td>
 
-                        <td>{{ $archive->name }}</td>
-                        <td>{{ $archive->email }}</td>
-                        <td>{{ \Carbon\Carbon::parse($archive->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                        <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone(value: 'Asia/Manila')->format('F j, Y \a\t h:i A') }}
                         </td>
 
                         <td class="action-cell">
-
-
-
-
                             <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button retrieve" type="button" data-id="{{ $archive->id }}"
-                                id="RetrieveAccountButton">
+                            <button class="btn gradient-button retrieve" type="button" data-id="{{ $device->id }}"
+                                id="RetrieveDevicetButton">
                                 <i class="fa-solid fa-trash-can-arrow-up"></i>
+
                             </button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-
-
-
     </div>
-
-
 
 
 
@@ -77,13 +76,8 @@
     @include('admin.sweetAlerts.archiveAlert')
 
 
-
-
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
-
-
-
 
 
     <!-- Add your search script below -->

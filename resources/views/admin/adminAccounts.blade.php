@@ -17,70 +17,71 @@
 
 
     <div style="display: flex; justify-content: flex-end; margin-top: 0px; padding-right: 20px;">
-        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
-            data-bs-toggle="modal" data-bs-target="#add_admin_modal">
-            <i class="fa fa-plus" style="margin-right: 5px;"></i>
-        </button>
-    </div>
+    <button class="btn gradient-button add" type="button" data-bs-toggle="modal" data-bs-target="#addAdminModal">
+        <i class="fa fa-plus" style="margin-right: 5px;"></i> Add Admin
+    </button>
+</div>
+@include('admin.modal.addadminModals')
+@include('admin.modal.editadminModals')
+
+
 
 
     <div class="table-container">
-        <table id="uniqueTable" class="styled-table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Entry Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($admin_accounts as $index => $admin_account)
-                    <tr class="table-row">
-                        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-                        <td>
-                            @if (filter_var($admin_account->id_picture, FILTER_VALIDATE_URL))
-                                <!-- If the id_picture is a URL, just output the URL -->
-                                <img src="{{ $admin_account->id_picture }}" alt="ID Picture"
-                                    style="width: 50px; height: auto;">
-                            @else
-                                <!-- If the id_picture is a local file, use asset() to reference it -->
-                                <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}"
-                                    alt="ID Picture" style="width: 50px; height: auto;">
-                            @endif
-                        </td>
+    <table id="uniqueTable" class="styled-table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Entry Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($admin_accounts as $index => $admin_account)
+        <tr class="table-row" data-archived="{{ $admin_account->archive_status }}">
+        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                <td>
+                    @if (filter_var($admin_account->id_picture, FILTER_VALIDATE_URL))
+                        <img src="{{ $admin_account->id_picture }}" alt="ID Picture"
+                            style="width: 50px; height: auto;">
+                    @else
+                        <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}"
+                            alt="ID Picture" style="width: 50px; height: auto;">
+                    @endif
+                </td>
 
-                        <td>{{ $admin_account->name }}</td>
-                        <td>{{ $admin_account->email }}</td>
-                        <td>{{ \Carbon\Carbon::parse($admin_account->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
-                        </td>
+                <td>{{ $admin_account->name }}</td>
+                <td>{{ $admin_account->email }}</td>
+                <td>{{ \Carbon\Carbon::parse($admin_account->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}</td>
 
-                        <td class="action-cell">
+                <td class="action-cell">
+                    <!-- Edit Admin Button -->
+                    <button class="btn gradient-button update" type="button"
+                        data-id="{{ $admin_account->id }}"
+                        data-name="{{ $admin_account->name }}"
+                        data-last_name="{{ $admin_account->last_name }}"
+                        data-email="{{ $admin_account->email }}"
+                        data-contact_number="{{ $admin_account->contact_number }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editAdminModal">
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    </button>
 
+                   <!-- Archive Admin Button -->
+                   <button class="btn gradient-button archive remove-admin" type="button"
+    data-id="{{ $admin_account->id }}">
+    <i class="fa-solid fa-box-archive"></i>
+</button>
 
-                            <!-- Adding ID from the professor list -->
-                            <button class="btn gradient-button update" type="button" data-id="{{ $admin_account->id }}"
-                                data-name="{{ $admin_account->name }}" data-email="{{ $admin_account->email }}"
-                                data-rfid_uid="{{ $admin_account->rfid_uid }}"
-                                data-is_activated="{{ $admin_account->is_activated }}" data-bs-toggle="modal"
-                                data-bs-target="#register_account_id_modal">
-                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                            </button>
-
-                            <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button archive" type="button"
-                                data-id="{{ $admin_account->id }}" id="RemoveAccountButton">
-                                <i class="fa-solid fa-box-archive"></i>
-
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
 
 
         <!-- Pagination controls -->
@@ -123,3 +124,59 @@
             }
         });
     </script>
+
+    <script>
+
+document.querySelectorAll('.update').forEach(button => {
+    button.addEventListener('click', function () {
+        document.getElementById('editAdminId').value = this.dataset.id;
+        document.getElementById('editAdminName').value = this.dataset.name;
+        document.getElementById('editAdminLastName').value = this.dataset.last_name;
+        document.getElementById('editAdminEmail').value = this.dataset.email;
+        document.getElementById('editAdminContact').value = this.dataset.contact_number;
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".remove-admin").forEach(button => {
+        button.addEventListener("click", function () {
+            let adminId = this.dataset.id;
+            Swal.fire({
+                title: "Are you sure?",
+                text: "This admin will be moved to archive!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, archive it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{{ url('/admin/remove') }}/" + adminId, { // ✅ Corrected URL with ID
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire("Archived!", "Admin has been archived.", "success").then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error!", "Something went wrong.", "error");
+                        }
+                    });
+                }
+            });
+        });
+    });
+});
+
+
+
+    </script>
+
+
+

@@ -7,7 +7,6 @@
 
     <!-- About Us Table -->
     <div class="table-container">
-        <h2 class="h5">Existing About Us</h2>
         <table id="uniqueTable" class="styled-table">
             <thead class="bg-success text-white">
                 <tr>
