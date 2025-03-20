@@ -9,6 +9,8 @@ use App\Services\FirebaseService;
 use Illuminate\Support\Facades\Hash;
 
 
+
+
 class AdminController extends Controller
 {
     public function index()
@@ -28,7 +30,7 @@ class AdminController extends Controller
     {
         // Get professors (admin users) where archive_status = 1 and paginate 10
         $admin_accounts = User::where('is_admin', true)  // Exclude admin users
-            ->where('archive_status', 1)  // Only those with archive_status = 1
+            ->where('archive_status', 0)  // Only those with archive_status = 1
             ->paginate(10);  // Paginate 10 results per page
 
         // Return the view with the professors data
@@ -118,14 +120,21 @@ class AdminController extends Controller
      * Archive a user account.
      */
     public function remove($id, Request $request)
-    {
-        $account = User::findOrFail($id); // Find the subject by ID
+{
+    \Log::info('Archiving user ID: ' . $id); // Debugging log
 
-        $account->archive_status = 0; // Set archive_status to 0 (mark as removed)
-        $account->save(); // Save changes
+    $account = User::find($id);
 
-        return response()->json(['success' => true]); // Send success response
+    if (!$account) {
+        return response()->json(['success' => false, 'message' => 'User not found'], 404);
     }
+
+    $account->archive_status = 1; // Set archive_status to 1 (Archived)
+    $account->save();
+
+    return response()->json(['success' => true, 'message' => 'User archived successfully!']);
+}
+
 
     public function fetchRFID(FirebaseService $firebaseService)
     {
@@ -148,8 +157,18 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users,email',
             'contact_number' => 'required|string|max:20',
             'password' => 'required|min:6|confirmed',
+            'id_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ensure it's a valid image file
         ]);
-
+    
+        // Handle file upload
+        if ($request->hasFile('id_picture')) {
+            $image = $request->file('id_picture');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/id_pictures'), $imageName); // Save to public/uploads/id_pictures
+        } else {
+            $imageName = 'default-profile.png'; // Default image if no upload
+        }
+    
         // Create new admin user
         User::create([
             'name' => $request->name,
@@ -157,12 +176,14 @@ class AdminController extends Controller
             'email' => $request->email,
             'contact_number' => $request->contact_number,
             'password' => Hash::make($request->password),
-            'is_admin' => 1, 
+            'is_admin' => 1,
+            'id_picture' => $imageName, // Save the filename in the database
+            'archive_status' =>0,
         ]);
-
+    
         return redirect()->back()->with('success', 'Admin account created successfully!');
     }
-
+    
 
     public function admin_update(Request $request)
     {
@@ -192,11 +213,12 @@ class AdminController extends Controller
         $admin = User::findOrFail($request->id);
         
         // Update archive_status to 0 instead of deleting
-        $admin->update(['archive_status' => 0]);
+        $admin->update(['archive_status' => 1]);
     
         return response()->json(['success' => true, 'message' => 'Admin archived successfully!']);
     }
     
-    
+
+
 
 }

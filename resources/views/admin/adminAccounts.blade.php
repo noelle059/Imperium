@@ -43,15 +43,17 @@
         @foreach ($admin_accounts as $index => $admin_account)
         <tr class="table-row" data-archived="{{ $admin_account->archive_status }}">
         <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-                <td>
-                    @if (filter_var($admin_account->id_picture, FILTER_VALIDATE_URL))
-                        <img src="{{ $admin_account->id_picture }}" alt="ID Picture"
-                            style="width: 50px; height: auto;">
-                    @else
-                        <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}"
-                            alt="ID Picture" style="width: 50px; height: auto;">
-                    @endif
-                </td>
+        <td>
+    @if (!empty($admin_account->id_picture) && file_exists(public_path('uploads/id_pictures/' . $admin_account->id_picture)))
+        <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}" 
+            alt="ID Picture" style="width: 50px; height: auto;">
+    @else
+        <img src="{{ asset('default-profile.png') }}" alt="Default Admin Image"
+            style="width: 50px; height: auto;">
+    @endif
+</td>
+
+
 
                 <td>{{ $admin_account->name }}</td>
                 <td>{{ $admin_account->email }}</td>

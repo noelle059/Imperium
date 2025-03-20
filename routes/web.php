@@ -345,8 +345,56 @@ Route::get('/admin/schedule/print-all', [ScheduleController::class, 'printAll'])
 //add admin
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
 Route::put('/admin/update', [AdminController::class, 'admin_update'])->name('admin.update');
-Route::post('/admin/remove/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+Route::post('/admin/remove/{id}', [AdminController::class, 'remove'])->name('admin.remove');
+
+//MIDDLEWARES
+use App\Http\Middleware\AdminMiddleware;
+
+// Admin Routes
+Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
+    // Dashboard
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+
+    // Account Management
+    Route::get('/admin/professor-accounts', [AdminController::class, 'showProfessors'])->name('accounts');
+    Route::get('/admin/admin-accounts', [AdminController::class, 'showAdminAccount'])->name('show_admin_accounts');
+    Route::get('/admin/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+
+    // Classroom Management
+    Route::get('/admin/floor', [FloorController::class, 'showFloor'])->name('show_floor');
+    Route::get('/admin/classrooms', [ClassroomController::class, 'showClassroom'])->name('show_classroom');
+    Route::get('/admin/show-devices', [DeviceController::class, 'showAddDevices'])->name('show_devices');
+    Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->name('show_schedule');
+
+    // Reports
+    Route::get('/admin/reports/schedule', [ScheduleController::class, 'scheduleReport'])->name('report.schedule');
+
+    // Archive
+    Route::get('/admin/archive/accounts', [ArchiveController::class, 'showArchiveAccount'])->name('show_archive_account');
+    Route::get('/admin/archive/floors', [ArchiveController::class, 'showArchiveFloor'])->name('show_archive_floor');
+    Route::get('/admin/archive/classrooms', [ArchiveController::class, 'showArchiveClassroom'])->name('show_archive_classroom');
+    Route::get('/admin/archive/devices', [ArchiveController::class, 'showArchiveDevice'])->name('show_archive_device');
+
+    // Homepage Management
+    Route::get('/admin/slider', [SliderController::class, 'index'])->name('admin.slider.sliderchanger');
+    Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback.feedbackchanger');
+    Route::get('/admin/about', [AboutUsController::class, 'index'])->name('admin.about.index');
+    Route::get('/admin/footer', [FooterController::class, 'index'])->name('admin.footer.index');
+});
 
 
+
+use App\Http\Middleware\UserMiddleware;
+
+Route::middleware([UserMiddleware::class, 'auth'])->group(function () {
+    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+});
+
+use App\Http\Middleware\RedirectIfNotAuthenticated;
+
+Route::middleware([RedirectIfNotAuthenticated::class])->group(function () {
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
+    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+});
 
 

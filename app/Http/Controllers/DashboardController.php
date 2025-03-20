@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
+
+
 class DashboardController extends Controller
 {
     public function index()
@@ -147,5 +149,6 @@ class DashboardController extends Controller
     //     $rooms = Room::all();
     //     return response()->json($rooms);
     // }
-
+    
+    
 }

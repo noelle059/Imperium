@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class UserMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
@@ -15,8 +15,8 @@ class AdminMiddleware
             return redirect('home')->with('error', 'Unauthorized access.');
         }
 
-        // If user is logged in but not an admin, redirect to homepage
-        if (!Auth::user()->is_admin) {
+        // If an admin tries to access user pages, redirect to homepage
+        if (Auth::user()->is_admin) {
             return redirect('home')->with('error', 'You do not have access to this page.');
         }
 

@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'contact_number', // Add this line
         'id_picture',
         'is_admin',
+        'archive_status'
 
     ];
 
