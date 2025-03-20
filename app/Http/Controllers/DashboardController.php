@@ -150,5 +150,4 @@ class DashboardController extends Controller
     //     return response()->json($rooms);
     // }
     
-    
 }

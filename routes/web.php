@@ -81,8 +81,9 @@ Route::get('/login', function () {
             return redirect()->route('user.dashboard')->with('alert', "Already logged in, logout to use a different account.");
         }
     }
-    return view('auth.login');
+    return redirect('/'); // ✅ Redirect to homepage instead of returning a view
 })->name('login');
+
 
 // User dashboard route
 Route::get('/user/dashboard', [DashboardController::class, 'index'])
