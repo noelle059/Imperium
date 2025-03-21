@@ -148,8 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "This admin will be moved to archive!",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
+                confirmButtonColor: "",
+                cancelButtonColor: "",
                 confirmButtonText: "Yes, archive it!"
             }).then((result) => {
                 if (result.isConfirmed) {

@@ -30,8 +30,10 @@ use App\Models\User;
 use App\Models\Schedule;
 
 Route::get('/', function () {
-    return view('homepage', ['alert' => session('alert')]);
+    session()->reflash();
+    return view('homepage');
 })->name('home');
+
 
 
 Route::get('/forgotpass', function () {
@@ -81,7 +83,7 @@ Route::get('/login', function () {
             return redirect()->route('user.dashboard')->with('alert', "Already logged in, logout to use a different account.");
         }
     }
-    return redirect('/'); // ✅ Redirect to homepage instead of returning a view
+    return redirect('/'); // 
 })->name('login');
 
 
@@ -96,7 +98,7 @@ Route::get('/admin/dashboard', function () {
     // Check if the user is authenticated and is an admin
 
     if (!Auth::check()) {
-        return redirect()->route('login')->with('alert', 'You must be logged in to access the admin dashboard.');
+        return redirect('/')->with('alert', 'You must be logged in to access the admin dashboard.');
     }
 
     if (Auth::check() && Auth::user()->is_admin) {
@@ -399,3 +401,10 @@ Route::middleware([RedirectIfNotAuthenticated::class])->group(function () {
 });
 
 
+use App\Http\Controllers\AuthRedirectController;
+
+// Redirect unauthorized users trying to access admin routes
+Route::get('/admin/{any}', [AuthRedirectController::class, 'unauthorizedAccess'])
+    ->where('any', '.*');
+
+    

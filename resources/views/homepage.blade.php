@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<x-floating-alert :message="session('alert')" />
+@if (session('alert'))
+    <x-floating-alert :message="session('alert')" />
+@endif
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,9 +48,9 @@
 </head>
 
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
-
     @include('class.navbar')
     @include('class.carousel', ['images' => $images])
+
     @include('class.about')
     @include('class.feedback')
     @include('class.feedbackModal')

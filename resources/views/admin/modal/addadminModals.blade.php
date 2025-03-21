@@ -41,12 +41,12 @@
                         <span class="text-danger" id="idPictureError"></span>
                     </div>
                     
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success">Register Admin</button>
-                    </div>
                 </form>
             </div>
+            <div class="modal-footer">
+                        <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn gradient-button">Register Admin</button>
+                    </div>
         </div>
     </div>
 </div>

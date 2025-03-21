@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<img src="{{ public_path('images/IMPERIUM_LOGO.jpg') }}" 
+<img src="{{ public_path('images/colored_logo_with_text.png') }}" 
 style="width: 150px; height: auto; display: block; margin: 0 auto; border: none;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <h5>Biglang Awa Street, Cor 11th Ave, Catleya, Caloocan, 1400 Metro Manila, Philippines</h5>
-    <h5>Empowering educators and institutions with an intelligent, energy-efficient system for seamless classroom management and security.</h5>
+    <p>Empowering educators and institutions with an intelligent, energy-efficient system for seamless classroom management and security.</p>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
