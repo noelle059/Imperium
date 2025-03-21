@@ -4,22 +4,28 @@
         <!-- Sidebar Header-->
         <!-- Sidebar Header -->
         <div class="sidebar-header d-flex align-items-center">
-            <div class="avatar">
-                @if (Auth::check())
-                    @if (Str::startsWith(Auth::user()->id_picture, 'http'))
-                        <!-- If id_picture is a Google URL -->
-                        <img src="{{ Auth::user()->id_picture }}" alt="Profile Picture" class="img-fluid rounded-circle">
-                    @else
-                        <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
-                        <img src="{{ asset(Auth::user()->id_picture) }}" alt="Profile Picture"
-                            class="img-fluid rounded-circle">
-                    @endif
-                @else
-                    <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
-                        class="img-fluid rounded-circle">
-                @endif
-            </div>
-
+        <div class="avatar">
+    @if (Auth::check())
+        @php
+            $idPicture = Auth::user()->id_picture; 
+            $filename = basename($idPicture); 
+            $localImagePath = public_path('uploads/id_pictures/' . $filename); 
+        @endphp
+        
+        @if (Str::startsWith($idPicture, 'http'))
+            <!-- If id_picture is a Google URL -->
+            <img src="{{ $idPicture }}" alt="Profile Picture" class="img-fluid rounded-circle">
+        @elseif (file_exists($localImagePath))
+            <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
+            <img src="{{ asset('uploads/id_pictures/' . $filename) }}" alt="Profile Picture" class="img-fluid rounded-circle">
+        @else
+            <!-- Fallback to default avatar if no valid image is found -->
+            <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
+        @endif
+    @else
+        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
+    @endif
+</div>
 
             <div class="title">
                 @if (Auth::check())

@@ -41,5 +41,7 @@ class AdminDashboardController extends Controller
 
         // Pass data to the view
         return view('admin.dashboard', compact('users', 'subjects', 'devices', 'classrooms', 'userCount', 'subjectCount', 'deviceCount', 'classroomCount'));
+
+        
     }
 }

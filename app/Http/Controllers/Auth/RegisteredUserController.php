@@ -122,9 +122,11 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
+    
+        // Log the user in
         Auth::login($user);
-
+        $user->sendEmailVerificationNotification();
+        
         return redirect(route('dashboard', absolute: false));
     }
 }

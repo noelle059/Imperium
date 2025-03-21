@@ -67,10 +67,13 @@ class GoogleController extends Controller
                     $user->id_picture = 'uploads/id_pictures/' . $filename;
                     $user->save();
                 }
+                $user->sendEmailVerificationNotification();
+
             }
     
             // Log the user in
             Auth::login($user);
+            
     
             session()->flash('success', 'You have successfully logged in!');
     

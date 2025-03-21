@@ -32,12 +32,11 @@
                         <input type="text" class="form-control" id="editAdminContact" name="contact_number" required>
                     </div>
                 </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
             </form>
+            <div class="modal-footer">
+                    <button type="submit" class="btn gradient-button">Save Changes</button>
+                    <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Cancel</button>
+                </div>
         </div>
     </div>
 </div>

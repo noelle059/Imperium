@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<img src="{{ public_path('images/IMPERIUM_LOGO.jpg') }}" 
+<img src="{{ public_path('images/colored_logo_with_text.png') }}" 
 style="width: 150px; height: auto; display: block; margin: 0 auto; border: none;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@ style="width: 150px; height: auto; display: block; margin: 0 auto; border: none;
 
     <h2>IMPERIUM CLASSROOM REPORT</h2>
 
-    <table>
+    <table style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr>
                 <th>Room No.</th>
