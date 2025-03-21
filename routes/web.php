@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserDashboardController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -84,10 +85,26 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// User dashboard route
-Route::get('/user/dashboard', [DashboardController::class, 'index'])
+
+// USER DASHBOARD
+Route::get('/professor/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
+
+
+Route::get('/professor/account-profile', [DashboardController::class, 'AccountProfile'])
+    ->middleware('auth')
+    ->name('AccountProfile');
+
+
+// Route to fetch devices for a specific classroom
+Route::get('/professor/get-devices/{classroom_id}', [DashboardController::class, 'getDevices']);
+
+// Update the state in the Firebase
+Route::post('/professor/update-device-state/{classroomId}/{deviceName}', [DashboardController::class, 'updateDeviceState']);
+
+
+
 
 Route::get('/get-room-status', [DashboardController::class, 'getRoomStatus']);
 // Admin dashboard route with inline check
@@ -387,14 +404,12 @@ Route::middleware([AdminMiddleware::class, 'auth'])->group(function () {
 use App\Http\Middleware\UserMiddleware;
 
 Route::middleware([UserMiddleware::class, 'auth'])->group(function () {
-    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/professor/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });
 
 use App\Http\Middleware\RedirectIfNotAuthenticated;
 
 Route::middleware([RedirectIfNotAuthenticated::class])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
-    Route::get('/user/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/professor/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });
-
-

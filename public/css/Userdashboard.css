@@ -1,0 +1,179 @@
+/* Reset default body margin and padding */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Remove any extra margin/padding on the body */
+body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.page-header {
+    padding: 10px 15px;
+    background: #47773f;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(198, 198, 198, 0.582);
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+/* Button - Admin - Accounts && Classroom */
+.btn.gradient-button {
+    background: #d5a432; /* Gradient from EDBF43 to green */
+    border: none;
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* No underline */
+    display: inline-block;
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+    transition: background 0.3s; /* Smooth transition */
+}
+
+/* Darker gradient on hover */
+.btn.gradient-button:hover {
+    background: #4caf50;
+}
+
+/*TABLE DESIGN */
+.table-container {
+    overflow-x: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+#uniqueTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+#uniqueTable th {
+    background-color: #47773f;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+#uniqueTable td {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding-left: 15px; /* Add left padding */
+    padding-right: 15px; /* Add right padding */
+}
+
+.table-row {
+    background-color: rgba(240, 240, 240, 0.99);
+    color: #123524;
+}
+
+.action-cell {
+    text-align: center;
+    /* padding: px; */
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* Cointroller HOVER BUTTON */
+/* Tooltip container */
+.controller:hover::after {
+    content: "Click to Control";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* Exit HOVER BUTTON */
+/* Tooltip container */
+.exit:hover::after {
+    content: "Click to Exit";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* Entry HOVER BUTTON */
+/* Tooltip container */
+.entry:hover::after {
+    content: "Click to Access";
+    /* Tooltip text */
+    position: absolute;
+    top: -30px;
+    /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ensure the button is positioned correctly */
+.btn {
+    position: relative;
+}
+
+/* <!-- Media Queries for Mobile --> */
+
+@media (max-width: 768px) {
+    .page-header .container-fluid {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .page-header .container-fluid h2 {
+        flex: unset;
+        /* Reset flex to allow centering */
+        margin: 5px 0;
+    }
+
+    .page-header .container-fluid input[type="text"] {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
