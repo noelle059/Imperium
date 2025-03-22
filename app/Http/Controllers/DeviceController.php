@@ -36,6 +36,17 @@ class DeviceController extends Controller
     }
 
 
+    public function showEditDevice($id)
+    {
+        // Find the device by ID
+        $device = Device::findOrFail($id);
+
+        // Get all classrooms
+        $classrooms = Classroom::all();
+
+        // Return the view with device and classrooms data
+        return view('admin.device', compact('device', 'classrooms'));
+    }
 
 
     public function addDevice(Request $request)
@@ -97,7 +108,7 @@ class DeviceController extends Controller
      */
     public function remove($id, Request $request)
     {
-        $device = Device::findOrFail($id); // Find the subject by 
+        $device = Device::findOrFail($id); // Find the subject by
 
         $device->archive_status = 0; // Set archive_status to 0 (mark as removed)
         $device->save(); // Save changes
@@ -180,7 +191,4 @@ class DeviceController extends Controller
         // Redirect with a success message
         return redirect('/admin/show-devices')->with('success', 'Device updated successfully in classroom: ' . $classroom->classroom_name);
     }
-
-
-    
 }

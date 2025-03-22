@@ -25,7 +25,7 @@ class ClassroomController extends Controller
         // Fetch classrooms with the related devices (device count), and paginate results
         $classrooms = Classroom::withCount('devices')  // Count the devices for each classroom
             ->where('archive_status', 1)  // Only fetch classrooms where archive_status = 1
-            ->paginate(10);
+            ->paginate(40);
 
         // Fetch all floors to display in the dropdown
         $floors = Floor::all();
@@ -33,9 +33,6 @@ class ClassroomController extends Controller
         // Pass classrooms and floors to the view
         return view('admin.classroom', compact('classrooms', 'floors'));
     }
-
-
-
 
 
     public function addClassroom(Request $request)
@@ -129,8 +126,4 @@ class ClassroomController extends Controller
         // Return a success response in JSON format
         return response()->json(['success' => true, 'message' => 'Classroom Removed Successfully']);
     }
-
-
-
-
 }

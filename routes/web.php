@@ -211,6 +211,9 @@ Route::put('admin/update-device/{id}', [DeviceController::class, 'update'])->nam
 // Archive device
 Route::patch('admin/device/remove/{id}', [DeviceController::class, 'remove'])->name('device.remove');
 
+Route::get('/admin/edit-device/{id}', [DeviceController::class, 'showEditDevice'])->name('edit_device');
+
+
 
 // Show Floor
 Route::get('/admin/floor', [FloorController::class, 'showFloor'])->name('show_floor');
@@ -230,6 +233,7 @@ Route::post('/admin/add-classroom', [ClassroomController::class, 'addClassroom']
 Route::put('admin/update-classroom/{id}', [ClassroomController::class, 'updateClassroom'])->name('update_classroom');
 // Archive Classroom
 Route::patch('admin/classroom/remove/{id}', [ClassroomController::class, 'removeClassroom'])->name('classroom_remove');
+
 
 
 // Route to show Schedules (with plural form)

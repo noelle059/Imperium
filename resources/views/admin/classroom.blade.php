@@ -11,7 +11,7 @@
 
             <div style="display: flex; align-items: center;">
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
-                <input type="text" id="searchInput" placeholder=" Search..."
+                <input type="text" id="searchInput" placeholder=" Search Classroom"
                     style="border: 1px solid #ccc; background-color: #f0f0f0; color: #123524; height: 30px; padding: 0; margin-right: 0;">
             </div>
         </div>
@@ -76,7 +76,10 @@
 
         </table>
 
-
+        <!-- Pagination controls -->
+        <div class="pagination-container" style="margin-top: 10px;">
+            {{ $classrooms->links() }}
+        </div>
 
     </div>
 

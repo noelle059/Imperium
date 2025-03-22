@@ -93,6 +93,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {{-- INCLUDE ADMIN MODAL AND ALERT --}}
     @include('admin.modal.deviceModals')
     @include('admin.sweetAlerts.deviceAlert')

@@ -77,12 +77,13 @@
                                <option value="">Select Classroom</option>
                                @foreach ($classrooms as $classroom)
                                    <option value="{{ $classroom->id }}"
-                                       {{ old('classroom_id', $device->classroom_id) == $classroom->id ? 'selected' : '' }}>
+                                       {{ old('classroom_id') == $classroom->id ? 'selected' : '' }}>
                                        {{ $classroom->classroom_name }}
                                    </option>
                                @endforeach
                            </select>
                        </div>
+
 
 
 

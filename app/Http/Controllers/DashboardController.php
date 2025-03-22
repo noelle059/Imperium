@@ -33,28 +33,30 @@ class DashboardController extends Controller
 
 
 
-    public function updateDeviceState(Request $request, $classroomId, $deviceName)
-    {
-        // Get the new state from the request (true or false)
-        $firebaseState = filter_var($request->input('state'), FILTER_VALIDATE_BOOLEAN); // Cast to boolean
 
-        // Firebase path
-        $firebasePath = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
 
-        try {
-            // Use FirebaseService to update the state in Firebase
-            $firebaseService = app(FirebaseService::class);
-            $firebaseService->setData($firebasePath, [
-                'device_name' => $deviceName,
-                'state' => $firebaseState, // Set the state in Firebase as a boolean
-            ]);
+    // public function updateDeviceState(Request $request, $classroomId, $deviceName)
+    // {
+    //     // Get the new state from the request (true or false)
+    //     $firebaseState = filter_var($request->input('state'), FILTER_VALIDATE_BOOLEAN); // Cast to boolean
 
-            // Return response with the updated state
-            return response()->json(['success' => true, 'state' => $firebaseState, 'message' => 'Device state updated successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to update device state', 'message' => $e->getMessage()], 500);
-        }
-    }
+    //     // Firebase path
+    //     $firebasePath = 'classrooms/' . $classroomId . '/devices/' . $deviceName;
+
+    //     try {
+    //         // Use FirebaseService to update the state in Firebase
+    //         $firebaseService = app(FirebaseService::class);
+    //         $firebaseService->setData($firebasePath, [
+    //             'device_name' => $deviceName,
+    //             'state' => $firebaseState, // Set the state in Firebase as a boolean
+    //         ]);
+
+    //         // Return response with the updated state
+    //         return response()->json(['success' => true, 'state' => $firebaseState, 'message' => 'Device state updated successfully']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Failed to update device state', 'message' => $e->getMessage()], 500);
+    //     }
+    // }
 
 
 

@@ -89,12 +89,15 @@
     </table>
 </div>
 
+
+
+
 <!-- Controller Modal -->
 <div class="modal fade" id="controlModal" tabindex="-1" aria-labelledby="controlModalTitle" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="controlModalTitle">Room Controller</h5>
+                <h5 class="modal-title" id="controlModalTitle">Name of the Room</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
@@ -118,7 +121,6 @@
 
 
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script type="module">
     // Import Firebase functions
@@ -129,7 +131,8 @@
         getDatabase,
         ref,
         onValue,
-        update
+        update,
+        get
     } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
     const firebaseConfig = {
@@ -208,12 +211,12 @@
         const deviceRef = ref(db, `classrooms/${classroomId}/devices/`);
         onValue(deviceRef, (snapshot) => {
             const devices = snapshot.val();
-            console.log(devices); // See the data structure
+            console.log(devices); // Check the data structure
 
             // Convert devices object to an array
             const deviceArray = Object.keys(devices).map(key => devices[key]);
 
-            // Now you can safely use forEach
+            // Now you can safely use forEach to update the UI
             deviceArray.forEach(device => {
                 // Update the UI with the device states
                 updateDeviceUI(device);
@@ -225,17 +228,26 @@
     function updateDeviceUI(device) {
         const switchElement = document.getElementById(`switch${device.device_name}`);
         if (switchElement) {
-            switchElement.checked = device.state === true; // Make sure it's correctly set to a boolean state
+            // Update the switch based on the Firebase state (true or false)
+            switchElement.checked = device.state === true;
         }
     }
 
     // Function to handle the switch toggle
     function toggleSwitch(deviceId, classroomId, deviceName) {
-        // Get the new state of the switch
-        var isChecked = $('#switch' + deviceId).is(':checked'); // Returns a boolean
+        // Directly access the checkbox DOM element
+        var switchElement = document.getElementById('switch' + deviceId);
+        var isChecked = switchElement.checked; // Accessing the `checked` property of the checkbox directly
+
+        // Log the current state to ensure it's being captured correctly
+        console.log(`Switch for ${deviceName} toggled`);
+        console.log(`Checkbox state: ${isChecked}`); // Log the state of the checkbox
+
         var newState = isChecked; // Directly use the boolean state (true or false)
 
-        // Update device state in Firebase
+        console.log(`newState before Firebase update: ${newState}`); // Log the newState before updating Firebase
+
+        // Update device state in Firebase immediately
         const deviceStateRef = ref(db, `classrooms/${classroomId}/devices/${deviceName}`);
         update(deviceStateRef, {
             state: newState
@@ -244,31 +256,11 @@
         }).catch(error => {
             console.log('Error updating Firebase:', error);
         });
-
-        // Send the new state to the server as well
-        $.ajax({
-            url: '/professor/update-device-state/' + classroomId + '/' + deviceName, // Endpoint
-            method: 'POST',
-            data: {
-                state: newState, // Send the boolean state
-            },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                console.log('Device state updated on server:', response);
-            },
-            error: function(error) {
-                console.log('Error updating device state:', error);
-            }
-        });
     }
 
     // Expose toggleSwitch to the global scope
     window.toggleSwitch = toggleSwitch;
 </script>
-
-
 
 
 
