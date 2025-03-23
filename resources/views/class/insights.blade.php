@@ -5,7 +5,7 @@
 
 <!-- Bootstrap Modal (INSIGHTS) -->
 <div class="modal fade" id="insightsModalInsights" tabindex="-1" aria-labelledby="insightsModalInsightsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="insights-content custom-modal">
 
             <div class="modal-header">

@@ -66,29 +66,15 @@
         });
     @endif
 
-    function openModal() {
-        document.getElementById('termsModal').style.display = 'block';
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+    var registerModal = document.getElementById('registerModal');
 
-    function closeModal() {
-        document.getElementById('termsModal').style.display = 'none';
-    }
+    registerModal.addEventListener('hidden.bs.modal', function () {
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = 'auto'; // Ensures scrolling is re-enabled
+    });
+});
 
-    function enableCheckbox() {
-        var termsText = document.getElementById('termsText');
-        var checkbox = document.getElementById('termsCheckbox');
-
-        if (termsText.scrollTop + termsText.clientHeight >= termsText.scrollHeight - 5) {
-        checkbox.disabled = false;
-        }
-    }
-
-    function toggleRegisterButton() {
-        var checkbox = document.getElementById('termsCheckbox');
-        var registerBtn = document.getElementById('registerBtn');
-
-        registerBtn.disabled = !checkbox.checked;
-    }
     </script>
 
     <!-- External Scripts -->

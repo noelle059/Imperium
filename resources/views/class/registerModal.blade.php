@@ -1,4 +1,4 @@
-<div class="modal fade" id="registerModal" data-bs-backdrop="false" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerModal" data-bs-backdrop="false" tabindex="-1" aria-labelledby="registerModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
         <div class="modal-header">
