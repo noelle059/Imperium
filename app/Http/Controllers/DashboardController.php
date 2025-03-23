@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\ScheduleLog;
+use App\Models\Schedule;
 use App\Models\Classroom;
 use App\Models\Notification;
 use App\Models\Floor;
@@ -91,20 +93,8 @@ class DashboardController extends Controller
     }
 
 
-
     public function index()
     {
-
-
-        $floors = Floor::with(['classrooms' => function ($query) {
-            $query->where('archive_status', 1);
-        }])
-            ->where('archive_status', 1)
-            ->get();
-
-        // Get the current date and time in the Philippines timezone
-        $currentDateTime = Carbon::now('Asia/Manila')->format('l, F j, Y g:i A');
-
         if (!Auth::check()) {
             return redirect()->route('login')->with('alert', 'You must be logged in to access the user dashboard.');
         }
@@ -117,17 +107,31 @@ class DashboardController extends Controller
             return redirect()->route('verification.notice')->with('alert', "Please verify your email before accessing the dashboard.");
         }
 
+        $currentDateTime = Carbon::now('Asia/Manila')->format('l, F j, Y g:i A');
+
+        $floors = Floor::with([
+            'classrooms' => function ($query) {
+                $query->where('archive_status', 1);
+            },
+            'classrooms.schedules.scheduleLogs' => function ($query) {
+                $query->whereNull('end_time');
+            },
+            'classrooms.schedules.professor',
+            'classrooms.schedules.subject'
+        ])
+        ->where('archive_status', 1)
+        ->get();
 
         $user = Auth::user();
         $rooms = Room::all();
 
         foreach ($rooms as $room) {
             if ($room->controller && $room->professor_name === $user->name) {
-                $room->button_status = "Remote"; // Show "Remote" pag professor na nag access
+                $room->button_status = "Remote"; // Show "Remote" if the logged-in professor is in control
             } elseif ($room->controller) {
-                $room->button_status = "Occupied"; // Show "Occupied" pag other professor ang nag login sa website
+                $room->button_status = "Occupied"; // Show "Occupied" if another professor is in control
             } else {
-                $room->button_status = "Offline"; // Pag wala pang nag access
+                $room->button_status = "Offline"; // Show "Offline" if no one is controlling the room
             }
         }
 

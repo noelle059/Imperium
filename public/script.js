@@ -17,18 +17,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Reference to the RFID node in Firebase
 const rfidRef = ref(db, "/rfid/access");
 
-// RFID scanning
-let isProcessingRFID = false; // Flag to prevent multiple requests
+let isProcessingRFID = false;
 const accessState = ref(db, "/access/state");
 
 onValue(rfidRef, function(snapshot) {
     const scannedRfid = snapshot.val();
 
     if (scannedRfid && !isProcessingRFID) {
-        isProcessingRFID = true; // Set the flag to prevent re-calling
+        isProcessingRFID = true;
         console.log('RFID scanned:', scannedRfid);
 
         fetch('/handle-rfid-scan', {
@@ -41,9 +39,9 @@ onValue(rfidRef, function(snapshot) {
         })
         .then(response => response.json())
         .then(data => {
-                console.log("Server response:", data); // Debugging step
+                console.log("Server response:", data);
                 if (data.access_state !== undefined) {
-                    console.log("Updating Firebase with:", data.access_state); // Debugging step
+                    console.log("Updating Firebase with:", data.access_state);
                     set(accessState, data.access_state);
                 } else {
                     console.error("RFID scan failed:", data.error);
@@ -66,7 +64,6 @@ onValue(rfidRef, function(snapshot) {
 });
 
 
-// Function to update the table row for Room #1
 function updateTableRow(room) {
     const row = document.querySelector(`#room-${room.id}`);
     if (row) {
