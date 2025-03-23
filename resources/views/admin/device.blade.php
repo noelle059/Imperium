@@ -31,7 +31,7 @@
                     <th>No.</th>
                     <th>Device Name</th>
                     <th>Classroom Name</th>
-                    <th>Status</th>
+                    {{-- <th>Status</th> --}}
                     <th>Entry Date</th>
                     <th>Action</th>
                 </tr>
@@ -53,13 +53,13 @@
                         </td>
 
 
-                        <td>
+                        {{-- <td>
                             @if ($device->state == 0)
                                 OFF
                             @elseif ($device->state == 1)
                                 ON
                             @endif
-                        </td>
+                        </td> --}}
 
                         <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone(value: 'Asia/Manila')->format('F j, Y \a\t h:i A') }}
                         </td>

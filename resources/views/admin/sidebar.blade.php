@@ -4,28 +4,31 @@
         <!-- Sidebar Header-->
         <!-- Sidebar Header -->
         <div class="sidebar-header d-flex align-items-center">
-        <div class="avatar">
-    @if (Auth::check())
-        @php
-            $idPicture = Auth::user()->id_picture; 
-            $filename = basename($idPicture); 
-            $localImagePath = public_path('uploads/id_pictures/' . $filename); 
-        @endphp
-        
-        @if (Str::startsWith($idPicture, 'http'))
-            <!-- If id_picture is a Google URL -->
-            <img src="{{ $idPicture }}" alt="Profile Picture" class="img-fluid rounded-circle">
-        @elseif (file_exists($localImagePath))
-            <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
-            <img src="{{ asset('uploads/id_pictures/' . $filename) }}" alt="Profile Picture" class="img-fluid rounded-circle">
-        @else
-            <!-- Fallback to default avatar if no valid image is found -->
-            <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
-        @endif
-    @else
-        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid rounded-circle">
-    @endif
-</div>
+            <div class="avatar">
+                @if (Auth::check())
+                    @php
+                        $idPicture = Auth::user()->id_picture;
+                        $filename = basename($idPicture);
+                        $localImagePath = public_path('uploads/id_pictures/' . $filename);
+                    @endphp
+
+                    @if (Str::startsWith($idPicture, 'http'))
+                        <!-- If id_picture is a Google URL -->
+                        <img src="{{ $idPicture }}" alt="Profile Picture" class="img-fluid rounded-circle">
+                    @elseif (file_exists($localImagePath))
+                        <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
+                        <img src="{{ asset('uploads/id_pictures/' . $filename) }}" alt="Profile Picture"
+                            class="img-fluid rounded-circle">
+                    @else
+                        <!-- Fallback to default avatar if no valid image is found -->
+                        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
+                            class="img-fluid rounded-circle">
+                    @endif
+                @else
+                    <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar"
+                        class="img-fluid rounded-circle">
+                @endif
+            </div>
 
             <div class="title">
                 @if (Auth::check())
@@ -93,13 +96,14 @@
                 <a href="#Report" aria-expanded="false" data-toggle="collapse">
                     <i class="material-icons" style="font-size: 25px;">folder</i>Report
                 </a>
-                
+
                 <ul id="Report" class="collapse list-unstyled">
                     <li> <a href="{{ route('report.schedule') }}">
-                                 <i class="fa fa-building" style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
+                            <i class="fa fa-building"
+                                style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
                     </li>
 
-                    <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li>
+                    {{-- <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li> --}}
                 </ul>
             </li>
 
