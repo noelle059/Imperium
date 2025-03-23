@@ -73,7 +73,7 @@
                         <td>{{ $schedule && $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') : 'N/A' }}
                         </td>
                         <td class="action-cell">
-                            @if ($activeLog)
+                            @if ($activeLog && $schedule->user_id === auth()->user()->id)
                                 <button class="btn gradient-button controller" type="button"
                                     data-id="{{ $classroom->id }}"
                                     data-classroom-name="{{ $classroom->classroom_name }}" data-bs-toggle="modal"
@@ -85,12 +85,14 @@
                                     data-bs-toggle="modal" data-bs-target="#room_exit">
                                     <i class="fa-solid fa-door-closed"></i>
                                 </button>
-                            @else
+                            @elseif (!$activeLog)
                                 <button class="btn gradient-button entry" type="button" data-id="{{ $classroom->id }}"
                                     data-bs-toggle="modal" data-bs-target="#entryModal">
                                     <i class="fa-solid fa-door-open"></i>
                                 </button>
-                            @endif
+                                @else
+                                    <span class="text-muted">No Access</span>
+                                @endif
                         </td>
                     </tr>
                 @endforeach
