@@ -41,4 +41,5 @@ class Classroom extends Model
     {
         return $this->belongsToMany(Subject::class);
     }
+
 }

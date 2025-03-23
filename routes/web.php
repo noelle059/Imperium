@@ -8,7 +8,9 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\ScheduleLogController;
 
+use App\Services\FirebaseService;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -247,6 +249,40 @@ Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSc
 
 // Route to get all schedules (calendar)
 Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
+Route::get('/professor/subjects', [ScheduleController::class, 'getProfessorSubjects']);
+Route::get('/check-schedule', [ScheduleController::class, 'checkSchedule']);
+
+
+Route::get('/get-rfid-from-firebase', function (FirebaseService $firebase) {
+    try {
+        // Clear old cache
+        Cache::forget("firebase:rfid/access");
+
+        // Fetch fresh data
+        $rfid = $firebase->getData('rfid/access');
+
+        return response()->json(['rfid' => $rfid]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Failed to fetch RFID'], 500);
+    }
+});
+
+
+
+
+Route::get('/get-professor-rfid', function () {
+    $professor = Auth::user();
+    return response()->json(['rfid_uid' => $professor->rfid_uid]);
+});
+
+// Schedule Logs
+Route::get('/schedule-logs', [ScheduleLogController::class, 'index']);
+Route::get('/schedule-logs/user/{userId}', [ScheduleLogController::class, 'getUserLogs']);
+Route::post('/schedule-log', [ScheduleLogController::class, 'store']);
+Route::put('/schedule-logs/{id}', [ScheduleLogController::class, 'update']);
+Route::delete('/schedule-logs/{id}', [ScheduleLogController::class, 'destroy']);
+Route::get('/active-log', [ScheduleLogController::class, 'getActiveLog']);
+Route::put('/schedule-log/{id}/exit', [ScheduleLogController::class, 'exitClassroom']);
 
 
 // Route to show Archive (with plural form)

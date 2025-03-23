@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-  
+
     protected $fillable = [
         'classroom_id', 'user_id', 'subject_id', 'start_time', 'end_time', 'schedule_day', 'archive_status'
     ];
@@ -28,4 +28,16 @@ class Schedule extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
+
+    public function scheduleLogs()
+    {
+        return $this->hasMany(ScheduleLog::class);
+    }
+
+    public function professor()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
 }

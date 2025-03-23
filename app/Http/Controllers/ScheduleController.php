@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Subject;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 use Carbon\Carbon;
 
@@ -243,6 +244,108 @@ public function printAll(Request $request)
     $pdf = Pdf::loadView('admin.schedule_pdf_all', compact('schedules', 'start_date', 'end_date', 'current_date', 'name'));
 
     return $pdf->download('schedule_Report_All.pdf');
+}
+
+public function getProfessorSubjects()
+{
+    $professorId = Auth::id();
+
+    // Get subjects related to the professor via schedules
+    $subjects = Schedule::where('user_id', $professorId)
+        ->where('archive_status', 1)
+        ->with('subject')
+        ->get()
+        ->pluck('subject')
+        ->unique('id');
+    return response()->json($subjects);
+}
+
+public function checkSchedule(Request $request)
+{
+    try {
+        $classroomId = $request->query('classroom_id');
+        $subjectId = $request->query('subject_id');
+        $professorId = Auth::id();
+        $currentDate = Carbon::now()->toDateString();
+        $currentTime = Carbon::now()->format('H:i:s');
+
+        Log::info("🔍 Checking schedule for Classroom: $classroomId, Subject: $subjectId, Professor: $professorId");
+        Log::info("📆 Date: $currentDate, 🕒 Time: $currentTime");
+
+        // Retrieve the schedule with all necessary conditions
+        $schedule = Schedule::where('classroom_id', $classroomId)
+            ->where('subject_id', $subjectId)
+            ->where('user_id', $professorId) // logged-in professor or yung nasa database na id lang ang makaka access
+            ->where('archive_status', 1)
+            ->whereDate('schedule_day', '=', $currentDate)
+            ->whereTime('start_time', '<=', $currentTime)
+            ->whereTime('end_time', '>=', $currentTime)
+            ->first();
+
+        if (!$schedule) {
+            Log::warning(" No valid schedule found!");
+
+            // Check if classroom and subject are correct but professor is wrong
+            $wrongProfessor = Schedule::where('classroom_id', $classroomId)
+                ->where('subject_id', $subjectId)
+                ->whereDate('schedule_day', '=', $currentDate)
+                ->first();
+
+            if ($wrongProfessor) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'You are not assigned to this subject in this classroom.'
+                ]);
+            }
+
+            // Check if classroom and professor are correct but subject is wrong
+            $wrongSubject = Schedule::where('classroom_id', $classroomId)
+                ->where('user_id', $professorId)
+                ->whereDate('schedule_day', '=', $currentDate)
+                ->first();
+
+            if ($wrongSubject) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'The selected subject is not assigned to this classroom at this time.'
+                ]);
+            }
+
+            // Check if classroom and professor are correct but wrong time
+            $wrongTime = Schedule::where('classroom_id', $classroomId)
+                ->where('user_id', $professorId)
+                ->where('subject_id', $subjectId)
+                ->where('archive_status', 1)
+                ->whereDate('schedule_day', '=', $currentDate)
+                ->first();
+
+            if ($wrongTime) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'You are trying to enter outside of the scheduled time.'
+                ]);
+            }
+
+            return response()->json([
+                'error' => true,
+                'message' => 'The selected subject is not scheduled for this classroom at this time.'
+            ]);
+        }
+
+        Log::info(" Schedule found: " . json_encode($schedule));
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Schedule is valid.',
+            'schedule_id' => $schedule->id
+        ]);
+    } catch (\Exception $e) {
+        Log::error(" Error checking schedule: " . $e->getMessage());
+        return response()->json([
+            'error' => true,
+            'message' => 'An unexpected error occurred. Check logs for details.'
+        ]);
+    }
 }
 
 
