@@ -62,58 +62,69 @@ class AdminController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, FirebaseService $firebaseService)
     {
         try {
-            // Find the subject by ID
+            $scannedRFID = $firebaseService->getCurrentRFID();
+
+            if (!$scannedRFID) {
+                return redirect()->route('accounts')
+                    ->with('error', 'No RFID scanned.');
+            }
+
             $account = User::findOrFail($id);
+
+            // CASE 1: Professor is already registered & admin scans super admin RFID → Deactivate first
+            if ($account->rfid_uid && $scannedRFID === 'a2aa1702') {
+                $account->is_activated = 0; // Deactivate the professor
+                $account->rfid_uid = null;  // Remove RFID
+                $account->save();
+
+                return redirect()->route('accounts')
+                    ->with('success', 'Professor has been deactivated successfully!');
+            }
+
+            // CASE 2: Professor tries to register using Super Admin RFID → Block it
+            if (!$account->rfid_uid && $scannedRFID === 'a2aa1702') {
+                return redirect()->route('accounts')
+                    ->with('error', 'This RFID is reserved for the Super Admin. Please use a different card.');
+            }
+
+            if (!is_null($account->rfid_uid) && $account->rfid_uid !== $scannedRFID) {
+                return redirect()->route('accounts')
+                    ->with('error', 'Please deactivate the professor first before assigning a new RFID.');
+            }
 
             // Validate the request data
             $validated = $request->validate([
                 'rfid_uid' => 'required|string|max:255',
             ]);
 
-            // Check if RFID UID already exists for another professor
+            // Check if RFID UID is already registered to another professor
             $existingAccount = User::where('rfid_uid', $validated['rfid_uid'])
-            ->where('id', '!=', $id) // Exclude the current professor
-            ->first();
+                ->where('id', '!=', $id)
+                ->first();
 
             if ($existingAccount) {
                 return redirect()->route('accounts')
-                ->with('error', 'This RFID is already registered to another account!');
+                    ->with('error', 'This RFID is already registered to another account!');
             }
 
-
-            // Check if anything has changed before updating
-            $isUpdated = false;
-
-            // Check each field and compare with the current subject values
-            if ($account->rfid_uid !== $validated['rfid_uid']) {
-                $account->rfid_uid = $validated['rfid_uid'];
-                $isUpdated = true;
-            }
-
-            // Set is_activated to 1 (indicating account is activated)
-            $account->is_activated = 1;  // Mark account as activated
-            $isUpdated = true;  // Mark as updated because we're changing the activation status
-
-            // If nothing was updated, set a warning session message
-            if (!$isUpdated) {
-                return redirect()->route('accounts')
-                    ->with('warning', 'No changes were made to the account no.');
-            }
-            // Save the changes to the database
+            // CASE 4: Assign RFID to professor only if there’s no previous RFID
+            $account->rfid_uid = $validated['rfid_uid'];
+            $account->is_activated = 1;
             $account->save();
 
-            // Redirect back to the subjects list with a success message
             return redirect()->route('accounts')
-                ->with('success', 'Account No. updated successfully!');
+                ->with('success', 'RFID updated successfully!');
         } catch (\Exception $e) {
-            // In case of any error, set an error session message
             return redirect()->route('accounts')
-                ->with('error', 'An error occurred while updating the subject: ' . $e->getMessage());
+                ->with('error', 'An error occurred while updating: ' . $e->getMessage());
         }
     }
+
+
+
 
 
     /**
@@ -159,7 +170,7 @@ class AdminController extends Controller
             'password' => 'required|min:6|confirmed',
             'id_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Ensure it's a valid image file
         ]);
-    
+
         // Handle file upload
         if ($request->hasFile('id_picture')) {
             $image = $request->file('id_picture');
@@ -168,7 +179,7 @@ class AdminController extends Controller
         } else {
             $imageName = 'default-profile.png'; // Default image if no upload
         }
-    
+
         // Create new admin user
         User::create([
             'name' => $request->name,
@@ -180,10 +191,10 @@ class AdminController extends Controller
             'id_picture' => $imageName, // Save the filename in the database
             'archive_status' =>0,
         ]);
-    
+
         return redirect()->back()->with('success', 'Admin account created successfully!');
     }
-    
+
 
     public function admin_update(Request $request)
     {
@@ -194,7 +205,7 @@ class AdminController extends Controller
             'email' => 'required|email|unique:users,email,' . $request->id,
             'contact_number' => 'required|string|max:20',
         ]);
-    
+
         $admin = User::findOrFail($request->id);
         $admin->update([
             'name' => $request->name,
@@ -202,22 +213,22 @@ class AdminController extends Controller
             'email' => $request->email,
             'contact_number' => $request->contact_number,
         ]);
-    
+
         return redirect()->back()->with('success', 'Admin updated successfully!');
     }
-    
+
 
 
     public function destroy(Request $request)
     {
         $admin = User::findOrFail($request->id);
-        
+
         // Update archive_status to 0 instead of deleting
         $admin->update(['archive_status' => 1]);
-    
+
         return response()->json(['success' => true, 'message' => 'Admin archived successfully!']);
     }
-    
+
 
 
 

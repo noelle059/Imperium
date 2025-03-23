@@ -45,6 +45,33 @@
 
 
 <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyB8wMtr-QwTxDQ0m86rUTY_BYeP-9z8tMg",
+        authDomain: "imperium---classroomautomation.firebaseapp.com",
+        databaseURL: "https://imperium---classroomautomation-default-rtdb.firebaseio.com",
+        projectId: "imperium---classroomautomation",
+        storageBucket: "imperium---classroomautomation.firebasestorage.app",
+        messagingSenderId: "1037315551683",
+        appId: "1:1037315551683:web:6abb03bc60964037f3cd76",
+        measurementId: "G-WF30WFY4HZ"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    function listenForRFIDUpdates() {
+        const rfidRef = firebase.database().ref('rfid/current');
+
+        rfidRef.on('value', (snapshot) => {
+            const rfidValue = snapshot.val();
+            if (rfidValue) {
+                document.getElementById('rfid_uid').value = rfidValue;
+            }
+        });
+    }
+
+
+
     // Attach event listener to each Update button to populate the modal and set form action
     document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
         button.addEventListener('click', async function() { // Mark the function as async
@@ -63,25 +90,10 @@
             document.getElementById('account_email').value = professorEmail;
 
             if (!professorRfidUid || professorActivated == "0") {
-                try {
-                    const response = await fetch("{{ route('fetch.rfid') }}");
-
-                    if (!response.ok) {
-                        throw new Error(`Server error: ${response.status}`);
-                    }
-
-                    const data = await response.json();
-                    if (data.success) {
-                        document.getElementById('rfid_uid').value = data.rfid;
-                    } else {
-                        console.error("RFID fetch failed:", data.message);
-                    }
-                } catch (error) {
-                    console.error("Error fetching RFID:", error);
-                }
-        } else {
-            document.getElementById('rfid_uid').value = professorRfidUid;
-        }
+                listenForRFIDUpdates();
+            } else {
+                document.getElementById('rfid_uid').value = professorRfidUid;
+            }
         });
     });
 

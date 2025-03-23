@@ -62,7 +62,7 @@ class FirebaseService
     // Get current RFID data
     public function getCurrentRFID()
     {
-        return $this->getData('rfid/current');
+        return $this->database->getReference('rfid/current')->getValue();
     }
 
 
