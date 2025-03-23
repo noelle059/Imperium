@@ -48,7 +48,7 @@
                     <h2 class="modal-title">{{ $aboutUs->modal_title ?? 'An IoT-Based Energy Conservation Smart Classroom System' }}</h2>
                     <p class="modal-subtitle"><em>{{ $aboutUs->modal_subtitle ?? 'Intelligent Automation & Soft Computing' }}</em></p>
                     <p class="modal-subtitle"><em>DOI: {{ $aboutUs->modal_doi ?? '10.32604/iasc.2023.032250' }}</em></p>
-                    <p class="modal-meta"><strong>{{ $aboutUs->modal_meta ?? 'Article' }}</strong></p>
+                    <p class="modal-meta"><em>{{ $aboutUs->modal_meta ?? 'Article' }}</em></p>
 
                     <p class="modal-abstract">
                         <strong>Abstract:</strong>

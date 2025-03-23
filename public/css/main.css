@@ -166,13 +166,13 @@ body {
 }
 
 #carouselExampleIndicators img {
-    max-height: 850px;
+    max-height: 790px;
     width: auto;
     object-fit: contain;
 }
 
 #carouselExampleIndicators {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 10px;
 }
 

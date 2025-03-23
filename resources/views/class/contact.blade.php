@@ -1,7 +1,7 @@
 <footer id="contact" class="new-footer">
     <div class="container">
         <div class="footer-content">
-            
+
             <div class="footer-left">
                 <img src="{{ asset($footerContent->logo ?? 'images/default-logo.svg') }}" alt="Imperium Logo" class="footer-logo">
                 <p class="footer-desc">
@@ -26,7 +26,13 @@
 
             <div class="footer-address">
                 <h5>Address</h5>
-                <p>{{ $footerContent->address ?? 'Default address' }}</p>
+                <p style="padding-bottom: 5px;">{{ $footerContent->address ?? 'Default address' }}</p>
+
+                <h5>Email</h5>
+                <p style="padding-bottom: 5px;">{{ $email->address ?? 'imperiumsystem001@gmail.com' }}</p>
+
+                <h5>Contact</h5>
+                <p style="padding-bottom: 5px;">{{ $email->contact ?? '0905 334 3426' }}</p>
             </div>
 
             <div class="footer-right">
