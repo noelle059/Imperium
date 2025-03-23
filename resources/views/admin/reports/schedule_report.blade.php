@@ -9,15 +9,14 @@
                 <i class="icon-magnifying-glass-browser" style="cursor: pointer; padding-right: 5px;"></i>
 
                 <!-- Room Search -->
-                <label for="searchRoom">Search Room:</label>
+                <label for="searchRoom"></label>
                 <input type="text" id="searchRoom" placeholder="Enter Room Name">
-
                 <!-- Start Date -->
-                <label for="searchInputStart">Start Date:</label>
+                <label for="searchInputStart">Start</label>
                 <input type="date" id="searchInputStart">
 
                 <!-- End Date -->
-                <label for="searchInputEnd">End Date:</label>
+                <label for="searchInputEnd">End</label>
                 <input type="date" id="searchInputEnd">
             </div>
         </div>
@@ -48,10 +47,12 @@
                     @if ($schedule->archive_status == 1)
                         <tr class="table-row">
                             <td>{{ $schedule->id }}</td>
-                            <td class="room-name">{{ $schedule->classroom ? $schedule->classroom->classroom_name : 'N/A' }}</td>
+                            <td class="room-name">
+                                {{ $schedule->classroom ? $schedule->classroom->classroom_name : 'N/A' }}</td>
                             <td>{{ $schedule->user ? $schedule->user->name : 'N/A' }}</td>
                             <td>{{ $schedule->subject ? $schedule->subject->subject_name : 'N/A' }}</td>
-                            <td class="entry-date" data-date="{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('Y-m-d') }}">
+                            <td class="entry-date"
+                                data-date="{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('Y-m-d') }}">
                                 {{ \Carbon\Carbon::parse($schedule->schedule_day)->translatedFormat('F j, Y') }}
                             </td>
                             <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }}</td>
@@ -66,76 +67,75 @@
                 @endforeach
             </tbody>
         </table>
-        
+
     </div>
 
-@include('admin.footer')
+    @include('admin.footer')
 
-<script>
-document.getElementById('searchInputStart').addEventListener('change', filterTable);
-document.getElementById('searchInputEnd').addEventListener('change', filterTable);
-document.getElementById('searchRoom').addEventListener('input', filterTable);
+    <script>
+        document.getElementById('searchInputStart').addEventListener('change', filterTable);
+        document.getElementById('searchInputEnd').addEventListener('change', filterTable);
+        document.getElementById('searchRoom').addEventListener('input', filterTable);
 
-function filterTable() {
-    let startDate = document.getElementById('searchInputStart').value;
-    let endDate = document.getElementById('searchInputEnd').value;
-    let searchRoom = document.getElementById('searchRoom').value.toLowerCase();
-    let table = document.getElementById('uniqueTable');
-    let rows = table.getElementsByTagName('tr');
+        function filterTable() {
+            let startDate = document.getElementById('searchInputStart').value;
+            let endDate = document.getElementById('searchInputEnd').value;
+            let searchRoom = document.getElementById('searchRoom').value.toLowerCase();
+            let table = document.getElementById('uniqueTable');
+            let rows = table.getElementsByTagName('tr');
 
-    let start = startDate ? new Date(startDate) : null;
-    let end = endDate ? new Date(endDate) : null;
+            let start = startDate ? new Date(startDate) : null;
+            let end = endDate ? new Date(endDate) : null;
 
-    for (let i = 1; i < rows.length; i++) {
-        let dateCell = rows[i].getElementsByClassName('entry-date')[0];
-        let roomCell = rows[i].getElementsByClassName('room-name')[0];
+            for (let i = 1; i < rows.length; i++) {
+                let dateCell = rows[i].getElementsByClassName('entry-date')[0];
+                let roomCell = rows[i].getElementsByClassName('room-name')[0];
 
-        if (dateCell && roomCell) {
-            let rowDate = new Date(dateCell.getAttribute("data-date")); // ✅ Read from data-date attribute
-            let roomText = roomCell.textContent.trim().toLowerCase();
+                if (dateCell && roomCell) {
+                    let rowDate = new Date(dateCell.getAttribute("data-date")); // ✅ Read from data-date attribute
+                    let roomText = roomCell.textContent.trim().toLowerCase();
 
-            let isInRange = (!start || rowDate.getTime() >= start.getTime()) &&
-                            (!end || rowDate.getTime() <= end.getTime()) || 
-                            (start && !end);
+                    let isInRange = (!start || rowDate.getTime() >= start.getTime()) &&
+                        (!end || rowDate.getTime() <= end.getTime()) ||
+                        (start && !end);
 
-            let roomMatch = searchRoom === "" || roomText.includes(searchRoom);
+                    let roomMatch = searchRoom === "" || roomText.includes(searchRoom);
 
-            rows[i].style.display = isInRange && roomMatch ? '' : 'none';
+                    rows[i].style.display = isInRange && roomMatch ? '' : 'none';
+                }
+            }
         }
-    }
-}
 
-function printAll() {
-    let startDate = document.getElementById('searchInputStart').value;
-    let endDate = document.getElementById('searchInputEnd').value;
+        function printAll() {
+            let startDate = document.getElementById('searchInputStart').value;
+            let endDate = document.getElementById('searchInputEnd').value;
 
-    let url = "{{ route('schedule.printAll') }}";
-    
-    // Append query parameters only if dates are selected
-    let params = [];
-    if (startDate) params.push("start_date=" + encodeURIComponent(startDate));
-    if (endDate) params.push("end_date=" + encodeURIComponent(endDate));
+            let url = "{{ route('schedule.printAll') }}";
 
-    if (params.length > 0) {
-        url += "?" + params.join("&");
-    }
+            // Append query parameters only if dates are selected
+            let params = [];
+            if (startDate) params.push("start_date=" + encodeURIComponent(startDate));
+            if (endDate) params.push("end_date=" + encodeURIComponent(endDate));
 
-    window.location.href = url;
-}
+            if (params.length > 0) {
+                url += "?" + params.join("&");
+            }
+
+            window.location.href = url;
+        }
 
 
-function printSchedule(scheduleId) {
-    let startDate = document.getElementById('searchInputStart').value;
-    let endDate = document.getElementById('searchInputEnd').value;
+        function printSchedule(scheduleId) {
+            let startDate = document.getElementById('searchInputStart').value;
+            let endDate = document.getElementById('searchInputEnd').value;
 
-    console.log("Start Date Sent:", startDate); // Debugging
-    console.log("End Date Sent:", endDate); // Debugging
+            console.log("Start Date Sent:", startDate); // Debugging
+            console.log("End Date Sent:", endDate); // Debugging
 
-    let url = "{{ url('/admin/schedule/print') }}/" + scheduleId 
-              + "?start_date=" + encodeURIComponent(startDate) 
-              + "&end_date=" + encodeURIComponent(endDate);
+            let url = "{{ url('/admin/schedule/print') }}/" + scheduleId +
+                "?start_date=" + encodeURIComponent(startDate) +
+                "&end_date=" + encodeURIComponent(endDate);
 
-    window.location.href = url;
-}
-
-</script>
+            window.location.href = url;
+        }
+    </script>

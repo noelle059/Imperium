@@ -351,8 +351,7 @@
 
 /* Meta Information */
 .modal-meta {
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 14px!important;
     margin-bottom: 10px;
     text-align: center;
 }

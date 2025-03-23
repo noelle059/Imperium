@@ -23,7 +23,7 @@ body {
     height: 80px;
     border-radius: 2px;
     padding: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgba(71, 119, 63, 1);
 }
 
 .navbar-brand{
@@ -39,8 +39,7 @@ body {
 }
 
 
-.login-button,
-.register-button {
+.login-button{
     background-color: #47773f;
     color: #fff;
     font-size: 20px;
@@ -52,7 +51,7 @@ body {
     width: 130px;
     transition: 0.3s background-color;
     text-align: center;
-    margin-right: 0;
+    margin-right: 25px;
 }
 
 
@@ -166,13 +165,13 @@ body {
 }
 
 #carouselExampleIndicators img {
-    max-height: 850px;
+    max-height: 790px;
     width: auto;
     object-fit: contain;
 }
 
 #carouselExampleIndicators {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 10px;
 }
 

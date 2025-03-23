@@ -23,7 +23,7 @@
     transition: 0.5s;
 }
 
-.modal-dialog.modal-s {
+.modal-dialog.modal-lg {
     max-width: 40%;
     width: 400px;
     height: auto;
@@ -39,9 +39,25 @@
     color: #555;
 }
 
+.g-recaptcha {
+    transform: scale(0.85);
+    transform-origin: left top;
+}
+
+@media (max-width: 480px) {
+    .g-recaptcha {
+        transform: scale(0.75);
+    }
+}
+
+@media (max-width: 360px) {
+    .g-recaptcha {
+        transform: scale(0.65);
+    }
+}
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     position: relative;
 }
 
@@ -161,6 +177,7 @@ input[type='password'] {
     border-radius: 8px;
     outline: none;
     font-size: 13px;
+    margin: 2px;
 }
 
     input[type='submit']:hover {

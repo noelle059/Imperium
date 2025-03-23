@@ -48,51 +48,53 @@
             </tr>
         </thead>
         <tbody>
-        @foreach ($floors as $floor)
-    <tr class="floor-header">
-        <td colspan="8" class="floor-name">
-            <strong>{{ $floor->floor_name }}</strong>
-        </td>
-    </tr>
+            @foreach ($floors as $floor)
+                <tr class="floor-header">
+                    <td colspan="8" class="floor-name">
+                        <strong>{{ $floor->floor_name }}</strong>
+                    </td>
+                </tr>
 
-    @foreach ($floor->classrooms as $classroom)
-            @php
-                $activeLog = $classroom->schedules->flatMap->scheduleLogs->where('end_time', null)->first();
-                $schedule = $activeLog ? $activeLog->schedule : null;
-            @endphp
+                @foreach ($floor->classrooms as $classroom)
+                    @php
+                        $activeLog = $classroom->schedules->flatMap->scheduleLogs->where('end_time', null)->first();
+                        $schedule = $activeLog ? $activeLog->schedule : null;
+                    @endphp
 
-            <tr class="table-row">
-                <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
-                <td>{{ $classroom->classroom_name }}</td>
-                <td>{{ $schedule->professor->name ?? 'N/A' }}</td>
-                <td>{{ $schedule->subject->subject_name ?? 'N/A' }}</td>
-                <td>{{ $schedule ? \Carbon\Carbon::parse($schedule->schedule_day)->format('F j, Y') : 'N/A' }}</td>
-                <td>{{ $schedule && $schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') : 'N/A' }}</td>
-                <td>{{ $schedule && $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') : 'N/A' }}</td>
-                <td class="action-cell">
-                    @if ($activeLog)
-                        <button class="btn gradient-button controller" type="button"
-                            data-id="{{ $classroom->id }}" data-classroom-name="{{ $classroom->classroom_name }}"
-                            data-bs-toggle="modal" data-bs-target="#controlModal">
-                            <i class="fa-solid fa-gamepad"></i>
-                        </button>
+                    <tr class="table-row">
+                        <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
+                        <td>{{ $classroom->classroom_name }}</td>
+                        <td>{{ $schedule->professor->name ?? 'N/A' }}</td>
+                        <td>{{ $schedule->subject->subject_name ?? 'N/A' }}</td>
+                        <td>{{ $schedule ? \Carbon\Carbon::parse($schedule->schedule_day)->format('F j, Y') : 'N/A' }}
+                        </td>
+                        <td>{{ $schedule && $schedule->start_time ? \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') : 'N/A' }}
+                        </td>
+                        <td>{{ $schedule && $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') : 'N/A' }}
+                        </td>
+                        <td class="action-cell">
+                            @if ($activeLog)
+                                <button class="btn gradient-button controller" type="button"
+                                    data-id="{{ $classroom->id }}"
+                                    data-classroom-name="{{ $classroom->classroom_name }}" data-bs-toggle="modal"
+                                    data-bs-target="#controlModal">
+                                    <i class="fa-solid fa-gamepad"></i>
+                                </button>
 
-                        <button class="btn gradient-button exit" type="button" data-id="{{ $classroom->id }}"
-                            data-bs-toggle="modal" data-bs-target="#room_exit">
-                            <i class="fa-solid fa-door-closed"></i>
-                        </button>
-                    @else
-                        <button class="btn gradient-button entry" type="button"
-                            data-id="{{ $classroom->id }}"
-                            data-bs-toggle="modal"
-                            data-bs-target="#entryModal">
-                            <i class="fa-solid fa-door-open"></i>
-                        </button>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-    @endforeach
+                                <button class="btn gradient-button exit" type="button" data-id="{{ $classroom->id }}"
+                                    data-bs-toggle="modal" data-bs-target="#room_exit">
+                                    <i class="fa-solid fa-door-closed"></i>
+                                </button>
+                            @else
+                                <button class="btn gradient-button entry" type="button" data-id="{{ $classroom->id }}"
+                                    data-bs-toggle="modal" data-bs-target="#entryModal">
+                                    <i class="fa-solid fa-door-open"></i>
+                                </button>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+            @endforeach
         </tbody>
     </table>
 </div>
@@ -115,8 +117,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
+                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
             </div>
         </div>
     </div>
@@ -319,131 +321,136 @@
     setInterval(updateDateTime, 1000);
 </script>
 
+
+
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    let exitModal = document.getElementById("room_exit");
-    let confirmExitBtn = document.getElementById("confirmExit");
-    let exitRfidLabel = document.getElementById("exitRfidLabel");
+    document.addEventListener("DOMContentLoaded", function() {
+        let exitModal = document.getElementById("room_exit");
+        let confirmExitBtn = document.getElementById("confirmExit");
+        let exitRfidLabel = document.getElementById("exitRfidLabel");
 
-    document.querySelectorAll(".exit").forEach(button => {
-        button.addEventListener("click", function () {
-            let classroomId = this.getAttribute("data-id");
-            exitModal.setAttribute("data-classroom-id", classroomId);
-            console.log("Exit modal opened for Classroom ID:", classroomId);
-        });
-    });
-
-    exitModal.addEventListener("show.bs.modal", function () {
-        exitRfidLabel.style.display = "block";
-        exitRfidLabel.textContent = "Scanning RFID...";
-        confirmExitBtn.style.display = "none";
-        confirmExitBtn.disabled = true;
-
-        fetchProfessorRFIDForExit();
-    });
-
-    function fetchProfessorRFIDForExit() {
-        fetch("/get-professor-rfid")
-            .then(response => response.json())
-            .then(professorData => {
-                console.log("Professor RFID for exit:", professorData.rfid_uid);
-                checkExitRFIDMatch(professorData.rfid_uid);
-            })
-            .catch(error => console.error("Error fetching professor RFID:", error));
-    }
-
-    function checkExitRFIDMatch(professorRFID) {
-        fetch("/get-rfid-from-firebase")
-            .then(response => response.json())
-            .then(data => {
-                console.log("Scanned RFID for exit:", data.rfid);
-
-                if (data.rfid) {
-                    exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
-                    exitRfidLabel.style.display = "block";
-
-                    if (String(data.rfid).trim() !== String(professorRFID).trim()) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Access Denied",
-                            text: "RFID does not match the logged-in professor!",
-                            timer: 2500,
-                            showConfirmButton: false
-                        });
-                        confirmExitBtn.disabled = true;
-                    } else {
-                        confirmExitBtn.disabled = false;
-                        confirmExitBtn.style.display = "block";
-                    }
-                }
-            })
-            .catch(error => console.error("Error fetching RFID from Firebase:", error));
-    }
-
-    confirmExitBtn.addEventListener("click", function () {
-        let professorId = "{{ auth()->user()->id }}";
-        let classroomId = exitModal.getAttribute("data-classroom-id");
-
-        if (!classroomId) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "No classroom selected!",
+        document.querySelectorAll(".exit").forEach(button => {
+            button.addEventListener("click", function() {
+                let classroomId = this.getAttribute("data-id");
+                exitModal.setAttribute("data-classroom-id", classroomId);
+                console.log("Exit modal opened for Classroom ID:", classroomId);
             });
-            return;
+        });
+
+        exitModal.addEventListener("show.bs.modal", function() {
+            exitRfidLabel.style.display = "block";
+            exitRfidLabel.textContent = "Scanning RFID...";
+            confirmExitBtn.style.display = "none";
+            confirmExitBtn.disabled = true;
+
+            fetchProfessorRFIDForExit();
+        });
+
+        function fetchProfessorRFIDForExit() {
+            fetch("/get-professor-rfid")
+                .then(response => response.json())
+                .then(professorData => {
+                    console.log("Professor RFID for exit:", professorData.rfid_uid);
+                    checkExitRFIDMatch(professorData.rfid_uid);
+                })
+                .catch(error => console.error("Error fetching professor RFID:", error));
         }
 
-        fetch(`/active-log?professor_id=${professorId}&classroom_id=${classroomId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.active) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "No Active Session",
-                        text: "You do not have an active session in this classroom!",
-                    });
-                    return;
-                }
-
-                fetch(`/schedule-log/${data.log_id}/exit`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    },
-                    body: JSON.stringify({
-                        end_time: new Date().toISOString(),
-                    }),
-                })
+        function checkExitRFIDMatch(professorRFID) {
+            fetch("/get-rfid-from-firebase")
                 .then(response => response.json())
-                .then(responseData => {
-                    if (responseData.success) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Exit Logged",
-                            text: "You have successfully exited the classroom.",
-                            timer: 2000,
-                            showConfirmButton: false
-                        }).then(() => {
-                            let modalInstance = bootstrap.Modal.getInstance(exitModal);
-                            if (modalInstance) {
-                                modalInstance.hide();
-                            }
-                            window.location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Exit Failed",
-                            text: "Something went wrong!",
-                        });
+                .then(data => {
+                    console.log("Scanned RFID for exit:", data.rfid);
+
+                    if (data.rfid) {
+                        exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
+                        exitRfidLabel.style.display = "block";
+
+                        if (String(data.rfid).trim() !== String(professorRFID).trim()) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Access Denied",
+                                text: "RFID does not match the logged-in professor!",
+                                timer: 2500,
+                                showConfirmButton: false
+                            });
+                            confirmExitBtn.disabled = true;
+                        } else {
+                            confirmExitBtn.disabled = false;
+                            confirmExitBtn.style.display = "block";
+                        }
                     }
                 })
-                .catch(error => console.error("Error logging exit:", error));
-            })
-            .catch(error => console.error("Error checking active log:", error));
+                .catch(error => console.error("Error fetching RFID from Firebase:", error));
+        }
+
+        confirmExitBtn.addEventListener("click", function() {
+            let professorId = "{{ auth()->user()->id }}";
+            let classroomId = exitModal.getAttribute("data-classroom-id");
+
+            if (!classroomId) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "No classroom selected!",
+                });
+                return;
+            }
+
+            fetch(`/active-log?professor_id=${professorId}&classroom_id=${classroomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.active) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "No Active Session",
+                            text: "You do not have an active session in this classroom!",
+                        });
+                        return;
+                    }
+
+                    fetch(`/schedule-log/${data.log_id}/exit`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector(
+                                    'meta[name="csrf-token"]').content,
+                            },
+                            body: JSON.stringify({
+                                end_time: new Date().toISOString(),
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(responseData => {
+                            if (responseData.success) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Exit Logged",
+                                    text: "You have successfully exited the classroom.",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    let modalInstance = bootstrap.Modal.getInstance(
+                                        exitModal);
+                                    if (modalInstance) {
+                                        modalInstance.hide();
+                                    }
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Exit Failed",
+                                    text: "Something went wrong!",
+                                });
+                            }
+                        })
+                        .catch(error => console.error("Error logging exit:", error));
+                })
+                .catch(error => console.error("Error checking active log:", error));
+        });
     });
-});
 </script>
 
 

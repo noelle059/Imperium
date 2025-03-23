@@ -22,7 +22,8 @@ class AdminDashboardController extends Controller
         $subjects = Subject::where('archive_status', 1)->get();
 
         // Fetch devices with state = 1 and archive_status = 1
-        $devices = Device::where('archive_status', 1)->where('state', 1)->get();
+        $devices = Device::where('archive_status', 1);
+        // ->where('state', 1)->get();
 
         // Fetch classrooms with archive_status = 1
         $classrooms = Classroom::where('archive_status', 1)->get();
@@ -41,7 +42,5 @@ class AdminDashboardController extends Controller
 
         // Pass data to the view
         return view('admin.dashboard', compact('users', 'subjects', 'devices', 'classrooms', 'userCount', 'subjectCount', 'deviceCount', 'classroomCount'));
-
-        
     }
 }

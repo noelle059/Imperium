@@ -57,7 +57,7 @@
                                 <div class="icon">
                                     <i class="fa fa-lightbulb-o" style="font-size: 25px;"></i>
                                 </div>
-                                <strong>Active Device</strong>
+                                <strong>Total Devices</strong>
                             </div>
                             <div class="number dashtext-3">{{ $deviceCount }}</div>
                         </div>
@@ -115,7 +115,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
-                    <!-- Stats for Users, Subjects, Devices, Classrooms -->
+                    {{-- <!-- Stats for Users, Subjects, Devices, Classrooms -->
                     <div class="stats-2-block block d-flex">
                         <div class="stats-2">
                             <strong class="d-block">{{ $userCount }}</strong><span class="d-block">Users</span>
@@ -125,8 +125,8 @@
                                     class="progress-bar progress-bar-template progress-bar-small dashbg-1">
                                 </div>
                             </div>
-                        </div>
-                        <div class="stats-2">
+                        </div> --}}
+                    {{-- <div class="stats-2">
                             <strong class="d-block">{{ $subjectCount }}</strong><span class="d-block">Subjects</span>
                             <div class="progress progress-template progress-small">
                                 <div role="progressbar" style="width: {{ $subjectCount / 10 }}%"
@@ -134,9 +134,9 @@
                                     class="progress-bar progress-bar-template progress-bar-small dashbg-2"></div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
-                    <div class="stats-2-block block d-flex">
+                    {{-- <div class="stats-2-block block d-flex">
                         <div class="stats-2">
                             <strong class="d-block">{{ $deviceCount }}</strong><span class="d-block">Devices</span>
                             <div class="progress progress-template progress-small">
@@ -179,7 +179,7 @@
 
 
             </div>
-        </div>
+        </div> --}}
     </section>
 
 

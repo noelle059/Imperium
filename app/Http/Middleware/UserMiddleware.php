@@ -12,12 +12,12 @@ class UserMiddleware
     {
         // If user is not logged in, redirect to homepage
         if (!Auth::check()) {
-            return redirect('home')->with('error', 'Unauthorized access.');
+            return redirect('/')->with('error', 'Unauthorized access.');
         }
 
         // If an admin tries to access user pages, redirect to homepage
         if (Auth::user()->is_admin) {
-            return redirect('home')->with('error', 'You do not have access to this page.');
+            return redirect('/')->with('error', 'You do not have access to this page.');
         }
 
         return $next($request);

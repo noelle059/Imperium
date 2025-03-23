@@ -5,7 +5,7 @@
 
 <!-- Bootstrap Modal (INSIGHTS) -->
 <div class="modal fade" id="insightsModalInsights" tabindex="-1" aria-labelledby="insightsModalInsightsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="insights-content custom-modal">
 
             <div class="modal-header">
@@ -17,7 +17,7 @@
                 <div class="content-box">
                     <h2 class="modal-title">IoT Based Energy Efficient Smart Classroom</h2>
                     <p class="modal-subtitle"><em>Journal of Multidisciplinary Engineering Science Studies (MESS)</em></p>
-                    <p class="modal-meta"><strong>ISSN: 2458-925X | Vol. 6 Issue 12 | December 2020</strong></p>
+                    <p class="modal-meta"><em>ISSN: 2458-925X | Vol. 6 Issue 12 | December 2020</em></p>
 
                     <p class="modal-abstract text-center">
                         <strong>Abstract:</strong>

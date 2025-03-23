@@ -2,9 +2,9 @@
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             @foreach($images as $index => $image)
-                <button type="button" data-bs-target="#carouselExampleIndicators" 
-                        data-bs-slide-to="{{ $index }}" 
-                        @if($index == 0) class="active" @endif 
+                <button type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide-to="{{ $index }}"
+                        @if($index == 0) class="active" @endif
                         aria-label="Slide {{ $index + 1 }}">
                 </button>
             @endforeach
