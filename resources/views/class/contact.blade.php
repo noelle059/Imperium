@@ -29,9 +29,16 @@
                 <p style="padding-bottom: 5px;">{{ $footerContent->address ?? 'Default address' }}</p>
 
                 <h5 style="text-decoration: underline; text-decoration-color: green; text-underline-offset: 5px;">Email:</h5>
-                <p>{{ $email->address ?? 'imperiumsystem001@gmail.com' }}</p>
+                <p>
+                    <a href="mailto:{{ $email->address ?? 'imperiumsystem001@gmail.com' }}"
+                    style="color: white; text-decoration: none;"
+                    onmouseover="this.style.color='green'"
+                    onmouseout="this.style.color='white'">
+                    {{ $email->address ?? 'imperiumsystem001@gmail.com' }}
+                    </a>
+                </p>
 
-                <h5 style="text-decoration: underline; text-decoration-color: green; text-underline-offset: 5px;">Contact:</h5>
+                <h5 style="margin-top: 5px; text-decoration: underline; text-decoration-color: green; text-underline-offset: 5px;">Contact:</h5>
                 <p>{{ $email->contact ?? '0905 334 3426' }}</p>
             </div>
 

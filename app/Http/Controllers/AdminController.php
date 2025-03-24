@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Room;
 use App\Services\FirebaseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
 
 
 
@@ -132,7 +134,7 @@ class AdminController extends Controller
      */
     public function remove($id, Request $request)
 {
-    \Log::info('Archiving user ID: ' . $id); // Debugging log
+    Log::info('Archiving user ID: ' . $id); // Debugging log
 
     $account = User::find($id);
 

@@ -1,6 +1,6 @@
    <!-- Modal -->
    <div class="modal fade" id="add_schedule_modal" tabindex="-1" aria-labelledby="add_schedule_modal" aria-hidden="true">
-       <div class="modal-dialog modal-lg">
+       <div class="modal-dialog modal-lg" style="max-width:30%;">
            <div class="modal-content">
                <div class="modal-header">
                    <h1 class="modal-title fs-5" id="add_schedule_modal">Add Schedule</h1>
@@ -77,7 +77,7 @@
 
    <!-- Update Schedule Modal -->
    <div class="modal fade" id="update_schedule_modal" tabindex="-1" aria-labelledby="update_schedule_modal">
-       <div class="modal-dialog modal-lg">
+       <div class="modal-dialog modal-lg" style="max-width:30%;">
            <div class="modal-content">
                <div class="modal-header">
                    <h1 class="modal-title fs-5" id="update_schedule_modal">Update Schedule</h1>
