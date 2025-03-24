@@ -192,7 +192,7 @@
             data: {
                 labels: ['Users', 'Subjects', 'Devices', 'Classrooms'], // Labels
                 datasets: [{
-                    label: 'Summary',
+                    label: 'Total Data Summary',
                     data: [{{ $userCount }}, {{ $subjectCount }}, {{ $deviceCount }},
                         {{ $classroomCount }}
                     ], // Dynamic data
@@ -229,7 +229,7 @@
             data: {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June'], // Example labels
                 datasets: [{
-                    label: 'Timeline',
+                    label: 'Classroom Monthly Usage',
                     data: [10, 20, 15, 30, 40, 50], // Example data
                     borderColor: 'rgb(24, 85, 25, 1)',
                     borderWidth: 1,

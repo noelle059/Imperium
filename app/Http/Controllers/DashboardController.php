@@ -92,7 +92,6 @@ class DashboardController extends Controller
         return response()->json(['devices' => $devicesWithState]);
     }
 
-
     public function index()
     {
         if (!Auth::check()) {
@@ -109,34 +108,32 @@ class DashboardController extends Controller
 
         $currentDateTime = Carbon::now('Asia/Manila')->format('l, F j, Y g:i A');
 
-        $floors = Floor::with([
-            'classrooms' => function ($query) {
-                $query->where('archive_status', 1);
+        $user = Auth::user();
+
+        // Fetch only the floors and classrooms where the professor is scheduled
+        $floors = Floor::whereHas('classrooms.schedules', function ($query) use ($user) {
+            $query->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
+        })
+        ->with([
+            'classrooms' => function ($query) use ($user) {
+                $query->whereHas('schedules', function ($subQuery) use ($user) {
+                    $subQuery->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
+                })->where('archive_status', 1);
+            },
+            'classrooms.schedules' => function ($query) use ($user) {
+                $query->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
             },
             'classrooms.schedules.scheduleLogs' => function ($query) {
                 $query->whereNull('end_time');
             },
-            'classrooms.schedules.professor',
             'classrooms.schedules.subject'
         ])
         ->where('archive_status', 1)
         ->get();
 
-        $user = Auth::user();
-        $rooms = Room::all();
-
-        foreach ($rooms as $room) {
-            if ($room->controller && $room->professor_name === $user->name) {
-                $room->button_status = "Remote"; // Show "Remote" if the logged-in professor is in control
-            } elseif ($room->controller) {
-                $room->button_status = "Occupied"; // Show "Occupied" if another professor is in control
-            } else {
-                $room->button_status = "Offline"; // Show "Offline" if no one is controlling the room
-            }
-        }
-
-        return view('user.dashboard', compact('rooms', 'currentDateTime', 'floors'));
+        return view('user.dashboard', compact('floors', 'currentDateTime'));
     }
+
 
     public function getRoomStatus()
     {
