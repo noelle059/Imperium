@@ -4,16 +4,11 @@
 {{-- Include Header --}}
 @include('user.navigationbar')
 
-
 <div class="page-header">
     <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
         <h2 class="h5 no-margin-bottom" style="margin-left: 20px;">ACCOUNT PROFILE</h2>
     </div>
 </div>
-
-
-
-
 
 <div class="container mt-4">
     <div class="card shadow-sm border-3">
@@ -23,7 +18,6 @@
 
         <div class="card-body">
             <div class="row g-4 align-items-center">
-
                 <div class="col-md-3 text-center">
                     <img src="{{ asset('images/avatar-1.jpg') }}" class="rounded-circle img-fluid" alt="Profile Picture" style="width: 120px; height: 120px;">
                     <div class="mt-3 d-grid gap-2">
@@ -70,8 +64,43 @@
             </div>
         </div>
     </div>
-</div>
 
+    <div class="card shadow-sm border-3 mt-4">
+        <div class="card-header bg-white text-center">
+            <h5 class="text-white ali fw-bold bg-success py-2 px-4 d-inline-block rounded">SUBJECT INFORMATION</h5>
+        </div>
+
+        <div class="card-body w-100">
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                            <th>Units</th>
+                            <th>Classroom</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Schedule Day</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NSTP 122</td>
+                            <td>CIVIC WELFARE TRAINING SERVICES 2</td>
+                            <td>3</td>
+                            <td>COM-LOVE 1</td>
+                            <td>08:00 AM</td>
+                            <td>10:00 AM</td>
+                            <td>Monday</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -79,7 +108,6 @@
         const saveBtn = document.getElementById("saveProfileBtn");
         const cancelBtn = document.getElementById("cancelEditBtn");
         const inputs = document.querySelectorAll(".form-control");
-
 
         let originalValues = {};
 
@@ -124,26 +152,10 @@
             alert("Profile updated successfully!");
         });
     });
-
-
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {{-- Include Footer --}}
 @include('user.footer')
 
 </body>
-
 </html>
