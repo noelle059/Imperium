@@ -17,7 +17,7 @@
         <!-- Featured In -->
         <div class="featured mt-4">
             <h4 class="fw-bold">FEATURED IN:</h4>
-            <div class="d-flex justify-content-start gap-3">
+            <div class="d-flex justify-content-center gap-3">
                 @if(isset($aboutUs) && $aboutUs->featured_1)
                     <img src="{{ asset('storage/' . $aboutUs->featured_1) }}" alt="Partner 1" class="featured-img">
                 @endif
@@ -35,7 +35,7 @@
 
 <!-- Bootstrap Modal -->
 <div class="modal fade about-modal" id="insightsModal" tabindex="-1" aria-labelledby="insightsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content custom-modal">
 
             <div class="modal-header">

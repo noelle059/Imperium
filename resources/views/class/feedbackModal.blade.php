@@ -1,6 +1,6 @@
 @foreach ($feedbacks as $feedback)
     <div class="modal fade" id="modal-{{ $feedback->id }}" tabindex="-1" aria-labelledby="modalLabel-{{ $feedback->id }}" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="feedback-modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel-{{ $feedback->id }}">{{ $feedback->name }}</h5>

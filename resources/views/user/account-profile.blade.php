@@ -33,27 +33,27 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold">First Name</label>
-                            <input type="text" class="form-control bg-light" value="" id="firstName" disabled>
+                            <input type="text" class="form-control bg-light" value="Leonard" id="firstName" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Last Name</label>
-                            <input type="text" class="form-control bg-light" value="" id="lastName" disabled>
+                            <input type="text" class="form-control bg-light" value="Santiago" id="lastName" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Username</label>
-                            <input type="text" class="form-control bg-light" value="" id="username" disabled>
+                            <input type="text" class="form-control bg-light" value="leonardsantiago@gmail.com" id="username" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Gender</label>
-                            <input type="text" class="form-control bg-light" value="" id="gender" disabled>
+                            <input type="text" class="form-control bg-light" value="Male" id="gender" disabled>
                         </div>
                         <div class="col-md-12">
                             <label class="form-label fw-bold">Email Address</label>
-                            <input type="email" class="form-control bg-light" value="" id="email" disabled>
+                            <input type="email" class="form-control bg-light" value="leonardsantiago@gmail.com" id="email" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Phone Number</label>
-                            <input type="text" class="form-control bg-light" value="" id="phoneNumber" disabled>
+                            <input type="text" class="form-control bg-light" value="092812345678" id="phoneNumber" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold">Role</label>
