@@ -9,11 +9,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - navbarHeight - 10, // Adjust para hindi matakpan
+                        top: targetElement.offsetTop - navbarHeight - 10, // Adjust to prevent overlap
                         behavior: "smooth"
                     });
                 }
+
+                // Close the offcanvas menu properly
+                const offcanvas = document.querySelector("#offcanvasNavbar");
+                if (offcanvas) {
+                    const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvas) || new bootstrap.Offcanvas(offcanvas);
+                    offcanvasInstance.hide();
+                }
             }
         });
+    });
+
+    // Ensure the backdrop is removed when offcanvas is closed
+    document.getElementById('offcanvasNavbar').addEventListener('hidden.bs.offcanvas', function () {
+        document.body.classList.remove('offcanvas-backdrop');
     });
 });
