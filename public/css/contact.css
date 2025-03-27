@@ -39,7 +39,7 @@
 }
 
 .footer-logo {
-    width: 300px; 
+    width: 300px;
     margin-bottom: 15px;
 }
 
@@ -55,7 +55,7 @@
     margin-bottom: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     text-align: center;
 }
@@ -115,7 +115,7 @@ h5 {
 
 .footer-right iframe {
     width: 100%;
-    max-width: 400px; /* optional, limit max width para di sobrang lapad */
+    max-width: 400px;
     height: 160px;
     border: none;
 }
@@ -138,7 +138,7 @@ h5 {
     width: 100%;
     text-align: center;
     padding-top: 10px;
-    font-size: 14px; 
+    font-size: 14px;
     color: #bbb;
     border-top: 1px solid #444;
 }
@@ -162,5 +162,55 @@ h5 {
     h5 {
         width: 100%;
         text-align: center;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .footer-logo {
+        width: 250px;
+    }
+
+    .footer-desc {
+        font-size: 13px;
+    }
+
+    .footer-address p {
+        font-size: 13px;
+    }
+
+    .footer-right iframe {
+        height: 100px;
+    }
+
+}
+
+@media (max-width: 1023px) {
+    .new-footer .container {
+        max-width: 90%;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-left,
+    .footer-middle,
+    .footer-address,
+    .footer-right {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .footer-logo {
+        width: 200px;
+    }
+
+    .featured-logos img {
+        width: 90px;
+        height: 90px;
     }
 }
