@@ -24,86 +24,64 @@
     </div>
 
 
-    <div class="table-container">
-        <table id="uniqueTable" class="styled-table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Device Name</th>
-                    <th>Classroom Name</th>
-                    {{-- <th>Status</th> --}}
-                    <th>Entry Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($show_devices as $index => $device)
-                    <tr class="table-row">
-                        <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-                        <td>{{ $device->device_name }}</td>
-
-                        <td>
-                            <!-- Find the classroom name by classroom_id -->
-                            @php
-                                $classroom = $classrooms->firstWhere('id', $device->classroom_id);
-                            @endphp
-
-                            <!-- Display the classroom name if found -->
-                            {{ $classroom ? $classroom->classroom_name : 'N/A' }}
-                        </td>
-
-
-                        {{-- <td>
-                            @if ($device->state == 0)
-                                OFF
-                            @elseif ($device->state == 1)
-                                ON
-                            @endif
-                        </td> --}}
-
-                        <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone(value: 'Asia/Manila')->format('F j, Y \a\t h:i A') }}
-                        </td>
-
-                        <td class="action-cell">
-
-
-                            <!-- Updating Device from ID -->
-                            <button class="btn gradient-button update" type="button" data-id="{{ $device->id }}"
-                                data-device_name="{{ $device->device_name }}"
-                                data-classroom_id="{{ $device->classroom_id }}" data-state="{{ $device->state }}"
-                                data-bs-toggle="modal" data-bs-target="#update_device__modal">
-                                <i class="fa-solid fa-arrow-up-from-bracket"></i>
-
-                            </button>
-
-                            <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button archive" type="button" data-id="{{ $device->id }}"
-                                id="RemoveDevicetButton">
-                                <i class="fa-solid fa-box-archive"></i>
-
-                            </button>
-                        </td>
+    <div id="deviceTable">
+        <div class="table-container">
+            <table id="uniqueTable" class="styled-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Device Name</th>
+                        <th>Classroom Name</th>
+                        {{-- <th>Status</th> --}}
+                        <th>Entry Date</th>
+                        <th>Action</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($show_devices as $index => $device)
+                        <tr class="table-row">
+                            <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
+                            <td>{{ $device->device_name }}</td>
+                            <td>
+                                <!-- Find the classroom name by classroom_id -->
+                                @php
+                                    $classroom = $classrooms->firstWhere('id', $device->classroom_id);
+                                @endphp
+                                <!-- Display the classroom name if found -->
+                                {{ $classroom ? $classroom->classroom_name : 'N/A' }}
+                            </td>
+                            {{-- <td>
+                                @if ($device->state == 0)
+                                    OFF
+                                @elseif ($device->state == 1)
+                                    ON
+                                @endif
+                            </td> --}}
+                            <td>{{ \Carbon\Carbon::parse($device->created_at)->timezone(value: 'Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                            </td>
+                            <td class="action-cell">
+                                <!-- Updating Device from ID -->
+                                <button class="btn gradient-button update" type="button" data-id="{{ $device->id }}"
+                                    data-device_name="{{ $device->device_name }}"
+                                    data-classroom_id="{{ $device->classroom_id }}" data-state="{{ $device->state }}"
+                                    data-bs-toggle="modal" data-bs-target="#update_device__modal">
+                                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                                </button>
+                                <!-- Removing the subject from the list -->
+                                <button class="btn gradient-button archive" type="button" data-id="{{ $device->id }}"
+                                    id="RemoveDevicetButton">
+                                    <i class="fa-solid fa-box-archive"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+                <div class="pagination-container" style="margin-top: 10px;">
+                    {{ $show_devices->links() }}
+                </div>
+        </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -115,32 +93,33 @@
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
 
-
-    <!-- Add your search script below -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let filter = this.value.toLowerCase();
-            let table = document.getElementById('uniqueTable');
-            let rows = table.getElementsByTagName('tr');
-
-            for (let i = 1; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let matchFound = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j]) {
-                        let cellText = cells[j].textContent || cells[j].innerText;
-                        if (cellText.toLowerCase().indexOf(filter) > -1) {
-                            matchFound = true;
-                        }
+        $(document).ready(function() {
+            function fetchData(page = 1, searchValue = '') {
+                $.ajax({
+                    url: "{{ route('show_devices') }}",
+                    type: "GET",
+                    data: { search: searchValue, page: page },
+                    success: function(response) {
+                        $('#deviceTable').html($(response.html).find('#deviceTable').html()); // Update table only
                     }
-                }
-
-                if (matchFound) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
+                });
             }
+
+            // Search Functionality
+            $('#searchInput').on('keyup', function() {
+                let searchValue = $(this).val();
+                fetchData(1, searchValue);
+            });
+
+            // Pagination Functionality
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                let searchValue = $('#searchInput').val();
+                fetchData(page, searchValue);
+            });
         });
     </script>
+

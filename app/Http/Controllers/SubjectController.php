@@ -13,14 +13,31 @@ class SubjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get all subjects from the database
-        $subjects = Subject::where('archive_status', 1)->paginate(10);
+        $query = Subject::where('archive_status', 1);
 
-        // Return the view with the subjects data
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('subject_code', 'like', "%$search%")
+                    ->orWhere('subject_name', 'like', "%$search%")
+                    ->orWhere('units', 'like', "%$search%");
+            });
+        }
+
+        $subjects = $query->paginate(10)->appends(['search' => $request->input('search')]);
+
+        if ($request->ajax()) {
+            return view('admin.subjects', compact('subjects'))->render();
+        }
+
         return view('admin.subjects', compact('subjects'));
     }
+
+
+
+
 
     /**
      * Show the form for creating a new resource.

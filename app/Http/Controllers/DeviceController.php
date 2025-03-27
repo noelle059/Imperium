@@ -22,18 +22,34 @@ class DeviceController extends Controller
 
 
 
-    public function showAddDevices()
+    public function showAddDevices(Request $request)
     {
-        // Get devices where archive_status = 1 and paginate 10
-        $show_devices = Device::where('archive_status', 1)
-            ->paginate(10);  // Paginate 10 results per page
+        $search = $request->input('search'); // Get the search query
+
+        // Get devices where archive_status = 1, filter by search query, and paginate
+        $query = Device::where('archive_status', 1);
+
+        if ($search) {
+            $query->where('device_name', 'LIKE', "%{$search}%");
+        }
+
+        $show_devices = $query->paginate(10);  // Paginate 10 results per page
 
         // Get all classrooms
         $classrooms = Classroom::all();
 
-        // Return the view with the devices and classrooms data
+        // If it's an AJAX request, return only the table content
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.device', compact('show_devices', 'classrooms'))->render()
+            ]);
+        }
+
+        // Otherwise, return the full page
         return view('admin.device', compact('show_devices', 'classrooms'));
     }
+
+
 
 
     public function showEditDevice($id)

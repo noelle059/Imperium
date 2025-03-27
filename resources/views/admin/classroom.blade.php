@@ -97,31 +97,33 @@
 
 
 
-    <!-- Add your search script below -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let filter = this.value.toLowerCase();
-            let table = document.getElementById('uniqueTable');
-            let rows = table.getElementsByTagName('tr');
-
-            for (let i = 1; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let matchFound = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j]) {
-                        let cellText = cells[j].textContent || cells[j].innerText;
-                        if (cellText.toLowerCase().indexOf(filter) > -1) {
-                            matchFound = true;
-                        }
+        $(document).ready(function() {
+            function fetchData(page = 1, searchValue = '') {
+                $.ajax({
+                    url: "{{ route('show_classroom') }}",
+                    type: "GET",
+                    data: { search: searchValue, page: page },
+                    success: function(response) {
+                        $('.table-container').html($(response.table).find('.table-container').html());
                     }
-                }
-
-                if (matchFound) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
+                });
             }
+
+            // Search Functionality
+            $('#searchInput').on('keyup', function() {
+                let searchValue = $(this).val();
+                fetchData(1, searchValue); // Reset to page 1 when searching
+            });
+
+            // Pagination Functionality
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1]; // Get page number
+                let searchValue = $('#searchInput').val(); // Get current search value
+                fetchData(page, searchValue);
+            });
         });
     </script>
+

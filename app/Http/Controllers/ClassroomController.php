@@ -20,19 +20,31 @@ class ClassroomController extends Controller
     }
 
 
-    public function showClassroom()
+    public function showClassroom(Request $request)
     {
-        // Fetch classrooms with the related devices (device count), and paginate results
-        $classrooms = Classroom::withCount('devices')  // Count the devices for each classroom
-            ->where('archive_status', 1)  // Only fetch classrooms where archive_status = 1
-            ->paginate(40);
+        $query = Classroom::withCount('devices')->where('archive_status', 1);
 
-        // Fetch all floors to display in the dropdown
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('classroom_name', 'LIKE', "%{$search}%")
+                ->orWhereHas('floor', function ($q) use ($search) {
+                    $q->where('floor_name', 'LIKE', "%{$search}%");
+                });
+        }
+
+        $classrooms = $query->paginate(10)->appends(['search' => $request->input('search')]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'table' => view('admin.classroom', compact('classrooms'))->render(),
+            ]);
+        }
+
         $floors = Floor::all();
-
-        // Pass classrooms and floors to the view
         return view('admin.classroom', compact('classrooms', 'floors'));
     }
+
+
 
 
     public function addClassroom(Request $request)

@@ -40,16 +40,31 @@ class AdminController extends Controller
     }
 
 
-    public function showProfessors()
+    public function showProfessors(Request $request)
     {
-        // Get professors (non-admin users) where archive_status = 1 and paginate 10
-        $professors = User::where('is_admin', false)  // Exclude admin users
-            ->where('archive_status', 1)  // Only those with archive_status = 1
-            ->paginate(10);  // Paginate 10 results per page
+        $query = User::where('is_admin', false)
+            ->where('archive_status', 1);
 
-        // Return the view with the professors data
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('rfid_uid', 'like', "%$search%");
+            });
+        }
+
+        $professors = $query->paginate(10)->appends(['search' => $request->input('search')]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.accounts', compact('professors'))->render()
+            ]);
+        }
+
         return view('admin.accounts', compact('professors'));
     }
+
 
     public function showRooms()
     {

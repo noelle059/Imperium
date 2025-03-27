@@ -2,7 +2,6 @@
 
 <!-- Account-->
 <div class="page-content">
-
     <div class="page-header">
         <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="h5 no-margin-bottom">Subject Registration</h2>
@@ -15,15 +14,14 @@
         </div>
     </div>
 
-    <div style="display: flex; justify-content: flex-end; margin-botton: 0px; padding-right: 20px;">
-        <button class="btn gradient-button add" style="display: flex; align-items: center; " type="button"
+    <div style="display: flex; justify-content: flex-end; padding-right: 20px;">
+        <button class="btn gradient-button add" style="display: flex; align-items: center;" type="button"
             data-bs-toggle="modal" data-bs-target="#add_subject_modal">
             <i class="fa fa-plus" style="margin-right: 5px;"></i>
         </button>
     </div>
 
-
-
+    {{-- Table Section --}}
     <div class="table-container">
         <table id="uniqueTable" class="styled-table">
             <thead>
@@ -43,10 +41,8 @@
                         <td>{{ $subject->subject_code }}</td>
                         <td>{{ $subject->subject_name }}</td>
                         <td>{{ $subject->units }}</td>
-                        <td>{{ \Carbon\Carbon::parse($subject->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
-                        </td>
+                        <td>{{ \Carbon\Carbon::parse($subject->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}</td>
                         <td class="action-cell">
-                            <!-- Pass subject data via data- attributes -->
                             <button class="btn gradient-button update" data-bs-toggle="modal"
                                 data-bs-target="#update_subject_modal" data-id="{{ $subject->id }}"
                                 data-subject_code="{{ $subject->subject_code }}"
@@ -55,11 +51,8 @@
                                 <i class="fa-solid fa-arrow-up-from-bracket"></i>
                             </button>
 
-                            <!-- Removing the subject from the list -->
-                            <button class="btn gradient-button archive" type="button" data-id="{{ $subject->id }}"
-                                id="RemoveSubjectButton">
+                            <button class="btn gradient-button archive" type="button" data-id="{{ $subject->id }}" id="RemoveSubjectButton">
                                 <i class="fa-solid fa-box-archive"></i>
-
                             </button>
                         </td>
                     </tr>
@@ -67,53 +60,41 @@
             </tbody>
         </table>
 
-
-        <!-- Pagination controls -->
         <div class="pagination-container" style="margin-top: 10px;">
             {{ $subjects->links() }}
         </div>
-
     </div>
+</div>
 
+@include('admin.footer')
 
+@include('admin.modal.subjectModals')
+@include('admin.sweetAlerts.subjectAlert')
 
-
-
-    {{-- INCLUDE FOOTER --}}
-    @include('admin.footer')
-
-
-    {{-- INCLUDE SUBJECT MODAL AND SUBJECT ALERT --}}
-    @include('admin.modal.subjectModals')
-    @include('admin.sweetAlerts.subjectAlert')
-
-
-
-    <!-- Add your search script below -->
-    <script>
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let filter = this.value.toLowerCase();
-            let table = document.getElementById('uniqueTable');
-            let rows = table.getElementsByTagName('tr');
-
-            for (let i = 1; i < rows.length; i++) {
-                let cells = rows[i].getElementsByTagName('td');
-                let matchFound = false;
-
-                for (let j = 0; j < cells.length; j++) {
-                    if (cells[j]) {
-                        let cellText = cells[j].textContent || cells[j].innerText;
-                        if (cellText.toLowerCase().indexOf(filter) > -1) {
-                            matchFound = true;
-                        }
-                    }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function fetchData(page = 1, searchValue = '') {
+            $.ajax({
+                url: "{{ route('subjects.index') }}",
+                method: 'GET',
+                data: { search: searchValue, page: page },
+                success: function (response) {
+                    $('.table-container').html($(response).find('.table-container').html());
                 }
+            });
+        }
 
-                if (matchFound) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
+        $('#searchInput').on('keyup', function () {
+            let searchValue = $(this).val();
+            fetchData(1, searchValue);
         });
-    </script>
+
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            let searchValue = $('#searchInput').val();
+            fetchData(page, searchValue);
+        });
+    });
+</script>
