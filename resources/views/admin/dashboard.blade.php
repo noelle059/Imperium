@@ -1,6 +1,20 @@
 <!--HEADER- SIDEBAR - NAVIGATION -->
 @include('admin.header')
 
+@php
+    use Carbon\Carbon;
+    use Illuminate\Support\Facades\DB;
+
+    $scheduleData = DB::table('schedule_logs')
+        ->selectRaw('DATE_FORMAT(start_time, "%M") as month, COUNT(*) as count')
+        ->groupBy('month')
+        ->orderByRaw("STR_TO_DATE(month, '%M') ASC") // Ensures correct order of months
+        ->get();
+
+    $months = $scheduleData->pluck('month')->toArray(); // Get month names
+    $counts = $scheduleData->pluck('count')->toArray(); // Get counts
+@endphp
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- DASHBOARD-->
 <div class="page-content">
@@ -223,22 +237,24 @@
         });
 
         // Line Chart (you can adjust this to show other relevant data)
+        document.addEventListener("DOMContentLoaded", function () {
         var ctx2 = document.getElementById('lineChartExample').getContext('2d');
+
         var lineChartExample = new Chart(ctx2, {
             type: 'line',
             data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June'], // Example labels
+                labels: {!! json_encode($months) !!}, // Display only months
                 datasets: [{
-                    label: 'Classroom Monthly Usage',
-                    data: [10, 20, 15, 30, 40, 50], // Example data
+                    label: 'Classroom Usage per Month',
+                    data: {!! json_encode($counts) !!}, // Fetch counts dynamically
                     borderColor: 'rgb(24, 85, 25, 1)',
                     borderWidth: 1,
                     fill: false
                 }]
             },
             options: {
-                responsive: true, // Ensures the chart is responsive
-                maintainAspectRatio: true, // Allows the chart to scale freely
+                responsive: true,
+                maintainAspectRatio: true,
                 scales: {
                     y: {
                         beginAtZero: true
@@ -246,6 +262,7 @@
                 }
             }
         });
+    });
     </script>
 
 
