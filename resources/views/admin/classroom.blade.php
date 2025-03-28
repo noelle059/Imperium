@@ -99,31 +99,130 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            function fetchData(page = 1, searchValue = '') {
-                $.ajax({
-                    url: "{{ route('show_classroom') }}",
-                    type: "GET",
-                    data: { search: searchValue, page: page },
-                    success: function(response) {
-                        $('.table-container').html($(response.table).find('.table-container').html());
-                    }
+        $(document).ready(function () {
+        function fetchData(page = 1, searchValue = '') {
+            $.ajax({
+                url: "{{ route('show_classroom') }}",
+                type: "GET",
+                data: { search: searchValue, page: page },
+                success: function (response) {
+                    $('.table-container').html($(response.table).find('.table-container').html());
+                }
+            });
+        }
+
+        // Event Delegation for Search Input
+        $(document).on('keyup', '#searchInput', function () {
+            let searchValue = $(this).val();
+            fetchData(1, searchValue);
+        });
+
+        // Event Delegation for Pagination
+        $(document).on('click', '.pagination a', function (e) {
+            e.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            let searchValue = $('#searchInput').val();
+            fetchData(page, searchValue);
+        });
+
+        // Event Delegation for Update Button
+        $(document).on('click', '.update', function () {
+            let id = $(this).data('id');
+            let classroom_name = $(this).data('classroom_name');
+            let floor_id = $(this).data('floor_id');
+
+            $('#classroom_name').val(classroom_name);
+            $('#floor_id').val(floor_id);
+
+            let form = $('#UpdateClassroomForm');
+            form.attr('action', form.attr('action').replace(':id', id));
+        });
+
+        // Event Delegation for Update Button in Modal
+        $(document).on('click', '#UpdateClassroomButton', function (e) {
+            e.preventDefault();
+
+            let classroom_name = $('#classroom_name').val();
+            let ClassroomID = $('#UpdateClassroomForm').attr('action').split('/').pop();
+
+            if (!classroom_name) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Please enter a classroom name.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
                 });
+                return;
             }
 
-            // Search Functionality
-            $('#searchInput').on('keyup', function() {
-                let searchValue = $(this).val();
-                fetchData(1, searchValue); // Reset to page 1 when searching
-            });
-
-            // Pagination Functionality
-            $(document).on('click', '.pagination a', function(e) {
-                e.preventDefault();
-                let page = $(this).attr('href').split('page=')[1]; // Get page number
-                let searchValue = $('#searchInput').val(); // Get current search value
-                fetchData(page, searchValue);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `Do you want to update the classroom: ${classroom_name}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Update Classroom',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formAction = `/admin/update-classroom/${ClassroomID}`;
+                    $('#UpdateClassroomForm').attr('action', formAction).submit();
+                }
             });
         });
+
+        // Event Delegation for Delete Button
+        $(document).on('click', '.archive', function () {
+            let id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will archive the classroom.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Archive',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/admin/delete-classroom/${id}`,
+                        type: 'DELETE',
+                        data: { _token: '{{ csrf_token() }}' },
+                        success: function (response) {
+                            Swal.fire('Deleted!', response.message, 'success');
+                            fetchData(); // Refresh table
+                        },
+                        error: function (xhr) {
+                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Event Delegation for Add Classroom Button
+        $(document).on('click', '#AddClassroomButton', function (e) {
+            e.preventDefault();
+
+            let form = $('#AddClassroomForm');
+            let formData = form.serialize();
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    Swal.fire('Success!', 'Classroom added successfully.', 'success');
+                    $('#add_classroom_modal').modal('hide');
+                    fetchData();
+                },
+                error: function (xhr) {
+                    Swal.fire('Error!', 'Failed to add classroom.', 'error');
+                }
+            });
+        });
+    });
+
     </script>
 

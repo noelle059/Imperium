@@ -95,31 +95,65 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function fetchData(page = 1, searchValue = '') {
                 $.ajax({
                     url: "{{ route('show_devices') }}",
                     type: "GET",
                     data: { search: searchValue, page: page },
-                    success: function(response) {
+                    success: function (response) {
                         $('#deviceTable').html($(response.html).find('#deviceTable').html()); // Update table only
                     }
                 });
             }
 
-            // Search Functionality
-            $('#searchInput').on('keyup', function() {
+            $('#searchInput').on('keyup', function () {
                 let searchValue = $(this).val();
                 fetchData(1, searchValue);
             });
 
-            // Pagination Functionality
-            $(document).on('click', '.pagination a', function(e) {
+            $(document).on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 let page = $(this).attr('href').split('page=')[1];
                 let searchValue = $('#searchInput').val();
                 fetchData(page, searchValue);
             });
+
+            $(document).on('click', '[data-bs-toggle="modal"]', function () {
+                let id = $(this).data('id');
+                let device_name = $(this).data('device_name');
+                let classroom_id = $(this).data('classroom_id');
+                let state = $(this).data('state');
+
+                $('#device_name').val(device_name);
+                $('#classroom_id').val(classroom_id);
+                $('#state').val(state);
+
+                let form = $('#UpdateDeviceForm');
+                let actionUrl = "{{ route('devices.update', ':id') }}".replace(':id', id);
+                form.attr('action', actionUrl);
+            });
+
+            $(document).on('click', '#UpdateDeviceButton', function () {
+                $('#UpdateDeviceForm').submit();
+            });
+
+            $(document).on('click', '#RemoveDevicetButton', function () {
+                let deviceId = $(this).data('id');
+
+                if (confirm('Are you sure you want to remove this device?')) {
+                    $.ajax({
+                        url: "{{ route('device.remove', ':id') }}".replace(':id', deviceId),
+                        type: "DELETE",
+                        data: { _token: "{{ csrf_token() }}" },
+                        success: function (response) {
+                            alert('Device removed successfully!');
+                            fetchData();
+                        }
+                    });
+                }
+            });
         });
     </script>
+
 
