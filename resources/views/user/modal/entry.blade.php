@@ -98,6 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function checkRFIDMatch(professorRFID) {
+        const superAdminRFID = "23b28d14"; // Define the super admin RFID
+
         fetch("/get-rfid")
             .then(response => response.json())
             .then(data => {
@@ -106,17 +108,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     rfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
                     rfidLabel.style.display = "block";
 
-                    if (String(data.rfid).trim() !== String(professorRFID).trim()) {
+                    const scannedRFID = String(data.rfid).trim();
+
+                    if (scannedRFID === String(professorRFID).trim() || scannedRFID === superAdminRFID) {
+                        // Allow access
+                        enterBtn.disabled = false;
+                    } else {
+                        // Deny access
                         Swal.fire({
                             icon: "error",
                             title: "Access Denied",
-                            text: "RFID does not match the logged-in professor!",
+                            text: "RFID does not match the logged-in professor or Super Admin!",
                             timer: 2500,
                             showConfirmButton: false
                         });
                         enterBtn.disabled = true;
-                    } else {
-                        enterBtn.disabled = false;
                     }
                 }
             })

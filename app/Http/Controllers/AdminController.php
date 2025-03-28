@@ -102,7 +102,7 @@ class AdminController extends Controller
             }
 
             // CASE 2: Professor tries to register using Super Admin RFID → Block it
-            if (!$account->rfid_uid && $scannedRFID === 'a2aa1702') {
+            if (!$account->rfid_uid && $scannedRFID === '23b28d14') {
                 return redirect()->route('accounts')
                     ->with('error', 'This RFID is reserved for the Super Admin. Please use a different card.');
             }

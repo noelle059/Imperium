@@ -141,53 +141,96 @@ class ScheduleController extends Controller
 
 
     public function updateSchedule(Request $request, $id)
-    {
-        Log::info('updateSchedule method called', [
-            'schedule_id' => $id,
-            'all_request_data' => $request->all()
+{
+    Log::info('updateSchedule method called', [
+        'schedule_id' => $id,
+        'all_request_data' => $request->all()
+    ]);
+
+    try {
+        $schedule = Schedule::findOrFail($id);
+        Log::info('Schedule found', [
+            'original_schedule' => $schedule->toArray()
         ]);
 
-        try {
-            $schedule = Schedule::findOrFail($id);
-            Log::info('Schedule found', [
-                'original_schedule' => $schedule->toArray()
-            ]);
+        // Convert incoming times to proper H:i format before validation
+        $formattedStartTime = \Carbon\Carbon::parse($request->input('start_time'))->format('H:i');
+        $formattedEndTime = \Carbon\Carbon::parse($request->input('end_time'))->format('H:i');
 
-            // Explicitly log each field before update
-            Log::info('Update attempt', [
-                'classroom_id' => $request->input('classroom_id'),
-                'user_id' => $request->input('user_id'),
-                'subject_id' => $request->input('subject_id'),
-                'date' => $request->input('date'),
-                'start_time' => $request->input('start_time'),
-                'end_time' => $request->input('end_time')
-            ]);
+        // Manually replace request values with formatted times
+        $request->merge([
+            'start_time' => $formattedStartTime,
+            'end_time' => $formattedEndTime,
+        ]);
 
-            $updated = $schedule->update([
-                'classroom_id' => $request->input('classroom_id'),
-                'user_id' => $request->input('user_id'),
-                'subject_id' => $request->input('subject_id'),
-                'schedule_day' => $request->input('date'),
-                'start_time' => $request->input('start_time'),
-                'end_time' => $request->input('end_time')
-            ]);
+        // Validate request
+        $this->validate($request, [
+            'classroom_id' => 'required|exists:classrooms,id',
+            'user_id' => 'required|exists:users,id',
+            'subject_id' => 'required|exists:subjects,id',
+            'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+        ]);
 
-            Log::info('Update method result', [
-                'updated' => $updated,
-                'updated_schedule' => $schedule->toArray()
-            ]);
+        $classroomId = $request->input('classroom_id');
+        $userId = $request->input('user_id');
+        $subjectId = $request->input('subject_id');
+        $date = $request->input('date');
 
-            return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
-        } catch (\Exception $e) {
-            Log::error('Update Schedule Error', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Failed to update schedule: ' . $e->getMessage());
+        $startTime = \Carbon\Carbon::createFromFormat('H:i', $formattedStartTime);
+        $endTime = \Carbon\Carbon::createFromFormat('H:i', $formattedEndTime);
+
+        if ($startTime->greaterThanOrEqualTo($endTime)) {
+            return redirect()->back()->with('warning', 'Start time must be earlier than end time.');
         }
+
+        // Check for schedule conflicts
+        $overlappingSchedule = Schedule::where('classroom_id', $classroomId)
+            ->where('schedule_day', $date)
+            ->where('id', '!=', $id)
+            ->where(function ($query) use ($startTime, $endTime) {
+                $query->whereBetween('start_time', [$startTime->format('H:i'), $endTime->format('H:i')])
+                    ->orWhereBetween('end_time', [$startTime->format('H:i'), $endTime->format('H:i')])
+                    ->orWhere(function ($query) use ($startTime, $endTime) {
+                        $query->where('start_time', '<=', $startTime->format('H:i'))
+                            ->where('end_time', '>=', $endTime->format('H:i'));
+                    });
+            })
+            ->first();
+
+        if ($overlappingSchedule) {
+            return redirect()->route('show_schedule')->with('error', 'The selected time slot is already occupied by another professor. Please choose another time.');
+        }
+
+        // Update the schedule
+        $schedule->update([
+            'classroom_id' => $classroomId,
+            'user_id' => $userId,
+            'subject_id' => $subjectId,
+            'schedule_day' => $date,
+            'start_time' => $startTime->format('H:i'),
+            'end_time' => $endTime->format('H:i'),
+        ]);
+
+        Log::info('Update method result', [
+            'updated_schedule' => $schedule->toArray()
+        ]);
+
+        return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
+    } catch (\Exception $e) {
+        Log::error('Update Schedule Error', [
+            'message' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Failed to update schedule: ' . $e->getMessage());
     }
+}
+
+
+
 
 
     public function removeSchedule($id)

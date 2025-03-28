@@ -360,33 +360,40 @@
                 .catch(error => console.error("Error fetching professor RFID:", error));
         }
 
-        function checkExitRFIDMatch(professorRFID) {
-            fetch("/get-rfid-from-firebase")
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Scanned RFID for exit:", data.rfid);
+        function checkExitRFIDMatch(professorRFID, classroomID) {
+        const superAdminRFID = "23b28d14"; // Define the Super Admin RFID
 
-                    if (data.rfid) {
-                        exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
-                        exitRfidLabel.style.display = "block";
+        fetch("/get-rfid")
+            .then(response => response.json())
+            .then(data => {
+                console.log("Scanned RFID for exit:", data.rfid);
 
-                        if (String(data.rfid).trim() !== String(professorRFID).trim()) {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Access Denied",
-                                text: "RFID does not match the logged-in professor!",
-                                timer: 2500,
-                                showConfirmButton: false
-                            });
-                            confirmExitBtn.disabled = true;
-                        } else {
-                            confirmExitBtn.disabled = false;
-                            confirmExitBtn.style.display = "block";
-                        }
+                if (data.rfid) {
+                    exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
+                    exitRfidLabel.style.display = "block";
+
+                    const scannedRFID = String(data.rfid).trim();
+
+                    if (scannedRFID === String(professorRFID).trim() || scannedRFID === superAdminRFID) {
+                        // Allow exit
+                        confirmExitBtn.disabled = false;
+                        confirmExitBtn.style.display = "block";
+                    } else {
+                        // Deny exit
+                        Swal.fire({
+                            icon: "error",
+                            title: "Access Denied",
+                            text: "RFID does not match the logged-in professor or Super Admin!",
+                            timer: 2500,
+                            showConfirmButton: false
+                        });
+                        confirmExitBtn.disabled = true;
                     }
-                })
-                .catch(error => console.error("Error fetching RFID from Firebase:", error));
-        }
+                }
+            })
+            .catch(error => console.error("Error fetching RFID from Firebase:", error));
+    }
+
 
         confirmExitBtn.addEventListener("click", function() {
             let professorId = "{{ auth()->user()->id }}";
