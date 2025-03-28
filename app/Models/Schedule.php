@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
 
+    protected $table = 'schedules';
+
     protected $fillable = [
         'classroom_id', 'user_id', 'subject_id', 'start_time', 'end_time', 'schedule_day', 'archive_status'
     ];

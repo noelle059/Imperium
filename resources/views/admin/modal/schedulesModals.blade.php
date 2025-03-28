@@ -83,8 +83,7 @@
                    <h1 class="modal-title fs-5" id="update_schedule_modal">Update Schedule</h1>
                </div>
 
-               <!-- Update Schedule Form -->
-               <form id="UpdateScheduleForm" action="{{ route('update_schedule', ':id') }}" method="POST">
+               <form id="UpdateScheduleForm" method="POST">
                    @csrf
                    @method('PUT')
 
@@ -155,75 +154,93 @@
        </div>
    </div>
 
-
-   <script>
-       // Format time to HH:mm
-       function formatTime(time) {
-           let date = new Date('1970-01-01T' + time + 'Z'); // Create a date object from the time string
-           let hours = date.getUTCHours().toString().padStart(2, '0');
-           let minutes = date.getUTCMinutes().toString().padStart(2, '0');
-           return hours + ':' + minutes; // Return in HH:mm format
-       }
-
-       // Event listener for buttons that trigger modal
-       document.querySelectorAll('[data-bs-target="#update_schedule_modal"]').forEach(button => {
-           button.addEventListener('click', function() {
-               const id = this.getAttribute('data-id'); // Get schedule ID
-               const classroom_id = this.getAttribute('data-classroom_id');
-               const user_id = this.getAttribute('data-user_id');
-               const subject_id = this.getAttribute('data-subject_id');
-               const schedule_day = this.getAttribute('data-schedule_day'); // Date value
-               const start_time = this.getAttribute('data-start_time'); // Start time value
-               const end_time = this.getAttribute('data-end_time'); // End time value
-
-               // Update the form action to include the schedule ID
-               const formAction = `/admin/update-schedule/${id}`;
-               document.getElementById('UpdateScheduleForm').action = formAction;
-
-               // Populate the modal fields with the current values
-               document.getElementById('classroom_id').value = classroom_id;
-               document.getElementById('user_id').value = user_id;
-               document.getElementById('subject_id').value = subject_id;
-               document.getElementById('schedule_day').value = schedule_day; // Set the date
-
-               // Format and set the start and end times (ensure HH:mm format)
-               document.getElementById('start_time').value = formatTime(start_time); // Set the start time
-               document.getElementById('end_time').value = formatTime(end_time); // Set the end time
-
-               // Log current values to the console
-               console.log('Current Classroom ID:', classroom_id);
-               console.log('Current Professor ID:', user_id);
-               console.log('Current Subject ID:', subject_id);
-               console.log('Current Schedule Day:', schedule_day);
-               console.log('Current Start Time:', start_time);
-               console.log('Current End Time:', end_time);
-           });
-       });
-
-       // Update Schedule Button click handler
-       document.getElementById('UpdateScheduleButton').addEventListener('click', function(event) {
-           event.preventDefault(); // Prevent form submission initially
-
-           // Show confirmation dialog before submitting the form
-           Swal.fire({
-               title: 'Are you sure?',
-               text: `Do you want to update the schedule?`,
-               icon: 'warning',
-               showCancelButton: true,
-               confirmButtonText: 'Yes, Update Schedule',
-               cancelButtonText: 'Cancel',
-               reverseButtons: true,
-           }).then((result) => {
-               if (result.isConfirmed) {
-                   // If confirmed, submit the form
-                   document.getElementById('UpdateScheduleForm').submit();
-               }
-           });
-       });
-   </script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
+    // Function to update modal fields when clicking the edit button
+    document.querySelectorAll('[data-bs-target="#update_schedule_modal"]').forEach(button => {
+        button.addEventListener('click', function () {
+            // Get schedule details from data attributes
+            const id = this.getAttribute('data-id');
+            const classroom_id = this.getAttribute('data-classroom_id');
+            const user_id = this.getAttribute('data-user_id');
+            const subject_id = this.getAttribute('data-subject_id');
+            const subject_name = this.getAttribute('data-subject_name'); // Add subject name
+            const schedule_day = this.getAttribute('data-schedule_day');
+            const start_time = this.getAttribute('data-start_time');
+            const end_time = this.getAttribute('data-end_time');
+
+            const updateForm = document.getElementById('UpdateScheduleForm');
+            updateForm.action = `/admin/update-schedule/${id}`;
+
+            if (document.getElementById('classroom_id')) {
+                document.getElementById('classroom_id').value = classroom_id;
+            }
+            if (document.getElementById('user_id')) {
+                document.getElementById('user_id').value = user_id;
+            }
+            if (document.querySelector('#update_schedule_modal .subject_search')) {
+                let subjectSearch = document.querySelector('#update_schedule_modal .subject_search');
+                let subjectDropdown = document.querySelector('#update_schedule_modal .subject_id');
+
+                subjectSearch.value = subject_name;
+
+                subjectSearch.setAttribute('data-selected-value', subject_id);
+
+                subjectSearch.dispatchEvent(new Event('input', { bubbles: true }));
+
+                if (subjectDropdown) {
+                    subjectDropdown.value = subject_id;
+
+                    let optionToSelect = subjectDropdown.querySelector(`option[value="${subject_id}"]`);
+                    if (optionToSelect) {
+                        optionToSelect.selected = true;
+                    }
+                }
+            }
+
+            if (document.querySelector('.subject_id')) {
+                document.querySelector('.subject_id').value = subject_id;
+            }
+            if (document.getElementById('schedule_day')) {
+                document.getElementById('schedule_day').value = schedule_day;
+            }
+            if (document.getElementById('start_time')) {
+                document.getElementById('start_time').value = start_time;
+            }
+            if (document.getElementById('end_time')) {
+                document.getElementById('end_time').value = end_time;
+            }
+
+            console.log("Updating Schedule ID:", id);
+            console.log("Classroom ID:", classroom_id);
+            console.log("Professor ID:", user_id);
+            console.log("Subject ID:", subject_id);
+            console.log("Subject Name:", subject_name);
+            console.log("Schedule Day:", schedule_day);
+            console.log("Start Time:", start_time);
+            console.log("End Time:", end_time);
+        });
+    });
+
+    document.getElementById('UpdateScheduleButton').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to update the schedule?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Update Schedule",
+            cancelButtonText: "Cancel",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('UpdateScheduleForm').submit();
+            }
+        });
+    });
+
+    // Functionality for subject dropdown search
     document.querySelectorAll(".modal").forEach((modal) => {
         const searchInput = modal.querySelector(".subject_search");
         const selectDropdown = modal.querySelector(".subject_id");
@@ -248,18 +265,19 @@ document.addEventListener("DOMContentLoaded", function () {
             for (let option of options) {
                 let text = option.textContent.toLowerCase();
                 if (text.includes(filter) || option.value === "") {
-                    option.style.display = "block"; // kung ano lang nag match na text sa option, yun lang lalabas
+                    option.style.display = "block";
                     hasResults = true;
                 } else {
-                    option.style.display = "none"; // kung walang match na text sa option, walang lalabas na option
+                    option.style.display = "none";
                 }
             }
 
-            selectDropdown.style.display = hasResults ? "block" : "none"; // matik pag walang match na text sa option, matatanggal dapat yung dropdown
+            selectDropdown.style.display = hasResults ? "block" : "none";
         });
 
         selectDropdown.addEventListener("change", function () {
             searchInput.value = selectDropdown.options[selectDropdown.selectedIndex].text;
+            searchInput.setAttribute('data-selected-value', selectDropdown.value);
             selectDropdown.style.display = "none";
         });
 
@@ -271,4 +289,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-</script>
+
+   </script>
+

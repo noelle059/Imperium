@@ -10,6 +10,8 @@ use App\Models\Subject;
 use App\Models\Schedule;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 use Carbon\Carbon;
 
@@ -86,7 +88,6 @@ class ScheduleController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
         ]);
 
-        // Retrieve the form input data
         $classroomId = $request->input('classroom_id');
         $userId = $request->input('user_id');
         $subjectId = $request->input('subject_id');
@@ -94,13 +95,10 @@ class ScheduleController extends Controller
         $startTime = $request->input('start_time');
         $endTime = $request->input('end_time');
 
-        // Convert start and end times to Carbon instances for comparison
         $startTime = \Carbon\Carbon::createFromFormat('H:i', $startTime);
         $endTime = \Carbon\Carbon::createFromFormat('H:i', $endTime);
 
-        // Check if start time is after end time (reverse order)
         if ($startTime->greaterThanOrEqualTo($endTime)) {
-            // Instead of redirecting with errors, pass the error message as a session warning for SweetAlert
             return redirect()->back()->with('warning', 'Start time must be earlier than end time.');
         }
 
@@ -144,39 +142,52 @@ class ScheduleController extends Controller
 
     public function updateSchedule(Request $request, $id)
     {
-        $this->validate($request, [
-            'classroom_id' => 'nullable|exists:classrooms,id',
-            'user_id' => 'nullable|exists:users,id',
-            'subject_id' => 'nullable|exists:subjects,id',
-            'date' => 'nullable|date',
-            'start_time' => 'nullable|date_format:H:i',
-            'end_time' => 'nullable|date_format:H:i|after:start_time',
+        Log::info('updateSchedule method called', [
+            'schedule_id' => $id,
+            'all_request_data' => $request->all()
         ]);
 
-        // Retrieve the schedule to be updated
-        $schedule = Schedule::findOrFail($id);
+        try {
+            $schedule = Schedule::findOrFail($id);
+            Log::info('Schedule found', [
+                'original_schedule' => $schedule->toArray()
+            ]);
 
-        // Use existing values if no new value is provided
-        $schedule->classroom_id = $request->has('classroom_id') ? $request->input('classroom_id') : $schedule->classroom_id;
-        $schedule->user_id = $request->has('user_id') ? $request->input('user_id') : $schedule->user_id;
-        $schedule->subject_id = $request->has('subject_id') ? $request->input('subject_id') : $schedule->subject_id;
-        $schedule->schedule_day = $request->has('date') ? $request->input('date') : $schedule->schedule_day;
+            // Explicitly log each field before update
+            Log::info('Update attempt', [
+                'classroom_id' => $request->input('classroom_id'),
+                'user_id' => $request->input('user_id'),
+                'subject_id' => $request->input('subject_id'),
+                'date' => $request->input('date'),
+                'start_time' => $request->input('start_time'),
+                'end_time' => $request->input('end_time')
+            ]);
 
+            $updated = $schedule->update([
+                'classroom_id' => $request->input('classroom_id'),
+                'user_id' => $request->input('user_id'),
+                'subject_id' => $request->input('subject_id'),
+                'schedule_day' => $request->input('date'),
+                'start_time' => $request->input('start_time'),
+                'end_time' => $request->input('end_time')
+            ]);
 
-        // For start_time and end_time, if no new value is provided, retain current values
-        $schedule->start_time = $request->has('start_time') ? \Carbon\Carbon::createFromFormat('H:i', $request->input('start_time'))->format('H:i') : $schedule->start_time;
-        $schedule->end_time = $request->has('end_time') ? \Carbon\Carbon::createFromFormat('H:i', $request->input('end_time'))->format('H:i') : $schedule->end_time;
+            Log::info('Update method result', [
+                'updated' => $updated,
+                'updated_schedule' => $schedule->toArray()
+            ]);
 
-        // Save the updated schedule
-        $schedule->save();
-
-        // Redirect back with a success message
-        return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
+            return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error('Update Schedule Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update schedule: ' . $e->getMessage());
+        }
     }
-
-
-
-
 
 
     public function removeSchedule($id)

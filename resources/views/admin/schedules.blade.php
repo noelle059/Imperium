@@ -66,6 +66,7 @@
                             <button class="btn gradient-button update" type="button" data-id="{{ $schedule->id }}"
                                 data-classroom_id="{{ $schedule->classroom_id }}"
                                 data-user_id="{{ $schedule->user_id }}" data-subject_id="{{ $schedule->subject_id }}"
+                                data-subject_name="{{ $schedule->subject->subject_name }}"
                                 data-schedule_day="{{ $schedule->schedule_day }}"
                                 data-start_time="{{ $schedule->start_time }}"
                                 data-end_time="{{ $schedule->end_time }}" data-bs-toggle="modal"

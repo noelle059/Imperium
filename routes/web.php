@@ -253,9 +253,9 @@ Route::get('/admin/schedules', [ScheduleController::class, 'showSchedule'])->nam
 // Route to handle schedule creation (add classroom)
 Route::post('/admin/add-schedule', [ScheduleController::class, 'addSchedule'])->name('add_schedule');
 // Update Schedule
-Route::put('admin/update-schedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('update_schedule');
+Route::put('/admin/update-schedule/{id}', [ScheduleController::class, 'updateSchedule'])->name('update_schedule');
 // Archive Schedule
-Route::patch('admin/schedule/remove/{id}', [ScheduleController::class, 'removeSchedule'])->name('remove_schedule');
+Route::patch('/admin/schedule/remove/{id}', [ScheduleController::class, 'removeSchedule'])->name('remove_schedule');
 
 // Route to get all schedules (calendar)
 Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
