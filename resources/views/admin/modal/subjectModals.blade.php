@@ -84,55 +84,56 @@
 
  {{-- UPDATE SUBJECT SCRIPT --}}
  <script>
-     // JavaScript to populate modal fields when the update button is clicked
-     document.addEventListener('DOMContentLoaded', function() {
-         const updateButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event delegation for dynamically loaded buttons
+        document.body.addEventListener('click', function (event) {
+            if (event.target.closest('[data-bs-target="#update_subject_modal"]')) {
+                const button = event.target.closest('[data-bs-target="#update_subject_modal"]');
 
-         updateButtons.forEach(button => {
-             button.addEventListener('click', function() {
-                 const subjectId = button.getAttribute('data-id');
-                 const subjectCode = button.getAttribute('data-subject_code');
-                 const subjectName = button.getAttribute('data-subject_name');
-                 const subjectUnits = button.getAttribute('data-subject_units');
+                const subjectId = button.getAttribute('data-id');
+                const subjectCode = button.getAttribute('data-subject_code');
+                const subjectName = button.getAttribute('data-subject_name');
+                const subjectUnits = button.getAttribute('data-subject_units');
 
-                 // Set the values in the modal fields
-                 document.getElementById('subject_code').value = subjectCode;
-                 document.getElementById('subject_name').value = subjectName;
-                 document.getElementById('subject_units').value = subjectUnits;
+                // Set values in the modal fields
+                document.getElementById('subject_code').value = subjectCode;
+                document.getElementById('subject_name').value = subjectName;
+                document.getElementById('subject_units').value = subjectUnits;
 
-                 // Update the form action URL to include the subject ID for the PUT request
-                 const form = document.getElementById('UpdateSubjectForm');
-                 form.action = form.action.replace(':id', subjectId);
+                // Update form action dynamically
+                const form = document.getElementById('UpdateSubjectForm');
+                form.action = `{{ route('subjects.update', '') }}/${subjectId}`;
 
-                 // Store the subject name in a global variable for use in the confirmation dialog
-                 window.subjectName = subjectName;
-             });
-         });
-     });
+                // Store subject name for the confirmation dialog
+                window.subjectName = subjectName;
+            }
+        });
 
-     // Confirmation before form submission
-     document.getElementById('UpdateSubjectButton').addEventListener('click', function(event) {
-         event.preventDefault(); // Prevent the form submission immediately
+        // Event delegation for update button click
+        document.body.addEventListener('click', function (event) {
+            if (event.target.id === 'UpdateSubjectButton') {
+                event.preventDefault();
 
-         // Get form input values
-         const subjectCode = document.querySelector('[name="subject_code"]').value;
-         const subjectName = document.getElementById('subject_name').value; // Get updated subject name
-         const subjectUnits = document.querySelector('[name="subject_units"]').value;
+                // Fetch form values
+                const subjectCode = document.getElementById('subject_code').value;
+                const subjectName = document.getElementById('subject_name').value;
+                const subjectUnits = document.getElementById('subject_units').value;
 
-         // If all fields are filled, show the confirmation dialog
-         Swal.fire({
-             title: 'Are you sure?',
-             text: `Do you want to update the subject: ${subjectName}?`, // This now uses the correctly fetched subjectName
-             icon: 'warning',
-             showCancelButton: true,
-             confirmButtonText: 'Yes, Update Subject',
-             cancelButtonText: 'Cancel',
-             reverseButtons: true,
-         }).then((result) => {
-             if (result.isConfirmed) {
-                 // If confirmed, submit the form
-                 document.getElementById('UpdateSubjectForm').submit(); // Submit the form
-             }
-         });
-     });
- </script>
+                // Confirmation before submitting
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: `Do you want to update the subject: ${subjectName}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Update Subject',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('UpdateSubjectForm').submit();
+                    }
+                });
+            }
+        });
+    });
+</script>
