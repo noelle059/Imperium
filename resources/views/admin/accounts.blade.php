@@ -82,30 +82,56 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        function fetchData(page = 1, searchValue = '') {
-            $.ajax({
-                url: "{{ route('accounts') }}",
-                method: 'GET',
-                data: { search: searchValue, page: page },
-                success: function (response) {
-                    $('#tableSection').html($(response.html).find('#tableSection').html());
-                },
-                error: function (xhr, status, error) {
-                    console.error("AJAX Error:", status, error);
-                }
-            });
-        }
-
-        $('#searchInput').on('keyup', function () {
-            let searchValue = $(this).val();
-            fetchData(1, searchValue);
+    function fetchData(page = 1, searchValue = '') {
+        $.ajax({
+            url: "{{ route('accounts') }}",
+            method: 'GET',
+            data: { search: searchValue, page: page },
+            success: function (response) {
+                $('#tableSection').html($(response.html).find('#tableSection').html());
+                attachEventListeners(); // Reattach event listeners
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+            }
         });
+    }
 
-        $(document).on('click', '.pagination a', function (e) {
-            e.preventDefault();
-            let page = $(this).attr('href').split('page=')[1];
-            let searchValue = $('#searchInput').val();
-            fetchData(page, searchValue);
-        });
+    $('#searchInput').on('keyup', function () {
+        let searchValue = $(this).val();
+        fetchData(1, searchValue);
     });
+
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        let searchValue = $('#searchInput').val();
+        fetchData(page, searchValue);
+    });
+
+    function attachEventListeners() {
+    $(document).off('click', '.update').on('click', '.update', function () {
+        let id = $(this).data('id');
+        let name = $(this).data('name');
+        let email = $(this).data('email');
+        let rfid = $(this).data('rfid_uid');
+
+        console.log("Update Clicked:", id, name, email, rfid);
+
+        // Ensure correct modal is targeted
+        let modal = $('#register_account_id_modal');
+
+        // Set input fields correctly
+        modal.find('input[name="name"]').val(name);
+        modal.find('input[name="email"]').val(email);
+        modal.find('input[name="rfid_uid"]').val(rfid);
+
+        modal.modal('show'); // Ensure modal opens
+    });
+}
+
+attachEventListeners();
+// Attach on initial page load
+});
+
 </script>

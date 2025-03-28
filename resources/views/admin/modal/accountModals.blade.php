@@ -70,32 +70,26 @@
         });
     }
 
+    $(document).on('click', '[data-bs-target="#register_account_id_modal"]', function () {
+        const professorId = $(this).data('id');
+        const professorName = $(this).data('name');
+        const professorEmail = $(this).data('email');
+        const professorRfidUid = $(this).data('rfid_uid');
+        const professorActivated = $(this).data('is_activated');
 
+        const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
+        $('#UpdateAccountForm').attr('action', formAction);
 
-    // Attach event listener to each Update button to populate the modal and set form action
-    document.querySelectorAll('[data-bs-target="#register_account_id_modal"]').forEach(button => {
-        button.addEventListener('click', async function() { // Mark the function as async
-            const professorId = this.getAttribute('data-id'); // Get professor ID
-            const professorName = this.getAttribute('data-name');
-            const professorEmail = this.getAttribute('data-email');
-            const professorRfidUid = this.getAttribute('data-rfid_uid');
-            const professorActivated = this.getAttribute('data-is_activated');
+        $('#account_name').val(professorName);
+        $('#account_email').val(professorEmail);
 
-            // Update the form action to include the professor's ID
-            const formAction = `{{ route('accounts.update', '') }}/${professorId}`;
-            document.getElementById('UpdateAccountForm').action = formAction;
-
-            // Populate the modal fields with the professor's data
-            document.getElementById('account_name').value = professorName;
-            document.getElementById('account_email').value = professorEmail;
-
-            if (!professorRfidUid || professorActivated == "0") {
-                listenForRFIDUpdates();
-            } else {
-                document.getElementById('rfid_uid').value = professorRfidUid;
-            }
-        });
+        if (!professorRfidUid || professorActivated == "0") {
+            listenForRFIDUpdates();
+        } else {
+            $('#rfid_uid').val(professorRfidUid);
+        }
     });
+
 
     // Update Account Button click handler
     document.getElementById('UpdateAccountButton').addEventListener('click', function(event) {

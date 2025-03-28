@@ -37,6 +37,14 @@ Route::get('/', function () {
     return view('homepage');
 })->name('home');
 
+Route::get('/clear-cache', function() {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    return 'Cache Cleared!';
+});
+
 
 
 Route::get('/forgotpass', function () {
