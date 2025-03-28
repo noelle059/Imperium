@@ -90,9 +90,9 @@
                                     data-bs-toggle="modal" data-bs-target="#entryModal">
                                     <i class="fa-solid fa-door-open"></i>
                                 </button>
-                                @else
-                                    <span class="text-muted">No Access</span>
-                                @endif
+                            @else
+                                <span class="text-muted">No Access</span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -157,6 +157,7 @@
 
 
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script type="module">
     // Import Firebase functions
@@ -185,6 +186,10 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+
+
+
 
     // Fetch and display devices when the modal is shown
     $('#controlModal').on('show.bs.modal', function(event) {
@@ -215,23 +220,28 @@
                         ''; // Ensure this is properly converted to a boolean
 
                     var deviceControl = `
-                        <div class="card">
-                            <label for="switch${device.device_name}">
-                                <i class="bi bi-lightbulb" id="icon${device.device_name}"></i> ${device.device_name}
-                            </label>
-                            <label class="switch">
-                                <input type="checkbox" id="switch${device.device_name}"
-                                       data-device-id="${device.device_name}"
-                                       data-classroom-id="${classroomId}"
-                                       data-device-name="${device.device_name}"
-                                       ${checked}
-                                       onclick="toggleSwitch('${device.device_name}', '${classroomId}', '${device.device_name}')">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    `;
+                <div class="card">
+                    <label for="switch${device.id}">
+                        <i class="bi bi-lightbulb" id="icon${device.id}"></i> ${device.device_name}
+                    </label>
+                    <label class="switch">
+                        <input type="checkbox" id="switch${device.id}"
+                               data-device-id="${device.id}"
+                               data-classroom-id="${classroomId}"
+                               data-device-name="${device.device_name}"
+                               ${checked}
+                               onclick="toggleSwitch(${device.id}, ${classroomId}, '${device.device_name}')">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            `;
                     $('#device-controls-container').append(deviceControl);
                 });
+
+                // Now you have the device IDs from the data.device_ids array
+                // You can do whatever is necessary with the device IDs here
+                console.log('Device IDs:', data
+                    .device_ids); // Example of how to access the device IDs
 
                 // Sync the UI with Firebase state after loading
                 syncDeviceStateWithFirebase(classroomId); // Make sure classroomId is passed here
@@ -242,6 +252,9 @@
         });
     });
 
+
+
+
     // Sync device states with Firebase
     function syncDeviceStateWithFirebase(classroomId) {
         const deviceRef = ref(db, `classrooms/${classroomId}/devices/`);
@@ -249,33 +262,48 @@
             const devices = snapshot.val();
             console.log(devices); // Check the data structure
 
-            // Convert devices object to an array
-            const deviceArray = Object.keys(devices).map(key => devices[key]);
+            // Loop through devices and update UI
+            if (devices) {
+                Object.keys(devices).forEach(deviceId => {
+                    const device = devices[deviceId];
+                    // Update the UI with the device states
+                    updateDeviceUI(deviceId, device);
 
-            // Now you can safely use forEach to update the UI
-            deviceArray.forEach(device => {
-                // Update the UI with the device states
-                updateDeviceUI(device);
-            });
+                    // console.log(`Device Id Sync: ${deviceId}`);
+
+                });
+            }
         });
+
     }
 
+
+
     // Update the switch state on the UI
-    function updateDeviceUI(device) {
-        const switchElement = document.getElementById(`switch${device.device_name}`);
+    function updateDeviceUI(deviceId, device) {
+        const switchElement = document.getElementById(`switch${deviceId}`);
         if (switchElement) {
             // Update the switch based on the Firebase state (true or false)
             switchElement.checked = device.state === true;
         }
+        // console.log(`Device Id: ${deviceId}`);
     }
+
 
     // Function to handle the switch toggle
     function toggleSwitch(deviceId, classroomId, deviceName) {
-        // Directly access the checkbox DOM element
+        console.log('Device ID:', deviceId); // Check the device ID passed
+        console.log('Classroom ID:', classroomId); // Check the classroom ID passed
+        console.log('Device Name:', deviceName); // Check the device name passed
+
+        if (!deviceId) {
+            console.error('Device ID is undefined');
+            return; // If deviceId is undefined, stop the function
+        }
+
         var switchElement = document.getElementById('switch' + deviceId);
         var isChecked = switchElement.checked; // Accessing the `checked` property of the checkbox directly
 
-        // Log the current state to ensure it's being captured correctly
         console.log(`Switch for ${deviceName} toggled`);
         console.log(`Checkbox state: ${isChecked}`); // Log the state of the checkbox
 
@@ -284,7 +312,13 @@
         console.log(`newState before Firebase update: ${newState}`); // Log the newState before updating Firebase
 
         // Update device state in Firebase immediately
-        const deviceStateRef = ref(db, `classrooms/${classroomId}/devices/${deviceName}`);
+        const deviceStateRef = ref(db,
+            `classrooms/${classroomId}/devices/${deviceId}`); // Correct Firebase reference
+
+        // Ensure the reference is correct by checking the path in the console
+        console.log('Firebase path:', `classrooms/${classroomId}/devices/${deviceId}`);
+
+        // Update Firebase with the new state
         update(deviceStateRef, {
             state: newState
         }).then(() => {
@@ -297,6 +331,23 @@
     // Expose toggleSwitch to the global scope
     window.toggleSwitch = toggleSwitch;
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

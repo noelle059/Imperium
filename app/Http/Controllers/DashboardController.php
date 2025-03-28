@@ -65,6 +65,7 @@ class DashboardController extends Controller
 
     public function getDevices($classroom_id)
     {
+        // Fetch the classroom with its devices relationship
         $classroom = Classroom::with('devices')->find($classroom_id);
 
         if (!$classroom) {
@@ -72,12 +73,13 @@ class DashboardController extends Controller
         }
 
         $devicesWithState = [];
+        $deviceIds = [];  // Array to store all the device IDs
 
         // Iterate through devices and get the state from Firebase
         foreach ($classroom->devices as $device) {
             try {
-                // Get the state from Firebase
-                $firebaseState = app(FirebaseService::class)->getData('classrooms/' . $classroom_id . '/devices/' . $device->device_name . '/state');
+                // Use device_id to form the correct Firebase path
+                $firebaseState = app(FirebaseService::class)->getData('classrooms/' . $classroom_id . '/devices/' . $device->id . '/state');
 
                 // Ensure that state is either true or false (boolean)
                 $device->state = ($firebaseState !== null) ? (bool)$firebaseState : false;
@@ -87,10 +89,17 @@ class DashboardController extends Controller
 
             // Add the device with state to the array
             $devicesWithState[] = $device;
+            // Collect the device_id in the array
+            $deviceIds[] = $device->id;
         }
 
-        return response()->json(['devices' => $devicesWithState]);
+        // Return the devices along with the device IDs
+        return response()->json([
+            'devices' => $devicesWithState,
+            'device_ids' => $deviceIds  // New key for device IDs
+        ]);
     }
+
 
     public function index()
     {
@@ -114,22 +123,22 @@ class DashboardController extends Controller
         $floors = Floor::whereHas('classrooms.schedules', function ($query) use ($user) {
             $query->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
         })
-        ->with([
-            'classrooms' => function ($query) use ($user) {
-                $query->whereHas('schedules', function ($subQuery) use ($user) {
-                    $subQuery->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
-                })->where('archive_status', 1);
-            },
-            'classrooms.schedules' => function ($query) use ($user) {
-                $query->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
-            },
-            'classrooms.schedules.scheduleLogs' => function ($query) {
-                $query->whereNull('end_time');
-            },
-            'classrooms.schedules.subject'
-        ])
-        ->where('archive_status', 1)
-        ->get();
+            ->with([
+                'classrooms' => function ($query) use ($user) {
+                    $query->whereHas('schedules', function ($subQuery) use ($user) {
+                        $subQuery->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
+                    })->where('archive_status', 1);
+                },
+                'classrooms.schedules' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id); // Change 'professor_id' to 'user_id'
+                },
+                'classrooms.schedules.scheduleLogs' => function ($query) {
+                    $query->whereNull('end_time');
+                },
+                'classrooms.schedules.subject'
+            ])
+            ->where('archive_status', 1)
+            ->get();
 
         return view('user.dashboard', compact('floors', 'currentDateTime'));
     }
