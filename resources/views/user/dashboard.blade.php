@@ -345,8 +345,9 @@
             exitRfidLabel.textContent = "Scanning RFID...";
             confirmExitBtn.style.display = "none";
             confirmExitBtn.disabled = true;
-
-            fetchProfessorRFIDForExit();
+            setInterval(() => {
+                fetchProfessorRFIDForExit();
+            }, 3000);
         });
 
         function fetchProfessorRFIDForExit() {

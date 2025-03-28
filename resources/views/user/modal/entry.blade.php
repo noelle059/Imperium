@@ -87,7 +87,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(professorData => {
                             console.log("Professor RFID:", professorData.rfid_uid);
-                            checkRFIDMatch(professorData.rfid_uid);
+                            setInterval(() => {
+                                checkRFIDMatch(professorData.rfid_uid);
+                            }, 3000);
                         });
                 }
             })
@@ -96,11 +98,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function checkRFIDMatch(professorRFID) {
-        fetch("/get-rfid-from-firebase")
+        fetch("/get-rfid")
             .then(response => response.json())
             .then(data => {
-                console.log("Fetched RFID from Firebase:", data.rfid);
-
+                console.log("Fetched RFID from firebase:", data.rfid);
                 if (data.rfid) {
                     rfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
                     rfidLabel.style.display = "block";
@@ -119,8 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             })
-            .catch(error => console.error("Error fetching RFID from Firebase:", error));
+            .catch(error => console.error("Error fetching RFID:", error));
     }
+
 
 
 

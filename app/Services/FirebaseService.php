@@ -65,6 +65,11 @@ class FirebaseService
         return $this->database->getReference('rfid/current')->getValue();
     }
 
+    public function getAccessRFID()
+    {
+        return $this->database->getReference('rfid/access')->getValue();
+    }
+
 
     // Fetch device status from Firebase
     public function getDeviceStatus($deviceId)
