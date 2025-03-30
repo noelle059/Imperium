@@ -213,6 +213,9 @@ Route::put('admin/subjects/{id}', [SubjectController::class, 'update'])->name('s
 // Archive a subject
 Route::patch('admin/subjects/remove/{id}', [SubjectController::class, 'remove'])->name('subjects.remove');
 
+Route::get('/get-subject-units/{id}', [SubjectController::class, 'getSubjectUnits']);
+
+
 
 // Show Devices
 Route::get('/admin/show-devices', [DeviceController::class, 'showAddDevices'])->name('show_devices');

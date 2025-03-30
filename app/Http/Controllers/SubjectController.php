@@ -35,6 +35,17 @@ class SubjectController extends Controller
         return view('admin.subjects', compact('subjects'));
     }
 
+    public function getSubjectUnits($id)
+    {
+        $subject = Subject::find($id);
+
+        if ($subject) {
+            return response()->json(['units' => $subject->units]);
+        }
+
+        return response()->json(['units' => null], 404);
+    }
+
 
 
 

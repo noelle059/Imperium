@@ -67,9 +67,10 @@
                                 data-classroom_id="{{ $schedule->classroom_id }}"
                                 data-user_id="{{ $schedule->user_id }}" data-subject_id="{{ $schedule->subject_id }}"
                                 data-subject_name="{{ $schedule->subject->subject_name }}"
+                                data-subject-units="{{ $schedule->subject->units }}"
                                 data-schedule_day="{{ $schedule->schedule_day }}"
                                 data-start_time="{{ $schedule->start_time }}"
-                                data-end_time="{{ $schedule->end_time }}" data-bs-toggle="modal"
+                                data-bs-toggle="modal"
                                 data-bs-target="#update_schedule_modal">
                                 <i class="fa-solid fa-arrow-up-from-bracket"></i>
                             </button>

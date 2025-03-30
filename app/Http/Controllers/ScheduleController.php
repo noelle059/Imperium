@@ -78,227 +78,154 @@ class ScheduleController extends Controller
 
     public function addSchedule(Request $request)
     {
-        // Validate the incoming request based on form fields
-        $this->validate($request, [
-            'classroom_id' => 'required|exists:classrooms,id', // Ensure classroom exists
-            'user_id' => 'required|exists:users,id', // Ensure professor exists
-            'subject_id' => 'required|exists:subjects,id', // Ensure subject exists
-            'date' => 'required|date', // Ensure date is in valid format
-            'start_time' => 'required|date_format:H:i', // Ensure start time is in valid format
-            'end_time' => 'required|date_format:H:i|after:start_time', // Ensure end time is after start time
-        ]);
-
-        $classroomId = $request->input('classroom_id');
-        $userId = $request->input('user_id');
-        $subjectId = $request->input('subject_id');
-        $date = $request->input('date');
-        $startTime = $request->input('start_time');
-        $endTime = $request->input('end_time');
-
-        $startTime = \Carbon\Carbon::createFromFormat('H:i', $startTime);
-        $endTime = \Carbon\Carbon::createFromFormat('H:i', $endTime);
-
-        if ($startTime->greaterThanOrEqualTo($endTime)) {
-            return redirect()->back()->with('warning', 'Start time must be earlier than end time.');
-        }
-
-        // Check if the time slot overlaps with existing schedules
-        $overlappingSchedule = Schedule::where('classroom_id', $classroomId)
-            ->where('schedule_day', $date)
-            ->where(function ($query) use ($startTime, $endTime) {
-                // Check if the new start time is within an existing schedule
-                $query->whereBetween('start_time', [$startTime->format('H:i'), $endTime->format('H:i')])
-                    // Or check if the new end time is within an existing schedule
-                    ->orWhereBetween('end_time', [$startTime->format('H:i'), $endTime->format('H:i')])
-                    // Or if the new schedule overlaps an existing one completely
-                    ->orWhere(function ($query) use ($startTime, $endTime) {
-                        $query->where('start_time', '<=', $startTime->format('H:i'))
-                            ->where('end_time', '>=', $endTime->format('H:i'));
-                    });
-            })
-            ->first();
-
-        if ($overlappingSchedule) {
-            // If the time slot is already occupied, show an alert
-            return redirect()->route('show_schedule')->with('error', 'The selected time slot is already occupied by another professor. Please choose another time.');
-        }
-
-        // Save the new schedule to the database
-        $schedule = new Schedule();
-        $schedule->classroom_id = $classroomId;
-        $schedule->user_id = $userId;  // Store the professor
-        $schedule->subject_id = $subjectId;
-        $schedule->schedule_day = $date;
-        $schedule->start_time = $startTime->format('H:i');
-        $schedule->end_time = $endTime->format('H:i');
-        $schedule->save();
-
-        // Redirect back with a success message
-        return redirect()->route('show_schedule')->with('success', 'Schedule Added Successfully');
-    }
-
-
-
-
-    public function updateSchedule(Request $request, $id)
-{
-    Log::info('updateSchedule method called', [
-        'schedule_id' => $id,
-        'all_request_data' => $request->all()
-    ]);
-
-    try {
-        $schedule = Schedule::findOrFail($id);
-        Log::info('Schedule found', [
-            'original_schedule' => $schedule->toArray()
-        ]);
-
-        // Convert incoming times to proper H:i format before validation
-        $formattedStartTime = \Carbon\Carbon::parse($request->input('start_time'))->format('H:i');
-        $formattedEndTime = \Carbon\Carbon::parse($request->input('end_time'))->format('H:i');
-
-        // Manually replace request values with formatted times
-        $request->merge([
-            'start_time' => $formattedStartTime,
-            'end_time' => $formattedEndTime,
-        ]);
-
-        // Validate request
+        // Validate the incoming request
         $this->validate($request, [
             'classroom_id' => 'required|exists:classrooms,id',
             'user_id' => 'required|exists:users,id',
             'subject_id' => 'required|exists:subjects,id',
             'date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
         $classroomId = $request->input('classroom_id');
-        $userId = $request->input('user_id');
+        $userId = $request->input('user_id'); // Professor ID
         $subjectId = $request->input('subject_id');
         $date = $request->input('date');
 
-        $startTime = \Carbon\Carbon::createFromFormat('H:i', $formattedStartTime);
-        $endTime = \Carbon\Carbon::createFromFormat('H:i', $formattedEndTime);
+        // Convert start time to Carbon instance
+        $startTime = \Carbon\Carbon::createFromFormat('H:i', $request->input('start_time'));
 
+        // Get the subject units and calculate the end time
+        $units = Subject::where('id', $subjectId)->value('units');
+        $endTime = $startTime->copy()->addHours($units);
+
+        // Ensure start time is before end time
         if ($startTime->greaterThanOrEqualTo($endTime)) {
             return redirect()->back()->with('warning', 'Start time must be earlier than end time.');
         }
 
-        // Check for schedule conflicts
-        $overlappingSchedule = Schedule::where('classroom_id', $classroomId)
+        // **Check if professor has overlapping schedules**
+        $professorConflict = Schedule::where('user_id', $userId)
             ->where('schedule_day', $date)
-            ->where('id', '!=', $id)
             ->where(function ($query) use ($startTime, $endTime) {
-                $query->whereBetween('start_time', [$startTime->format('H:i'), $endTime->format('H:i')])
+                $query->where(function ($q) use ($startTime, $endTime) {
+                    // Case 1: New start time is within an existing schedule
+                    $q->whereBetween('start_time', [$startTime->format('H:i'), $endTime->format('H:i')])
                     ->orWhereBetween('end_time', [$startTime->format('H:i'), $endTime->format('H:i')])
-                    ->orWhere(function ($query) use ($startTime, $endTime) {
-                        $query->where('start_time', '<=', $startTime->format('H:i'))
+                    // Case 2: Existing schedule completely overlaps the new one
+                    ->orWhere(function ($q) use ($startTime, $endTime) {
+                        $q->where('start_time', '<=', $startTime->format('H:i'))
                             ->where('end_time', '>=', $endTime->format('H:i'));
                     });
+                });
             })
-            ->first();
+            ->exists();
 
-        if ($overlappingSchedule) {
-            return redirect()->route('show_schedule')->with('error', 'The selected time slot is already occupied by another professor. Please choose another time.');
+        if ($professorConflict) {
+            return redirect()->route('show_schedule')
+                ->with('error', 'The selected time slot is already occupied by the professor. Please choose another time.');
         }
 
-        // Update the schedule
-        $schedule->update([
-            'classroom_id' => $classroomId,
-            'user_id' => $userId,
-            'subject_id' => $subjectId,
-            'schedule_day' => $date,
-            'start_time' => $startTime->format('H:i'),
-            'end_time' => $endTime->format('H:i'),
-        ]);
 
-        Log::info('Update method result', [
-            'updated_schedule' => $schedule->toArray()
-        ]);
-
-        return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
-    } catch (\Exception $e) {
-        Log::error('Update Schedule Error', [
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ]);
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Failed to update schedule: ' . $e->getMessage());
-    }
-}
-
-
-
-
-
-    public function removeSchedule($id)
-    {
-        // Find the floor by id
-        $schedule = Schedule::find($id);
-
-        // Set the archive_status to 0
-        $schedule->archive_status = 0;
+        // Save the schedule
+        $schedule = new Schedule();
+        $schedule->classroom_id = $classroomId;
+        $schedule->user_id = $userId;
+        $schedule->subject_id = $subjectId;
+        $schedule->schedule_day = $date;
+        $schedule->start_time = $startTime->format('H:i');
+        $schedule->end_time = $endTime->format('H:i');
         $schedule->save();
 
-        // Return a success response in JSON format
-        return response()->json(['success' => true, 'message' => 'Schedule Removed Successfully']);
+        return redirect()->route('show_schedule')->with('success', 'Schedule Added Successfully');
     }
 
 
-    public function printPdf($id, Request $request)
-{
-    $schedule = Schedule::with(['classroom', 'user', 'subject'])->findOrFail($id);
-
-    // ✅ Get logged-in user's name
-    $name = Auth::check() ? Auth::user()->name : 'N/A';
-
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
-    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
-
-    // ✅ Pass the name variable to the Blade template
-    $pdf = Pdf::loadView('admin.schedule_pdf', compact('schedule', 'start_date', 'end_date', 'current_date', 'name'));
-
-    return $pdf->download('Schedule_Report.pdf');
-}
 
 
 
-public function scheduleReport()
-{
-    $schedules = Schedule::with(['classroom', 'user', 'subject'])->get();
-    return view('admin.reports.schedule_report', compact('schedules'));
-}
+    public function updateSchedule(Request $request, $id)
+    {
+        Log::info('updateSchedule method called', [
+            'schedule_id' => $id,
+            'all_request_data' => $request->all()
+        ]);
 
+        try {
+            $schedule = Schedule::findOrFail($id);
+            Log::info('Schedule found', ['original_schedule' => $schedule->toArray()]);
 
+            // Ensure start_time is properly formatted before validation
+            $startTime = \Carbon\Carbon::parse($request->input('start_time'))->format('H:i');
 
-public function printAll(Request $request)
-{
-    $query = Schedule::with(['classroom', 'user', 'subject']);
+            // Validate request
+            $this->validate($request, [
+                'classroom_id' => 'required|exists:classrooms,id',
+                'user_id' => 'required|exists:users,id',
+                'subject_id' => 'required|exists:subjects,id',
+                'date' => 'required|date',
+                'start_time' => 'required|date_format:H:i',
+            ]);
 
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
+            $classroomId = $request->input('classroom_id');
+            $userId = $request->input('user_id'); // Professor ID
+            $subjectId = $request->input('subject_id');
+            $date = $request->input('date');
 
-    if ($start_date) {
-        $query->whereDate('schedule_day', '>=', $start_date);
+            // Convert start_time to Carbon instance again
+            $startTime = \Carbon\Carbon::createFromFormat('H:i', $startTime);
+
+            // Fetch subject units and calculate end_time
+            $units = Subject::where('id', $subjectId)->value('units');
+            $endTime = $startTime->copy()->addHours($units);
+
+            if ($startTime->greaterThanOrEqualTo($endTime)) {
+                return redirect()->back()->with('warning', 'Start time must be earlier than end time.');
+            }
+
+            // **Check if professor has overlapping schedules (excluding current schedule)**
+            $professorConflict = Schedule::where('user_id', $userId)
+                ->where('schedule_day', $date)
+                ->where('id', '!=', $id) // Exclude the current schedule
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->whereBetween('start_time', [$startTime->format('H:i'), $endTime->format('H:i')])
+                        ->orWhereBetween('end_time', [$startTime->format('H:i'), $endTime->format('H:i')])
+                        ->orWhere(function ($query) use ($startTime, $endTime) {
+                            $query->where('start_time', '<=', $startTime->format('H:i'))
+                                ->where('end_time', '>=', $endTime->format('H:i'));
+                        });
+                })
+                ->exists();
+
+            if ($professorConflict) {
+                return redirect()->route('show_schedule')->with('error', 'This professor already has a schedule during the selected time. Please choose another time.');
+            }
+
+            // Update schedule in database
+            $schedule->update([
+                'classroom_id' => $classroomId,
+                'user_id' => $userId,
+                'subject_id' => $subjectId,
+                'schedule_day' => $date,
+                'start_time' => $startTime->format('H:i'),
+                'end_time' => $endTime->format('H:i'),
+            ]);
+
+            Log::info('Schedule updated', ['updated_schedule' => $schedule->toArray()]);
+
+            return redirect()->route('show_schedule')->with('success', 'Schedule Updated Successfully');
+        } catch (\Exception $e) {
+            Log::error('Update Schedule Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update schedule: ' . $e->getMessage());
+        }
     }
-    if ($end_date) {
-        $query->whereDate('schedule_day', '<=', $end_date);
-    }
 
-    $schedules = $query->get();
-    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
 
-    // ✅ Get logged-in user's name
-    $name = Auth::check() ? Auth::user()->name : 'N/A';
-
-    // ✅ Pass the name variable to the Blade template
-    $pdf = Pdf::loadView('admin.schedule_pdf_all', compact('schedules', 'start_date', 'end_date', 'current_date', 'name'));
-
-    return $pdf->download('schedule_Report_All.pdf');
-}
 
 public function getProfessorSubjects()
 {
@@ -401,6 +328,77 @@ public function checkSchedule(Request $request)
         ]);
     }
 }
+
+
+
+    public function removeSchedule($id)
+    {
+        // Find the floor by id
+        $schedule = Schedule::find($id);
+
+        // Set the archive_status to 0
+        $schedule->archive_status = 0;
+        $schedule->save();
+
+        // Return a success response in JSON format
+        return response()->json(['success' => true, 'message' => 'Schedule Removed Successfully']);
+    }
+
+
+    public function printPdf($id, Request $request)
+{
+    $schedule = Schedule::with(['classroom', 'user', 'subject'])->findOrFail($id);
+
+    // ✅ Get logged-in user's name
+    $name = Auth::check() ? Auth::user()->name : 'N/A';
+
+    $start_date = $request->input('start_date');
+    $end_date = $request->input('end_date');
+    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
+
+    // ✅ Pass the name variable to the Blade template
+    $pdf = Pdf::loadView('admin.schedule_pdf', compact('schedule', 'start_date', 'end_date', 'current_date', 'name'));
+
+    return $pdf->download('Schedule_Report.pdf');
+}
+
+
+
+public function scheduleReport()
+{
+    $schedules = Schedule::with(['classroom', 'user', 'subject'])->get();
+    return view('admin.reports.schedule_report', compact('schedules'));
+}
+
+
+
+public function printAll(Request $request)
+{
+    $query = Schedule::with(['classroom', 'user', 'subject']);
+
+    $start_date = $request->input('start_date');
+    $end_date = $request->input('end_date');
+
+    if ($start_date) {
+        $query->whereDate('schedule_day', '>=', $start_date);
+    }
+    if ($end_date) {
+        $query->whereDate('schedule_day', '<=', $end_date);
+    }
+
+    $schedules = $query->get();
+    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
+
+    // ✅ Get logged-in user's name
+    $name = Auth::check() ? Auth::user()->name : 'N/A';
+
+    // ✅ Pass the name variable to the Blade template
+    $pdf = Pdf::loadView('admin.schedule_pdf_all', compact('schedules', 'start_date', 'end_date', 'current_date', 'name'));
+
+    return $pdf->download('schedule_Report_All.pdf');
+}
+
+
 
 
 

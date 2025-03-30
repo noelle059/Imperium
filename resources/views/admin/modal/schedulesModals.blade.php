@@ -44,6 +44,11 @@
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="units" class="form-label">Units</label>
+                            <input type="text" id="units" class="form-control" readonly>
+                        </div>
+
                        <!-- Date -->
                        <div class="mb-3">
                            <label for="Date" class="form-label">Date</label>
@@ -54,12 +59,6 @@
                        <div class="mb-3">
                            <label for="StartTime" class="form-label">Start Time</label>
                            <input type="time" name="start_time" class="form-control" required>
-                       </div>
-
-                       <!-- End Time -->
-                       <div class="mb-3">
-                           <label for="EndTime" class="form-label">End Time</label>
-                           <input type="time" name="end_time" class="form-control" required>
                        </div>
 
                    </div>
@@ -122,6 +121,11 @@
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="units" class="form-label">Units</label>
+                            <input type="text" id="update_units" class="form-control" readonly>
+                        </div>
+
                        <!-- Date -->
                        <div class="mb-3">
                            <label for="Date" class="form-label">Date</label>
@@ -133,13 +137,6 @@
                            <label for="StartTime" class="form-label">Start Time</label>
                            <input type="time" name="start_time" id="start_time" class="form-control">
                        </div>
-
-                       <!-- End Time -->
-                       <div class="mb-3">
-                           <label for="EndTime" class="form-label">End Time</label>
-                           <input type="time" name="end_time" id="end_time" class="form-control">
-                       </div>
-
 
                    </div>
 
@@ -154,141 +151,190 @@
        </div>
    </div>
 
-<script>
+   <script>
    document.addEventListener("DOMContentLoaded", function () {
-    // Function to update modal fields when clicking the edit button
-    document.querySelectorAll('[data-bs-target="#update_schedule_modal"]').forEach(button => {
-        button.addEventListener('click', function () {
-            // Get schedule details from data attributes
-            const id = this.getAttribute('data-id');
-            const classroom_id = this.getAttribute('data-classroom_id');
-            const user_id = this.getAttribute('data-user_id');
-            const subject_id = this.getAttribute('data-subject_id');
-            const subject_name = this.getAttribute('data-subject_name'); // Add subject name
-            const schedule_day = this.getAttribute('data-schedule_day');
-            const start_time = this.getAttribute('data-start_time');
-            const end_time = this.getAttribute('data-end_time');
+       const startTimeInput = document.querySelector("[name='start_time']");
+       const unitsInput = document.getElementById("units") || document.getElementById("update_units");
 
-            const updateForm = document.getElementById('UpdateScheduleForm');
-            updateForm.action = `/admin/update-schedule/${id}`;
+       document.addEventListener("input", function (event) {
+           if (event.target.matches("[name='start_time'], #update_units, #units")) {
+               calculateEndTime();
+           }
+       });
 
-            if (document.getElementById('classroom_id')) {
-                document.getElementById('classroom_id').value = classroom_id;
-            }
-            if (document.getElementById('user_id')) {
-                document.getElementById('user_id').value = user_id;
-            }
-            if (document.querySelector('#update_schedule_modal .subject_search')) {
-                let subjectSearch = document.querySelector('#update_schedule_modal .subject_search');
-                let subjectDropdown = document.querySelector('#update_schedule_modal .subject_id');
+       if (startTimeInput && unitsInput) {
+           startTimeInput.addEventListener("change", calculateEndTime);
+           unitsInput.addEventListener("change", calculateEndTime);
 
-                subjectSearch.value = subject_name;
+           function calculateEndTime() {
+               let startTime = startTimeInput.value;
+               let units = parseFloat(unitsInput.value);
 
-                subjectSearch.setAttribute('data-selected-value', subject_id);
+               if (startTime && !isNaN(units) && units > 0) {
+                   let [hours, minutes] = startTime.split(":").map(Number);
+                   hours += units;
 
-                subjectSearch.dispatchEvent(new Event('input', { bubbles: true }));
+                   let endTime = new Date();
+                   endTime.setHours(hours, minutes);
 
-                if (subjectDropdown) {
-                    subjectDropdown.value = subject_id;
+                   let formattedEndTime = endTime.toTimeString().slice(0, 5);
 
-                    let optionToSelect = subjectDropdown.querySelector(`option[value="${subject_id}"]`);
-                    if (optionToSelect) {
-                        optionToSelect.selected = true;
-                    }
-                }
-            }
+                   let endTimeField = document.querySelector("[name='end_time']");
+                   if (!endTimeField) {
+                       endTimeField = document.createElement("input");
+                       endTimeField.type = "hidden";
+                       endTimeField.name = "end_time";
+                       startTimeInput.closest("form").appendChild(endTimeField);
+                   }
+                   endTimeField.value = formattedEndTime;
+               }
+           }
+       }
 
-            if (document.querySelector('.subject_id')) {
-                document.querySelector('.subject_id').value = subject_id;
-            }
-            if (document.getElementById('schedule_day')) {
-                document.getElementById('schedule_day').value = schedule_day;
-            }
-            if (document.getElementById('start_time')) {
-                document.getElementById('start_time').value = start_time;
-            }
-            if (document.getElementById('end_time')) {
-                document.getElementById('end_time').value = end_time;
-            }
+       // Event Delegation: Fetch and update units dynamically for both Add & Update modals
+       document.addEventListener("change", function (event) {
+           if (event.target.classList.contains("subject_id")) {
+               let subjectId = event.target.value;
+               let modal = event.target.closest(".modal");
+               let unitsInput = modal ? modal.querySelector("#units, #update_units") : null;
 
-            console.log("Updating Schedule ID:", id);
-            console.log("Classroom ID:", classroom_id);
-            console.log("Professor ID:", user_id);
-            console.log("Subject ID:", subject_id);
-            console.log("Subject Name:", subject_name);
-            console.log("Schedule Day:", schedule_day);
-            console.log("Start Time:", start_time);
-            console.log("End Time:", end_time);
-        });
-    });
+               if (subjectId && unitsInput) {
+                   fetch(`/get-subject-units/${subjectId}`)
+                       .then(response => response.json())
+                       .then(data => {
+                           unitsInput.value = data.units !== null ? data.units : "";
+                       })
+                       .catch(error => {
+                           console.error("Error fetching subject units:", error);
+                           unitsInput.value = "";
+                       });
+               } else if (unitsInput) {
+                   unitsInput.value = "";
+               }
+           }
+       });
 
-    document.getElementById('UpdateScheduleButton').addEventListener('click', function (event) {
-        event.preventDefault();
+       // Update modal fields when clicking the edit button
+       document.querySelectorAll('[data-bs-target="#update_schedule_modal"]').forEach(button => {
+           button.addEventListener('click', function () {
+               const id = this.getAttribute('data-id');
+               const classroom_id = this.getAttribute('data-classroom_id');
+               const user_id = this.getAttribute('data-user_id');
+               const subject_id = this.getAttribute('data-subject_id');
+               const updateUnits = this.getAttribute('data-subject-units');
+               const subject_name = this.getAttribute('data-subject_name');
+               const schedule_day = this.getAttribute('data-schedule_day');
+               const start_time = this.getAttribute('data-start_time');
+               const end_time = this.getAttribute('data-end_time');
 
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to update the schedule?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, Update Schedule",
-            cancelButtonText: "Cancel",
-            reverseButtons: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('UpdateScheduleForm').submit();
-            }
-        });
-    });
+               const updateForm = document.getElementById('UpdateScheduleForm');
+               updateForm.action = `/admin/update-schedule/${id}`;
 
-    // Functionality for subject dropdown search
-    document.querySelectorAll(".modal").forEach((modal) => {
-        const searchInput = modal.querySelector(".subject_search");
-        const selectDropdown = modal.querySelector(".subject_id");
+               if (document.getElementById('classroom_id')) {
+                   document.getElementById('classroom_id').value = classroom_id;
+               }
+               if (document.getElementById('user_id')) {
+                   document.getElementById('user_id').value = user_id;
+               }
+               if (document.querySelector('#update_schedule_modal .subject_search')) {
+                   let subjectSearch = document.querySelector('#update_schedule_modal .subject_search');
+                   let subjectDropdown = document.querySelector('#update_schedule_modal .subject_id');
 
-        if (!searchInput || !selectDropdown) return;
+                   subjectSearch.value = subject_name;
+                   subjectSearch.setAttribute('data-selected-value', subject_id);
+                   subjectSearch.dispatchEvent(new Event('input', { bubbles: true }));
 
-        searchInput.addEventListener("focus", function () {
-            selectDropdown.style.display = "block";
-        });
+                   if (subjectDropdown) {
+                       subjectDropdown.value = subject_id;
+                       let optionToSelect = subjectDropdown.querySelector(`option[value="${subject_id}"]`);
+                       if (optionToSelect) {
+                           optionToSelect.selected = true;
+                       }
+                   }
+               }
 
-        document.addEventListener("click", function (event) {
-            if (!searchInput.contains(event.target) && !selectDropdown.contains(event.target)) {
-                selectDropdown.style.display = "none";
-            }
-        });
+               if (document.getElementById('update_units')) {
+                   document.getElementById('update_units').value = updateUnits;
+               }
+               if (document.getElementById('schedule_day')) {
+                   document.getElementById('schedule_day').value = schedule_day;
+               }
+               if (document.getElementById('start_time')) {
+                   document.getElementById('start_time').value = start_time.slice(0, 5);
+               }
+               if (document.getElementById('end_time')) {
+                   document.getElementById('end_time').value = end_time;
+               }
 
-        searchInput.addEventListener("input", function () {
-            const filter = searchInput.value.toLowerCase();
-            const options = selectDropdown.getElementsByTagName("option");
+               console.log("Updating Schedule ID:", id);
+           });
+       });
 
-            let hasResults = false;
-            for (let option of options) {
-                let text = option.textContent.toLowerCase();
-                if (text.includes(filter) || option.value === "") {
-                    option.style.display = "block";
-                    hasResults = true;
-                } else {
-                    option.style.display = "none";
-                }
-            }
+       // Confirmation prompt before updating schedule
+       document.getElementById('UpdateScheduleButton').addEventListener('click', function (event) {
+           event.preventDefault();
+           Swal.fire({
+               title: "Are you sure?",
+               text: "Do you want to update the schedule?",
+               icon: "warning",
+               showCancelButton: true,
+               confirmButtonText: "Yes, Update Schedule",
+               cancelButtonText: "Cancel",
+               reverseButtons: true,
+           }).then((result) => {
+               if (result.isConfirmed) {
+                   document.getElementById('UpdateScheduleForm').submit();
+               }
+           });
+       });
 
-            selectDropdown.style.display = hasResults ? "block" : "none";
-        });
+       // Subject dropdown search functionality
+       document.querySelectorAll(".modal").forEach((modal) => {
+           const searchInput = modal.querySelector(".subject_search");
+           const selectDropdown = modal.querySelector(".subject_id");
 
-        selectDropdown.addEventListener("change", function () {
-            searchInput.value = selectDropdown.options[selectDropdown.selectedIndex].text;
-            searchInput.setAttribute('data-selected-value', selectDropdown.value);
-            selectDropdown.style.display = "none";
-        });
+           if (!searchInput || !selectDropdown) return;
 
-        searchInput.addEventListener("click", function () {
-            for (let option of selectDropdown.options) {
-                option.style.display = "block";
-            }
-            selectDropdown.style.display = "block";
-        });
-    });
-});
+           searchInput.addEventListener("focus", function () {
+               selectDropdown.style.display = "block";
+           });
 
-   </script>
+           document.addEventListener("click", function (event) {
+               if (!searchInput.contains(event.target) && !selectDropdown.contains(event.target)) {
+                   selectDropdown.style.display = "none";
+               }
+           });
 
+           searchInput.addEventListener("input", function () {
+               const filter = searchInput.value.toLowerCase();
+               const options = selectDropdown.getElementsByTagName("option");
+
+               let hasResults = false;
+               for (let option of options) {
+                   let text = option.textContent.toLowerCase();
+                   if (text.includes(filter) || option.value === "") {
+                       option.style.display = "block";
+                       hasResults = true;
+                   } else {
+                       option.style.display = "none";
+                   }
+               }
+
+               selectDropdown.style.display = hasResults ? "block" : "none";
+           });
+
+           selectDropdown.addEventListener("change", function () {
+               searchInput.value = selectDropdown.options[selectDropdown.selectedIndex].text;
+               searchInput.setAttribute('data-selected-value', selectDropdown.value);
+               selectDropdown.style.display = "none";
+           });
+
+           searchInput.addEventListener("click", function () {
+               for (let option of selectDropdown.options) {
+                   option.style.display = "block";
+               }
+               selectDropdown.style.display = "block";
+           });
+       });
+   });
+</script>
