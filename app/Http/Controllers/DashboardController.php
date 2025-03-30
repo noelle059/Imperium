@@ -251,4 +251,16 @@ class DashboardController extends Controller
     // }
 
 
+    public function loginHistory()
+{
+    $logs = Notification::where('user_id', auth()->id())
+        ->where('message', 'LIKE', '%logged in%') // Fetch only login messages
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); 
+
+    return view('user.login-history', compact('logs'));
+}
+
+
+
 }

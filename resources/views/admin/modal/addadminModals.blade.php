@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <!-- Registration Form for Admin -->
-                <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="addAdminForm" action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">First Name</label>
@@ -40,13 +40,21 @@
                         <input type="file" class="form-control" id="idPicture" name="id_picture" accept="image/*" required>
                         <span class="text-danger" id="idPictureError"></span>
                     </div>
-                    
-                </form>
+                </form> <!-- ✅ Form closes here (without a submit button inside) -->
             </div>
+
+            <!-- ✅ Submit Button Outside Form -->
             <div class="modal-footer">
-                        <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn gradient-button">Register Admin</button>
-                    </div>
+                <button type="button" class="btn gradient-button" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn gradient-button" id="submitAdminForm">Register Admin</button>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- ✅ JavaScript to Submit the Form -->
+<script>
+    document.getElementById("submitAdminForm").addEventListener("click", function() {
+        document.getElementById("addAdminForm").submit();
+    });
+</script>

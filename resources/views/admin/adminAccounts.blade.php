@@ -153,12 +153,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmButtonText: "Yes, archive it!"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch("{{ url('/admin/remove') }}/" + adminId, { // ✅ Corrected URL with ID
+                    fetch("{{ url('/admin/remove') }}", { // ✅ Use POST instead of appending ID in URL
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        }
+                        },
+                        body: JSON.stringify({ id: adminId }) // ✅ Send ID as JSON
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -167,14 +168,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                 location.reload();
                             });
                         } else {
-                            Swal.fire("Error!", "Something went wrong.", "error");
+                            Swal.fire("Error!", data.message || "Something went wrong.", "error");
                         }
+                    })
+                    .catch(error => {
+                        console.error("Fetch error:", error);
+                        Swal.fire("Error!", "Failed to send request.", "error");
                     });
                 }
             });
         });
     });
 });
+
 
 
 

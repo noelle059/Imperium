@@ -33,4 +33,13 @@ class NotificationController extends Controller
         }
         return response()->json(['error' => 'Notification not found'], 404);
     }
+
+    public function loginLogs()
+    {
+        $logs = Notification::whereHas('user', function ($query) {
+            $query->where('is_admin', 1); // Fetch only admin logs
+        })->orderBy('created_at', 'desc')->get();
+
+        return view('admin.login-logs', compact('logs'));
+    }
 }

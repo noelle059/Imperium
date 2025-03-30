@@ -15,36 +15,47 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
+    
         $credentials = $request->only('email', 'password');
-
+    
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-
+    
             // Check if user is archived
             if ($this->is_archived($user)) {
                 Auth::logout();
                 return back()->withInput($request->only('email'))->with('alert', 'Your account has been deactivated and cannot log in.');
             }
-
-            // Create a user-specific login notification
-            $message = $this->getLoginNotificationMessage($user);
+    
+            // Get the current session ID
+            $currentSessionId = session()->getId();
+            
+            // Check if there's a previous session and log it out
+            $previousSessionId = \Illuminate\Support\Facades\Cache::get('user_session_' . $user->id);
+            if ($previousSessionId && $previousSessionId !== $currentSessionId) {
+                \Illuminate\Support\Facades\Session::getHandler()->destroy($previousSessionId);
+            }
+    
+            // Store the new session ID
+            \Illuminate\Support\Facades\Cache::put('user_session_' . $user->id, $currentSessionId, now()->addHours(5));
+    
+            // Create a login notification
             Notification::create([
                 'user_id' => $user->id,
-                'message' => $message,
+                'message' => 'You have successfully logged in.',
                 'is_read' => false,
             ]);
-
-            // Set a session flash message for successful login
+    
             session()->flash('success', 'You have successfully logged in!');
-
-            // Redirect based on user role
+    
             return $user->is_admin ? redirect()->route('admin.dashboard') : redirect()->route('user.dashboard');
         }
-
-        // If authentication fails, redirect back with an alert
+    
         return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.');
     }
+    
+    
+
 
     private function is_archived($user)
     {
@@ -60,4 +71,17 @@ class LoginController extends Controller
             return 'Welcome back! Enjoy your time.';
         }
     }
+
+    private function forceLogoutPreviousSessions($user)
+{
+    $currentSession = session()->getId();
+    $storedSession = \Illuminate\Support\Facades\Cache::get('user_session_' . $user->id);
+
+    // If a different session exists, log the user out
+    if ($storedSession && $storedSession !== $currentSession) {
+        Auth::logout();
+        return redirect()->route('home')->with('alert', 'You have been logged out because you signed in on another device.');
+    }
+}
+
 }

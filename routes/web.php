@@ -35,9 +35,10 @@ use App\Models\User;
 use App\Models\Schedule;
 
 Route::get('/', function () {
-    session()->reflash();
+    session()->reflash(); // Keep the session flash message for one more request
     return view('homepage');
 })->name('home');
+
 
 Route::get('/clear-cache', function() {
     Artisan::call('config:clear');
@@ -421,7 +422,7 @@ Route::get('/admin/schedule/print-all', [ScheduleController::class, 'printAll'])
 //add admin
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
 Route::put('/admin/update', [AdminController::class, 'admin_update'])->name('admin.update');
-Route::post('/admin/remove/{id}', [AdminController::class, 'remove'])->name('admin.remove');
+Route::post('/admin/remove', [AdminController::class, 'destroy'])->name('admin.destroy');
 
 //MIDDLEWARES
 use App\Http\Middleware\AdminMiddleware;
@@ -472,3 +473,19 @@ Route::middleware([RedirectIfNotAuthenticated::class])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'showAdminDashboard'])->name('admin.dashboard');
     Route::get('/professor/dashboard', [DashboardController::class, 'index'])->name('user.dashboard');
 });
+
+
+
+use App\Http\Middleware\ForceLogout;
+// Apply ForceLogout middleware to all authenticated routes
+Route::middleware(['auth', ForceLogout::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Add all other protected routes here
+});
+//logs
+Route::get('/admin/login-logs', [AdminController::class, 'loginLogs'])->name('admin.login.logs');
+Route::get('/login-history', [DashboardController::class, 'loginHistory'])->name('login.history');
+

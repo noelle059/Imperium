@@ -7,6 +7,10 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str; // Ensure this is imported
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Notification; // Import Notification model
 use Exception;
 
@@ -17,22 +21,20 @@ class GoogleController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function googleCallback()
+    
+    public function googleCallback(Request $request)
     {
         try {
-            // Get the user from Google
             $googleUser = Socialite::driver('google')->user();
-            $googleAvatarUrl = $googleUser->getAvatar(); // Get latest Google profile picture
+            $googleAvatarUrl = $googleUser->getAvatar();
     
-            // Check if the user already exists in the database
+            // Find or create the user
             $user = User::where('email', $googleUser->getEmail())->first();
     
             if (!$user) {
-                // If the user does not exist, create a new user and save the profile picture
-                $filename = time() . '.jpg'; // Unique filename
+                $filename = time() . '.jpg';
                 $filepath = public_path('uploads/id_pictures/' . $filename);
     
-                // Download and save Google profile picture
                 if ($googleAvatarUrl) {
                     $imageContents = file_get_contents($googleAvatarUrl);
                     file_put_contents($filepath, $imageContents);
@@ -42,48 +44,35 @@ class GoogleController extends Controller
                     'name' => $googleUser->getName(),
                     'last_name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
-                    'password' => bcrypt(Str::random(16)), // Generate random password
-                    'id_picture' => 'uploads/id_pictures/' . $filename, // Save local path
-                    'is_archived' => 0, // Ensure new users are not archived by default
+                    'password' => bcrypt(Str::random(16)),
+                    'id_picture' => 'uploads/id_pictures/' . $filename,
+                    'archive_status' => 1,
                 ]);
             } else {
-                // Prevent login if the user is archived
-                if ($user->is_archived == 1) {
-                    return redirect()->route('login')->with('alert', 'Your account has been deactivated and cannot log in.');
+                $user->refresh();
+                if ($user->archive_status == 0) {
+                    return redirect()->route('home')->with('alert', 'Your account has been deactivated and cannot log in.');
                 }
-    
-                // Check if the stored id_picture is different from the new one
-                if (!$user->id_picture || !str_contains($user->id_picture, md5($googleAvatarUrl))) {
-                    $filename = md5($googleAvatarUrl) . '.jpg'; // Generate filename based on avatar hash
-                    $filepath = public_path('uploads/id_pictures/' . $filename);
-    
-                    // Download and update only if changed
-                    if ($googleAvatarUrl) {
-                        $imageContents = file_get_contents($googleAvatarUrl);
-                        file_put_contents($filepath, $imageContents);
-                    }
-    
-                    // Update only if the image is different
-                    $user->id_picture = 'uploads/id_pictures/' . $filename;
-                    $user->save();
-                }
-                $user->sendEmailVerificationNotification();
-
             }
     
-            // Log the user in
-            Auth::login($user);
-            
+            // ✅ **Store a logout signal in cache (to be checked on all devices)**
+            Cache::put('force_logout_' . $user->id, true, now()->addMinutes(5));
     
-            session()->flash('success', 'You have successfully logged in!');
+            // ✅ **Log out all other devices manually**
+            DB::table('sessions')->where('user_id', $user->id)->delete();
     
+            // ✅ **Log in user on the new session**
+            Auth::login($user, true);
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+    
+            // ✅ **Notify user about login**
             Notification::create([
                 'user_id' => $user->id,
-                'message' => 'You have successfully logged in using Google.',
+                'message' => 'You have successfully logged in using Google on ' . now()->format('F j, Y \a\t h:i A') . '.',
                 'is_read' => false,
             ]);
     
-            // Redirect based on user role
             return $user->is_admin 
                 ? redirect()->route('admin.dashboard') 
                 : redirect()->route('user.dashboard');
@@ -92,6 +81,10 @@ class GoogleController extends Controller
             return redirect()->route('login')->with('alert', 'Unable to login using Google. Please try again.');
         }
     }
+    
+    
+    
+
     
     
 

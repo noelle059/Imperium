@@ -102,9 +102,15 @@
                             <i class="fa fa-building"
                                 style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
                     </li>
+                    <li> <a href="{{ route('admin.login.logs') }}">
+                            <i class="fa fa-building"
+                                style="font-size:font-size: 25px; padding-left: 8px;"></i>Admin Logs</a>
+                      </li>
+
 
                     {{-- <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li> --}}
                 </ul>
+             
             </li>
 
 
