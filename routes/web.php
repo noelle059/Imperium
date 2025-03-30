@@ -104,6 +104,14 @@ Route::get('/professor/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
 
+    Route::middleware(['auth'])->get('/check-archive-status', function () {
+        $user = Auth::user();
+        if ($user->archive_status == 0) {
+            return response()->json(['archived' => true]);
+        }
+
+        return response()->json(['archived' => false]);
+    });
 
 Route::get('/professor/account-profile', [DashboardController::class, 'AccountProfile'])
     ->middleware('auth')

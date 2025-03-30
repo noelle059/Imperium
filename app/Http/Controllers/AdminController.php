@@ -7,8 +7,9 @@ use App\Models\User;
 use App\Models\Room;
 use App\Services\FirebaseService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use App\Models\Schedule;
 
 
 
@@ -28,14 +29,14 @@ class AdminController extends Controller
     }
 
 
+
     public function showAdminAccount()
     {
-        // Get professors (admin users) where archive_status = 1 and paginate 10
-        $admin_accounts = User::where('is_admin', true)  // Exclude admin users
-            ->where('archive_status', 0)  // Only those with archive_status = 1
-            ->paginate(10);  // Paginate 10 results per page
+        $admin_accounts = User::where('is_admin', 1)
+                                ->where('archive_status', 1)
+                                ->where('id', '!=', Auth::id())
+                                ->paginate(10);
 
-        // Return the view with the professors data
         return view('admin.adminAccounts', compact('admin_accounts'));
     }
 
@@ -148,21 +149,32 @@ class AdminController extends Controller
      * Archive a user account.
      */
     public function remove($id, Request $request)
-{
-    Log::info('Archiving user ID: ' . $id); // Debugging log
+    {
+        Log::info('Archiving user ID: ' . $id);
 
-    $account = User::find($id);
+        $account = User::find($id);
 
-    if (!$account) {
-        return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        if (!$account) {
+            return response()->json(['success' => false, 'message' => 'User not found'], 404);
+        }
+
+        // Check if the professor has active schedules
+        $activeSchedules = Schedule::where('user_id', $id)
+            ->where('archive_status', 1)
+            ->exists();
+
+        if ($activeSchedules) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot archive this professor. They have active schedules.'
+            ]);
+        }
+
+        $account->archive_status = 0;
+        $account->save();
+
+        return response()->json(['success' => true, 'message' => 'User archived successfully!']);
     }
-
-    $account->archive_status = 1; // Set archive_status to 1 (Archived)
-    $account->save();
-
-    return response()->json(['success' => true, 'message' => 'User archived successfully!']);
-}
-
 
     public function fetchRFID(FirebaseService $firebaseService)
     {

@@ -24,9 +24,6 @@
 @include('admin.modal.addadminModals')
 @include('admin.modal.editadminModals')
 
-
-
-
     <div class="table-container">
     <table id="uniqueTable" class="styled-table">
     <thead>
@@ -43,13 +40,22 @@
         @foreach ($admin_accounts as $index => $admin_account)
         <tr class="table-row" data-archived="{{ $admin_account->archive_status }}">
         <td>{{ $loop->iteration }}</td> <!-- Auto-increment number -->
-        <td>
-    @if (!empty($admin_account->id_picture) && file_exists(public_path('uploads/id_pictures/' . $admin_account->id_picture)))
-        <img src="{{ asset('uploads/id_pictures/' . $admin_account->id_picture) }}" 
-            alt="ID Picture" style="width: 50px; height: auto;">
+       <td>
+    @php
+        $idPicture = $admin_account->id_picture;
+        $filename = basename($idPicture);
+        $localImagePath = public_path('uploads/id_pictures/' . $filename);
+    @endphp
+
+    @if (Str::startsWith($idPicture, 'http'))
+        <!-- If id_picture is a Google URL -->
+        <img src="{{ $idPicture }}" alt="Profile Picture" class="img-fluid" style="width: 50px; height: auto;">
+    @elseif (!empty($idPicture) && file_exists($localImagePath))
+        <!-- If id_picture is a local file stored in 'uploads/id_pictures/' -->
+        <img src="{{ asset('uploads/id_pictures/' . $filename) }}" alt="Profile Picture" class="img-fluid" style="width: 50px; height: auto;">
     @else
-        <img src="{{ asset('default-profile.png') }}" alt="Default Admin Image"
-            style="width: 50px; height: auto;">
+        <!-- Fallback to default avatar if no valid image is found -->
+        <img src="{{ asset('uploads/default-avatar.jpg') }}" alt="Default Avatar" class="img-fluid" style="width: 50px; height: auto;">
     @endif
 </td>
 
@@ -72,12 +78,6 @@
                         <i class="fa-solid fa-arrow-up-from-bracket"></i>
                     </button>
 
-                   <!-- Archive Admin Button -->
-                   <button class="btn gradient-button archive remove-admin" type="button"
-    data-id="{{ $admin_account->id }}">
-    <i class="fa-solid fa-box-archive"></i>
-</button>
-
                 </td>
             </tr>
         @endforeach
@@ -96,9 +96,6 @@
     {{-- INCLUDE FOOTER --}}
     @include('admin.footer')
 
-
-
-    <!-- Add your search script below -->
     <script>
         document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toLowerCase();
@@ -128,56 +125,15 @@
     </script>
 
     <script>
-
-document.querySelectorAll('.update').forEach(button => {
-    button.addEventListener('click', function () {
-        document.getElementById('editAdminId').value = this.dataset.id;
-        document.getElementById('editAdminName').value = this.dataset.name;
-        document.getElementById('editAdminLastName').value = this.dataset.last_name;
-        document.getElementById('editAdminEmail').value = this.dataset.email;
-        document.getElementById('editAdminContact').value = this.dataset.contact_number;
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".remove-admin").forEach(button => {
-        button.addEventListener("click", function () {
-            let adminId = this.dataset.id;
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This admin will be moved to archive!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "",
-                cancelButtonColor: "",
-                confirmButtonText: "Yes, archive it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch("{{ url('/admin/remove') }}/" + adminId, { // ✅ Corrected URL with ID
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire("Archived!", "Admin has been archived.", "success").then(() => {
-                                location.reload();
-                            });
-                        } else {
-                            Swal.fire("Error!", "Something went wrong.", "error");
-                        }
-                    });
-                }
+        document.querySelectorAll('.update').forEach(button => {
+            button.addEventListener('click', function () {
+                document.getElementById('editAdminId').value = this.dataset.id;
+                document.getElementById('editAdminName').value = this.dataset.name;
+                document.getElementById('editAdminLastName').value = this.dataset.last_name;
+                document.getElementById('editAdminEmail').value = this.dataset.email;
+                document.getElementById('editAdminContact').value = this.dataset.contact_number;
             });
         });
-    });
-});
-
-
-
     </script>
 
 

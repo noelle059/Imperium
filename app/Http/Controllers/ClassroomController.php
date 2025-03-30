@@ -8,6 +8,7 @@ use App\Services\FirebaseService;
 use App\Models\Classroom;
 use App\Models\Floor;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Schedule;
 
 class ClassroomController extends Controller
 {
@@ -128,14 +129,27 @@ class ClassroomController extends Controller
 
     public function removeClassroom($id)
     {
-        // Find the floor by id
         $classroom = Classroom::find($id);
 
-        // Set the archive_status to 0
+        if (!$classroom) {
+            return response()->json(['success' => false, 'message' => 'Classroom not found'], 404);
+        }
+
+        $activeSchedules = Schedule::where('classroom_id', $id)
+            ->where('archive_status', 1)
+            ->exists();
+
+        if ($activeSchedules) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot archive this classroom. They are being used on active schedules.'
+            ]);
+        }
+
         $classroom->archive_status = 0;
         $classroom->save();
 
-        // Return a success response in JSON format
         return response()->json(['success' => true, 'message' => 'Classroom Removed Successfully']);
     }
+
 }

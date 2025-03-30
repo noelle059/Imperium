@@ -7,9 +7,6 @@
 @include('user.modal.entry')
 
 
-
-
-
 <div class="page-header">
     <div class="container-fluid"
         style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
@@ -412,38 +409,59 @@
         }
 
         function checkExitRFIDMatch(professorRFID, classroomID) {
-        const superAdminRFID = "23b28d14"; // Define the Super Admin RFID
+            const superAdminRFID = "23b28d14"; // Define the Super Admin RFID
 
-        fetch("/get-rfid")
+            fetch("/get-rfid")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Scanned RFID for exit:", data.rfid);
+
+                    if (data.rfid) {
+                        exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
+                        exitRfidLabel.style.display = "block";
+
+                        const scannedRFID = String(data.rfid).trim();
+
+                        if (scannedRFID === String(professorRFID).trim() || scannedRFID === superAdminRFID) {
+                            // Allow exit
+                            confirmExitBtn.disabled = false;
+                            confirmExitBtn.style.display = "block";
+                        } else {
+                            // Deny exit
+                            Swal.fire({
+                                icon: "error",
+                                title: "Access Denied",
+                                text: "RFID does not match the logged-in professor or Super Admin!",
+                                timer: 2500,
+                                showConfirmButton: false
+                            });
+                            confirmExitBtn.disabled = true;
+                        }
+                    }
+                })
+                .catch(error => console.error("Error fetching RFID from Firebase:", error));
+        }
+        setInterval(function() {
+            fetch('{{ url('/check-archive-status') }}', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            })
             .then(response => response.json())
             .then(data => {
-                console.log("Scanned RFID for exit:", data.rfid);
-
-                if (data.rfid) {
-                    exitRfidLabel.textContent = `Scanned RFID: ${data.rfid}`;
-                    exitRfidLabel.style.display = "block";
-
-                    const scannedRFID = String(data.rfid).trim();
-
-                    if (scannedRFID === String(professorRFID).trim() || scannedRFID === superAdminRFID) {
-                        // Allow exit
-                        confirmExitBtn.disabled = false;
-                        confirmExitBtn.style.display = "block";
-                    } else {
-                        // Deny exit
-                        Swal.fire({
-                            icon: "error",
-                            title: "Access Denied",
-                            text: "RFID does not match the logged-in professor or Super Admin!",
-                            timer: 2500,
-                            showConfirmButton: false
-                        });
-                        confirmExitBtn.disabled = true;
-                    }
+                console.log('Archive status data:', data);
+                if (data.archived) {
+                    // Redirect to the homepage with the archived query parameter
+                    window.location.href = '{{ route('home') }}?archived=true';
                 }
             })
-            .catch(error => console.error("Error fetching RFID from Firebase:", error));
-    }
+            .catch(error => {
+                console.error('Error checking archive status:', error);
+            });
+        }, 5000);
+
 
 
         confirmExitBtn.addEventListener("click", function() {

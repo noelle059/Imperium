@@ -243,12 +243,4 @@ class DashboardController extends Controller
         return response()->json(['error' => 'RFID does not match'], 400);
     }
 
-
-    // public function getRooms()
-    // {
-    //     $rooms = Room::all();
-    //     return response()->json($rooms);
-    // }
-
-
 }

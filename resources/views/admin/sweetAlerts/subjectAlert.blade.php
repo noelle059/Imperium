@@ -41,66 +41,68 @@
 
 {{-- REMOVE SUBJECT ALERT --}}
 <script>
-    // Attach event listener to the "REMOVE" button
-    document.querySelectorAll('#RemoveSubjectButton').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default action
+    function fetchData(page = 1, searchValue = '') {
+        $.ajax({
+            url: "{{ route('subjects.index') }}",
+            method: 'GET',
+            data: { search: searchValue, page: page },
+            success: function (response) {
+                $('.table-container').html($(response).find('.table-container').html());
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", status, error);
+            }
+        });
+    }
 
-            const subjectId = this.getAttribute('data-id'); // Get subject ID
+    $(document).on('click', '#RemoveSubjectButton', function (event) {
+        event.preventDefault();
+        const subjectId = $(this).data('id');
 
-            // Show confirmation dialog with SweetAlert
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to remove this subject?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, Remove Subject',
-                cancelButtonText: 'Cancel',
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Make an AJAX request to update the archive status to 0 (removed)
-                    fetch(`subjects/remove/${subjectId}`, {
-                            method: 'PATCH', // Use PATCH to update
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token for protection
-                            },
-                            body: JSON.stringify({
-                                archive_status: 0 // Set archive_status to 0
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // If the update is successful, show success message and remove the row from the table
-                            if (data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Subject Removed',
-                                    text: 'The subject has been removed successfully.',
-                                }).then(() => {
-                                    // Optionally, remove the subject row from the table
-                                    document.querySelector(
-                                            `button[data-id="${subjectId}"]`)
-                                        .closest('tr').remove();
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Something went wrong. Please try again.',
-                                });
-                            }
-                        })
-                        .catch(error => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to remove this subject?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Remove Subject',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `subjects/remove/${subjectId}`,
+                    type: 'PATCH',
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                    data: { archive_status: 0 },
+                    success: function (data) {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Subject Removed',
+                                text: data.message,
+                            }).then(() => {
+                                fetchData(); // ✅ Refresh the table
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
-                                text: 'Unable to remove subject. Please try again later.',
+                                text: data.message || 'Something went wrong. Please try again.',
                             });
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("AJAX Error:", xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Unable to remove subject. Please try again later.',
                         });
-                }
-            });
+                    }
+                });
+            }
         });
     });
 </script>
+
+

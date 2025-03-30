@@ -67,13 +67,27 @@
     @endif
 
     document.addEventListener('DOMContentLoaded', function () {
-    var registerModal = document.getElementById('registerModal');
+        var registerModal = document.getElementById('registerModal');
 
-    registerModal.addEventListener('hidden.bs.modal', function () {
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = 'auto'; // Ensures scrolling is re-enabled
+        registerModal.addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = 'auto'; // Ensures scrolling is re-enabled
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('archived')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Account Archived',
+                text: 'Your account has been archived. Please contact the admin.',
+                confirmButtonText: 'Okay'
+            }).then(() => {
+                // After SweetAlert is closed, clean up the URL by removing the query parameter
+                const newUrl = window.location.href.split('?')[0];
+                window.history.replaceState({}, document.title, newUrl);
+            });
+        }
     });
-});
 
     </script>
 

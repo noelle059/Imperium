@@ -48,7 +48,7 @@ class LoginController extends Controller
 
     private function is_archived($user)
     {
-        return $user->is_archived == 1;
+        return $user->archive_status == 0;
     }
 
     private function getLoginNotificationMessage($user)

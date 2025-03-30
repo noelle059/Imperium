@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\Subject;
+use App\Models\Schedule;
 
 class SubjectController extends Controller
 {
@@ -164,11 +165,30 @@ class SubjectController extends Controller
 
     public function remove($id, Request $request)
     {
-        $subject = Subject::findOrFail($id); // Find the subject by ID
+        if (!Subject::where('id', $id)->exists()) {
+            return response()->json(['success' => false, 'message' => 'Subject not found'], 404);
+        }
 
-        $subject->archive_status = 0; // Set archive_status to 0 (mark as removed)
-        $subject->save(); // Save changes
+        $subject = Subject::findOrFail($id);
 
-        return response()->json(['success' => true]); // Send success response
+        // Check if the subject is used in an active schedule
+        $hasActiveSchedules = Schedule::where('subject_id', $id)
+            ->where('archive_status', 1)
+            ->exists();
+
+        if ($hasActiveSchedules) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot archive this subject. It is currently assigned in an active schedule.'
+            ]);
+        }
+
+        // Archive the subject
+        $subject->archive_status = 0;
+        $subject->save();
+
+        return response()->json(['success' => true, 'message' => 'Subject archived successfully!']);
     }
+
+
 }
