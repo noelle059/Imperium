@@ -49,11 +49,20 @@
                             <input type="text" id="units" class="form-control" readonly>
                         </div>
 
-                       <!-- Date -->
-                       <div class="mb-3">
-                           <label for="Date" class="form-label">Date</label>
-                           <input type="date" name="date" class="form-control" required>
-                       </div>
+                       <!-- Schedule Day -->
+                       <div class="mb-3 position-relative">
+                            <label for="schedule_day" class="form-label">Schedule Day</label>
+                            <select name="schedule_day" class="form-control" required>
+                                <option value="" disabled selected>Select Day</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
 
                        <!-- Start Time -->
                        <div class="mb-3">
@@ -126,11 +135,20 @@
                             <input type="text" id="update_units" class="form-control" readonly>
                         </div>
 
-                       <!-- Date -->
-                       <div class="mb-3">
-                           <label for="Date" class="form-label">Date</label>
-                           <input type="date" name="date" id="schedule_day" class="form-control">
-                       </div>
+                       <!-- Schedule Day -->
+                       <div class="mb-3 position-relative">
+                            <label for="schedule_day" class="form-label">Schedule Day</label>
+                            <select name="schedule_day" class="form-control" required>
+                                <option value="" disabled selected>Select Day</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
 
                        <!-- Start Time -->
                        <div class="mb-3">
@@ -167,28 +185,37 @@
            unitsInput.addEventListener("change", calculateEndTime);
 
            function calculateEndTime() {
-               let startTime = startTimeInput.value;
-               let units = parseFloat(unitsInput.value);
+            let startTimeInput = document.querySelector("[name='start_time']");
+            let unitsInput = document.getElementById("units") || document.getElementById("update_units");
 
-               if (startTime && !isNaN(units) && units > 0) {
-                   let [hours, minutes] = startTime.split(":").map(Number);
-                   hours += units;
+            if (!startTimeInput || !unitsInput) {
+                console.error("Missing input fields for start time or units.");
+                return; // Stop execution if fields are not found
+            }
 
-                   let endTime = new Date();
-                   endTime.setHours(hours, minutes);
+            let startTime = startTimeInput.value;
+            let units = parseFloat(unitsInput.value);
 
-                   let formattedEndTime = endTime.toTimeString().slice(0, 5);
+            if (startTime && !isNaN(units) && units > 0) {
+                let [hours, minutes] = startTime.split(":").map(Number);
+                hours += units;
 
-                   let endTimeField = document.querySelector("[name='end_time']");
-                   if (!endTimeField) {
-                       endTimeField = document.createElement("input");
-                       endTimeField.type = "hidden";
-                       endTimeField.name = "end_time";
-                       startTimeInput.closest("form").appendChild(endTimeField);
-                   }
-                   endTimeField.value = formattedEndTime;
-               }
-           }
+                let endTime = new Date();
+                endTime.setHours(hours, minutes);
+
+                let formattedEndTime = endTime.toTimeString().slice(0, 5);
+
+                let endTimeField = document.querySelector("[name='end_time']");
+                if (!endTimeField) {
+                    endTimeField = document.createElement("input");
+                    endTimeField.type = "hidden";
+                    endTimeField.name = "end_time";
+                    startTimeInput.closest("form").appendChild(endTimeField);
+                }
+                endTimeField.value = formattedEndTime;
+            }
+        }
+
        }
 
        // Event Delegation: Fetch and update units dynamically for both Add & Update modals
@@ -256,9 +283,16 @@
                if (document.getElementById('update_units')) {
                    document.getElementById('update_units').value = updateUnits;
                }
-               if (document.getElementById('schedule_day')) {
-                   document.getElementById('schedule_day').value = schedule_day;
+
+               const updateModal = document.getElementById("update_schedule_modal");
+               const scheduleDaySelect = updateModal.querySelector("select[name='schedule_day']");
+
+               console.log("schedule_day value:", schedule_day);
+
+               if (scheduleDaySelect) {
+                   scheduleDaySelect.value = schedule_day;
                }
+
                if (document.getElementById('start_time')) {
                    document.getElementById('start_time').value = start_time.slice(0, 5);
                }

@@ -23,9 +23,9 @@
                         <th>Pictures</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Account No.</th>
+                        <th>RFID No.</th>
                         <th>Status</th>
-                        <th>Entry Date</th>
+                        <th>Professor created on</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -44,7 +44,7 @@
                             </td>
                             <td>{{ $professor->name }}</td>
                             <td>{{ $professor->email }}</td>
-                            <td>{{ $professor->rfid_uid ?? 'N/A' }}</td>
+                            <td>{{ $professor->rfid_uid ?? 'Not Activated' }}</td>
                             <td>{{ $professor->is_activated ? 'Registered' : 'Pending Activation' }}</td>
                             <td>{{ \Carbon\Carbon::parse($professor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}</td>
 
@@ -110,25 +110,24 @@
     });
 
     function attachEventListeners() {
-    $(document).off('click', '.update').on('click', '.update', function () {
-        let id = $(this).data('id');
-        let name = $(this).data('name');
-        let email = $(this).data('email');
-        let rfid = $(this).data('rfid_uid');
+        $(document).off('click', '.update').on('click', '.update', function () {
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let email = $(this).data('email');
+            let rfid = $(this).data('rfid_uid');
 
-        console.log("Update Clicked:", id, name, email, rfid);
+            console.log("Update Clicked:", id, name, email, rfid);
 
-        // Ensure correct modal is targeted
-        let modal = $('#register_account_id_modal');
+            let modal = $('#register_account_id_modal');
 
-        // Set input fields correctly
-        modal.find('input[name="name"]').val(name);
-        modal.find('input[name="email"]').val(email);
-        modal.find('input[name="rfid_uid"]').val(rfid);
+            // Set input fields correctly
+            modal.find('input[name="name"]').val(name);
+            modal.find('input[name="email"]').val(email);
+            modal.find('input[name="rfid_uid"]').val(rfid);
 
-        modal.modal('show'); // Ensure modal opens
-    });
-}
+            modal.modal('show');
+        });
+    }
 
 attachEventListeners();
 // Attach on initial page load

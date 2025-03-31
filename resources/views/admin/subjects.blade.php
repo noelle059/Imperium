@@ -27,10 +27,10 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Code</th>
-                    <th>Name</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
                     <th>Units</th>
-                    <th>Entry Date</th>
+                    <th>Subject Added on</th>
                     <th>Action</th>
                 </tr>
             </thead>
