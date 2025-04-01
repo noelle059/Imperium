@@ -78,6 +78,12 @@
                         <i class="fa-solid fa-arrow-up-from-bracket"></i>
                     </button>
 
+                    <button class="btn gradient-button archive remove-admin" type="button"
+    data-id="{{ $admin_account->id }}">
+    <i class="fa-solid fa-box-archive"></i>
+</button>
+
+
                 </td>
             </tr>
         @endforeach

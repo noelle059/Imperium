@@ -415,15 +415,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/verify-phone', [PhoneVerificationController::class, 'verifyOtp'])->name('auth.verify-phone.verifyOtp');
 });
 
-//classroom
-Route::get('/admin/reports/schedule', function () {
-    return view('admin.schedule_report');
-})->name('report.schedule');
+//classroom report
+Route::get('/admin/reports/schedule-logs', [ScheduleLogController::class, 'scheduleLogReport'])->name('report.scheduleLogs');
+Route::get('/admin/schedule-logs/print/{id}', [ScheduleLogController::class, 'printPdf'])->name('scheduleLogs.print');
+Route::get('/admin/schedule-logs/print-all', [ScheduleLogController::class, 'printAll'])->name('scheduleLogs.printAll');
 
-Route::get('/admin/reports/schedule', [ScheduleController::class, 'scheduleReport'])->name('report.schedule');
-Route::get('/admin/schedule/print/{id}', [ScheduleController::class, 'printPdf'])->name('schedule.print');
 
-Route::get('/admin/schedule/print-all', [ScheduleController::class, 'printAll'])->name('schedule.printAll');
 
 
 
@@ -496,4 +493,8 @@ Route::middleware(['auth', ForceLogout::class])->group(function () {
 //logs
 Route::get('/admin/login-logs', [AdminController::class, 'loginLogs'])->name('admin.login.logs');
 Route::get('/login-history', [DashboardController::class, 'loginHistory'])->name('login.history');
+
+Route::get('/admin/schedule-logs', [ScheduleLogController::class, 'showLogs'])->name('scheduleLogs.show');
+
+
 

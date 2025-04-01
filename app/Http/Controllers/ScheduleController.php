@@ -8,7 +8,6 @@ use App\Models\Classroom;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Schedule;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -438,59 +437,7 @@ class ScheduleController extends Controller
     }
 
 
-    public function printPdf($id, Request $request)
-{
-    $schedule = Schedule::with(['classroom', 'user', 'subject'])->findOrFail($id);
-
-    // ✅ Get logged-in user's name
-    $name = Auth::check() ? Auth::user()->name : 'N/A';
-
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
-    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
-
-    // ✅ Pass the name variable to the Blade template
-    $pdf = Pdf::loadView('admin.schedule_pdf', compact('schedule', 'start_date', 'end_date', 'current_date', 'name'));
-
-    return $pdf->download('Schedule_Report.pdf');
-}
-
-
-
-public function scheduleReport()
-{
-    $schedules = Schedule::with(['classroom', 'user', 'subject'])->get();
-    return view('admin.reports.schedule_report', compact('schedules'));
-}
-
-
-
-public function printAll(Request $request)
-{
-    $query = Schedule::with(['classroom', 'user', 'subject']);
-
-    $start_date = $request->input('start_date');
-    $end_date = $request->input('end_date');
-
-    if ($start_date) {
-        $query->whereDate('schedule_day', '>=', $start_date);
-    }
-    if ($end_date) {
-        $query->whereDate('schedule_day', '<=', $end_date);
-    }
-
-    $schedules = $query->get();
-    $current_date = \Carbon\Carbon::now()->format('F j, Y - g:i A');
-
-    // ✅ Get logged-in user's name
-    $name = Auth::check() ? Auth::user()->name : 'N/A';
-
-    // ✅ Pass the name variable to the Blade template
-    $pdf = Pdf::loadView('admin.schedule_pdf_all', compact('schedules', 'start_date', 'end_date', 'current_date', 'name'));
-
-    return $pdf->download('schedule_Report_All.pdf');
-}
-
+    
 
 
 

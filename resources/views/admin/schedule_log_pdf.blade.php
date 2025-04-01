@@ -28,25 +28,37 @@
     <table>
         <thead>
             <tr>
-                <th>Schedule ID</th>
+                <th>NO.</th>
                 <th>Classroom</th>
                 <th>Professor</th>
                 <th>Subject</th>
+                <th>RFID NO.</th>
                 <th>Schedule Day</th>
                 <th>Start Time</th>
                 <th>End Time</th>
+                <th>Created at</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>{{ $schedule->id }}</td>
-                <td>{{ $schedule->classroom ? $schedule->classroom->classroom_name : 'N/A' }}</td>
-                <td>{{ $schedule->user ? $schedule->user->name : 'N/A' }}</td>
-                <td>{{ $schedule->subject ? $schedule->subject->subject_name : 'N/A' }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('F j, Y') }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }}</td>
-            </tr>
+        <tr>
+    <td>{{ $log->id }}</td>
+    <td>{{ $log->schedule && $log->schedule->classroom ? $log->schedule->classroom->classroom_name : 'N/A' }}</td>
+    <td>{{ $log->user ? $log->user->name : 'N/A' }}</td>
+    <td>{{ $log->schedule && $log->schedule->subject ? $log->schedule->subject->subject_name : 'N/A' }}</td>
+    <td>{{ $log->rfid_no ?? 'N/A' }}</td> 
+    <td>
+    @if($log->schedule && $log->schedule->schedule_day)
+        {{ \Carbon\Carbon::parse($log->schedule->schedule_day)->format('l') }}
+    @else
+        N/A
+    @endif
+</td>
+
+    <td>{{ \Carbon\Carbon::parse($log->start_time)->format('g:i A') }}</td>
+    <td>{{ \Carbon\Carbon::parse($log->end_time)->format('g:i A') }}</td>
+    <td>{{ \Carbon\Carbon::parse($log->created_at)->format('F j, Y - g:i A') }}</td>
+</tr>
+
         </tbody>
     </table>
 

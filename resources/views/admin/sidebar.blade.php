@@ -98,10 +98,11 @@
                 </a>
 
                 <ul id="Report" class="collapse list-unstyled">
-                    <li> <a href="{{ route('report.schedule') }}">
-                            <i class="fa fa-building"
-                                style="font-size:font-size: 25px; padding-left: 8px;"></i>Classroom</a>
-                    </li>
+                <li>
+    <a href="{{ route('report.scheduleLogs') }}">
+        <i class="fa fa-building" style="font-size: 25px; padding-left: 8px;"></i> Classroom
+    </a>
+</li>
                     <li> <a href="{{ route('admin.login.logs') }}">
                             <i class="fa fa-building"
                                 style="font-size:font-size: 25px; padding-left: 8px;"></i>Admin Logs</a>

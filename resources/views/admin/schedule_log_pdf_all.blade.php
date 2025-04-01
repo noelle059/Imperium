@@ -34,28 +34,33 @@
     <table>
         <thead>
             <tr>
-                <th>Room No.</th>
+                <th>No.</th>
                 <th>Classroom Name</th>
                 <th>Professor Name</th>
                 <th>Subject</th>
-                <th>Entry Date</th>
+                <th>RFID NO.</th>
+                <th>Schedule Day</th>
                 <th>Start Time</th>
                 <th>End Time</th>
+                <th>Created At</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($schedules as $schedule)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $schedule->classroom ? $schedule->classroom->classroom_name : 'N/A' }}</td>
-                <td>{{ $schedule->user ? $schedule->user->name : 'N/A' }}</td>
-                <td>{{ $schedule->subject ? $schedule->subject->subject_name : 'N/A' }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('F j, Y') }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->start_time)->format('g:i A') }}</td>
-                <td>{{ \Carbon\Carbon::parse($schedule->end_time)->format('g:i A') }}</td>
-            </tr>
-            @endforeach
-        </tbody>
+    @foreach ($logs as $log)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $log->schedule && $log->schedule->classroom ? $log->schedule->classroom->classroom_name : 'N/A' }}</td>
+        <td>{{ $log->user ? $log->user->name : 'N/A' }}</td>
+        <td>{{ $log->schedule && $log->schedule->subject ? $log->schedule->subject->subject_name : 'N/A' }}</td>
+        <td>{{ $log->rfid_no ?? 'N/A' }}</td> <!-- Fixed RFID -->
+        <td>{{ $log->schedule && $log->schedule->schedule_day ? \Carbon\Carbon::parse($log->schedule->schedule_day)->format('l') : 'N/A' }}</td> <!-- Shows Monday, Tuesday -->
+        <td>{{ $log->start_time ? \Carbon\Carbon::parse($log->start_time)->format('g:i A') : 'N/A' }}</td>
+        <td>{{ $log->end_time ? \Carbon\Carbon::parse($log->end_time)->format('g:i A') : 'N/A' }}</td>
+        <td>{{ \Carbon\Carbon::parse($log->created_at)->format('F j, Y - g:i A') }}</td>
+    </tr>
+    @endforeach
+</tbody>
+
     </table>
 
     <div style="text-align:right; margin-top: 10px;">
