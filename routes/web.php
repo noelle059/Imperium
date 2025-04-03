@@ -118,7 +118,7 @@ Route::get('/professor/account-profile', [DashboardController::class, 'AccountPr
     ->middleware('auth')
     ->name('AccountProfile');
 
-Route::get('/professor/login-history', [DashboardController::class, 'accountHistory'])
+Route::get('/professor/login-history', [DashboardController::class, 'loginHistory'])
     ->middleware('auth')
     ->name('AccountHistory');
 
