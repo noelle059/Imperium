@@ -16,10 +16,10 @@ if (totalCards > 10) {
 
 function updateVisibleCards() {
     let wrapperWidth = document.querySelector('.testimonial-track-wrapper').offsetWidth;
-    
+
     // Show only 1 card per slide on smaller screens
     visibleCards = window.innerWidth < 768 ? 1 : Math.floor(wrapperWidth / cardWidth);
-    
+
     track.style.transform = `translateX(-${index * cardWidth}px)`;
     updateButtons();
 }
@@ -31,7 +31,7 @@ window.addEventListener('resize', () => {
 });
 
 nextBtn.addEventListener('click', () => {
-    if (index < totalCards - visibleCards) { 
+    if (index < totalCards - visibleCards) {
         index++;
         track.style.transform = `translateX(-${index * cardWidth}px)`;
     }
@@ -47,10 +47,10 @@ prevBtn.addEventListener('click', () => {
 });
 
 function updateButtons() {
-    prevBtn.style.opacity = index === 0 ? "0.5" : "1"; 
+    prevBtn.style.opacity = index === 0 ? "0.5" : "1";
     prevBtn.style.pointerEvents = index === 0 ? "none" : "auto";
 
-    nextBtn.style.opacity = index >= totalCards - visibleCards ? "0.5" : "1"; 
+    nextBtn.style.opacity = index >= totalCards - visibleCards ? "0.5" : "1";
     nextBtn.style.pointerEvents = index >= totalCards - visibleCards ? "none" : "auto";
 }
 

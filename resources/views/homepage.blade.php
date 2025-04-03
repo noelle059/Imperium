@@ -18,16 +18,24 @@
     <link rel="stylesheet" href="{{ asset('css/contact.css') }}">
     <link rel="stylesheet" href="{{ asset('css/mediaquery.css') }}">
     <link rel="stylesheet" href="{{ asset('css/newlogin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/usersfeedback.css') }}">
+
 
     <!-- Scripts -->
     <script src="{{ asset('scripts/login.js') }}" defer></script>
     <script src="{{ asset('scripts/landingpage.js') }}" defer></script>
     <script src="{{ asset('scripts/feedback.js') }}" defer></script>
+    <script src="{{ asset('scripts/usersfeedback.js') }}" defer></script>
+
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
+
 </head>
 
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
@@ -37,6 +45,7 @@
     @include('class.feedback')
     @include('class.feedbackModal')
     @include('class.insights')
+    @include('class.usersfeedback')
     @include('class.contact')
 
     <!-- Login and Registration Modals -->
@@ -81,5 +90,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
 </body>
 </html>

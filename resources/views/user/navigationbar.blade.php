@@ -21,6 +21,8 @@
                         <hr class="dropdown-divider">
                         <li><a class="dropdown-item" href="{{ route('AccountProfile') }}">Account Profile</a></li>
                         <hr class="dropdown-divider">
+                        <li><a class="dropdown-item" href="{{ route('AccountHistory') }}">Login History</a></li>
+                        <hr class="dropdown-divider">
                         <li>
                             <form method="POST" action="{{ route('logout') }}" class="m-0">
                                 @csrf

@@ -1,5 +1,5 @@
 <div id="feedback">
-    <h2 class="testimonial-title">WHAT THEY <span>SAY</span></h2>
+    <h2 class="testimonial-title">PROFESSOR'S <span>REVIEWS</span></h2>
     <p class="testimonial-subtitle">Leading the way, setting a powerful example</p>
     <div class="testimonial-slider">
         <button class="prev-btn">&#10094;</button>

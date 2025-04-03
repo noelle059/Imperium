@@ -10,8 +10,9 @@
                 <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                     <li class="nav-item"><a class="nav-link active mx-lg-2" href="#carouselExampleIndicators">Home</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#feedback">Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#feedback">Reviews</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#insights">Insights</a></li>
+                    <li class="nav-item"><a class="nav-link mx-lg-2" href="#UsersFeedback">Feedback</a></li>
                     <li class="nav-item"><a class="nav-link mx-lg-2" href="#contact">Contact</a></li>
                     <li class="nav-item d-lg-none">
                         <button type="button" class="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>

@@ -109,6 +109,10 @@ Route::get('/professor/account-profile', [DashboardController::class, 'AccountPr
     ->middleware('auth')
     ->name('AccountProfile');
 
+Route::get('/professor/login-history', [DashboardController::class, 'accountHistory'])
+    ->middleware('auth')
+    ->name('AccountHistory');
+
 
 // Route to fetch devices for a specific classroom
 Route::get('/professor/get-devices/{classroom_id}', [DashboardController::class, 'getDevices']);

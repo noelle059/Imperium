@@ -33,6 +33,10 @@ class DashboardController extends Controller
         return view('user.account-profile');
     }
 
+    public function accountHistory()
+{
+    return view('user.login-history'); // Ensure this view file exists
+}
 
 
 
