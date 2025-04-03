@@ -92,7 +92,7 @@
 
     {{-- INCLUDE CLASSROOM MODALS --}}
     @include('admin.modal.classroomModals')
-    @include('admin.sweetAlerts.classroomAlert')
+    <!-- @include('admin.sweetAlerts.classroomAlert') -->
 
 
 
@@ -103,10 +103,13 @@
         function fetchData(page = 1, searchValue = '') {
             $.ajax({
                 url: "{{ route('show_classroom') }}",
-                type: "GET",
+                method: 'GET',
                 data: { search: searchValue, page: page },
                 success: function (response) {
-                    $('.table-container').html($(response.table).find('.table-container').html());
+                    $('.table-container').html($(response).find('.table-container').html());
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
                 }
             });
         }
@@ -173,7 +176,8 @@
 
         // Event Delegation for Delete Button
         $(document).on('click', '.archive', function () {
-            let id = $(this).data('id');
+            let id = $(this).data('id');  // Get the classroom id
+            let row = $(this).closest('tr');
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -186,15 +190,19 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/admin/delete-classroom/${id}`,
-                        type: 'DELETE',
+                        url: `/admin/classroom/remove/${id}`,
+                        type: 'PATCH',
                         data: { _token: '{{ csrf_token() }}' },
                         success: function (response) {
-                            Swal.fire('Deleted!', response.message, 'success');
-                            fetchData(); // Refresh table
+                            if (response.success) {
+                                Swal.fire('Archived!', response.message, 'success');
+                                row.remove();
+                            } else {
+                                Swal.fire('Error!', response.message, 'error');
+                            }
                         },
                         error: function (xhr) {
-                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                            Swal.fire('Error!', 'Something went wrong while archiving the classroom.', 'error');
                         }
                     });
                 }

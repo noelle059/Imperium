@@ -39,12 +39,12 @@
                 <tr>
                     <th>No.</th>
                     <th>Classroom</th>
-                    <th>Professor</th>
+                    <th>Professor Assigned</th>
                     <th>Subject</th>
                     <th>Day</th>
                     <th>Start-Time</th>
                     <th>End-Time</th>
-                    <th>Entry Date</th>
+                    <th>Schedule added on</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -77,9 +77,13 @@
 
                             <!-- Removing Schedule -->
                             <button class="btn gradient-button archive" type="button" data-id="{{ $schedule->id }}"
+                                data-schedule_day="{{ \Carbon\Carbon::parse($schedule->schedule_day)->format('Y-m-d') }}"
+                                data-start_time="{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}"
+                                data-end_time="{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}"
                                 id="RemoveScheduleButton">
                                 <i class="fa-solid fa-box-archive"></i>
                             </button>
+
                         </td>
                     </tr>
                 @endforeach
