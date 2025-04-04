@@ -42,4 +42,18 @@ class NotificationController extends Controller
 
         return view('admin.login-logs', compact('logs'));
     }
+
+    public function loginHistory()
+{
+    $userId = Auth::id(); // Get the currently authenticated user
+
+    $notifications = Notification::where('user_id', $userId)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return view('user.login-history', compact('notifications'));
+}
+
+
+    
 }

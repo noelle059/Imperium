@@ -499,6 +499,10 @@ Route::get('/admin/login-logs', [AdminController::class, 'loginLogs'])->name('ad
 Route::get('/login-history', [DashboardController::class, 'loginHistory'])->name('login.history');
 
 Route::get('/admin/schedule-logs', [ScheduleLogController::class, 'showLogs'])->name('scheduleLogs.show');
+Route::get('/login-history', [NotificationController::class, 'loginHistory'])
+    ->name('login.history')
+    ->middleware('auth');
+
 
 
 

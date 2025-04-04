@@ -4,6 +4,7 @@
 {{-- Include Navigation --}}
 @include('user.navigationbar')
 
+
 <div class="page-header">
     <div class="container-fluid" style="display: flex; justify-content: space-between; align-items: center;">
         <h2 class="h5 no-margin-bottom" style="margin-left: 20px;">ACCOUNT PROFILE</h2>
@@ -27,37 +28,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2024-03-31 12:45 PM</td>
-                            <td>192.168.1.1</td>
-                            <td><i class="fas fa-desktop"></i> Desktop</td>
-                            <td>New York, USA</td>
-                        </tr>
-                        <tr>
-                            <td>2024-03-30 10:15 AM</td>
-                            <td>203.55.112.89</td>
-                            <td><i class="fas fa-mobile-alt"></i> Mobile</td>
-                            <td>London, UK</td>
-                        </tr>
-                        <tr>
-                            <td>2024-03-29 08:30 AM</td>
-                            <td>145.36.78.99</td>
-                            <td><i class="fas fa-desktop"></i> Desktop</td>
-                            <td>Berlin, Germany</td>
-                        </tr>
-                        <tr>
-                            <td>2024-03-28 05:20 PM</td>
-                            <td>220.145.12.88</td>
-                            <td><i class="fas fa-mobile-alt"></i> Mobile</td>
-                            <td>Tokyo, Japan</td>
-                        </tr>
-                        <tr>
-                            <td>2024-03-27 02:00 PM</td>
-                            <td>176.23.45.67</td>
-                            <td><i class="fas fa-desktop"></i> Desktop</td>
-                            <td>Paris, France</td>
-                        </tr>
-                    </tbody>
+                @foreach ($logs as $index => $log)
+                    <tr>
+                    <td>{{ \Carbon\Carbon::parse($log->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}</td>
+                    <td>{{ $log->ip_address }}</td> <!-- Displaying the IP address here -->
+                    <td>{{ $log->device_info }}</td>
+                    <td>{{ $log->location }}</td>
+
+
+
+
+                    </tr>
+                @endforeach
+            </tbody>
+
+
                 </table>
             </div>
         </div>

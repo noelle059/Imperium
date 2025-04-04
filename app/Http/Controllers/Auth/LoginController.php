@@ -39,11 +39,19 @@ class LoginController extends Controller
             // Store the new session ID
             \Illuminate\Support\Facades\Cache::put('user_session_' . $user->id, $currentSessionId, now()->addHours(5));
     
-            // Create a login notification
+            // Get user IP, location, and device type
+            $ip = $request->ip();
+            $deviceType = $this->getDeviceType($request->header('User-Agent'));
+            $location = $this->getLocationFromIp($ip);
+    
+            // Create a login notification with the IP, location, and device type
             Notification::create([
                 'user_id' => $user->id,
                 'message' => 'You have successfully logged in.',
                 'is_read' => false,
+                'ip_address' => $ip,
+                'device_info' => $deviceType,
+                'location' => $location,
             ]);
     
             session()->flash('success', 'You have successfully logged in!');
@@ -53,35 +61,44 @@ class LoginController extends Controller
     
         return back()->withInput($request->only('email'))->with('alert', 'Invalid Email or password. Please try again.');
     }
-    
-    
-
 
     private function is_archived($user)
     {
         return $user->archive_status == 0;
     }
 
-    private function getLoginNotificationMessage($user)
+    private function getDeviceType($userAgent)
     {
-        // Customize the message based on is_admin attribute
-        if ($user->is_admin) {
-            return 'Welcome back, Admin! You have new updates to review.';
+        if (preg_match('/(android|iphone|ipod|windows phone)/i', $userAgent)) {
+            return 'Mobile';
+        } elseif (preg_match('/(tablet|ipad|playbook|silk)/i', $userAgent)) {
+            return 'Tablet';
         } else {
-            return 'Welcome back! Enjoy your time.';
+            return 'Desktop';
         }
     }
 
-    private function forceLogoutPreviousSessions($user)
-{
-    $currentSession = session()->getId();
-    $storedSession = \Illuminate\Support\Facades\Cache::get('user_session_' . $user->id);
+    private function getLocationFromIp($ip)
+    {
+        // You can use a service like "ipinfo.io" to get location data based on IP address
+        // For simplicity, we're using this approach directly for Google login
+        $json = file_get_contents("http://ipinfo.io/{$ip}/json"); // Fetch location data for the IP
+        $data = json_decode($json, true);
 
-    // If a different session exists, log the user out
-    if ($storedSession && $storedSession !== $currentSession) {
-        Auth::logout();
-        return redirect()->route('home')->with('alert', 'You have been logged out because you signed in on another device.');
+        // Return a location or default message if location is not available
+        return isset($data['city']) && isset($data['country']) ? $data['city'] . ', ' . $data['country'] : 'Unknown Location';
     }
-}
 
+    protected function authenticated(Request $request, $user)
+    {
+        // Store login event with IP, location, and device info
+        Notification::create([
+            'user_id' => $user->id,
+            'message' => 'Successful login at ' . now(),
+            'created_at' => now(),
+            'ip_address' => $request->ip(), // Capturing the actual IP
+            'device_info' => $this->getDeviceType($request->header('User-Agent')), // Device type
+            'location' => $this->getLocationFromIp($request->ip()), // Location based on IP
+        ]);
+    }
 }
