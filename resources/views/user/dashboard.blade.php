@@ -462,6 +462,26 @@
             });
         }, 5000);
 
+        function updateAccessState(accessState) {
+            return fetch('/update-access-state', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ access_state: accessState })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log(`Access state updated to ${accessState}.`);
+                } else {
+                    console.error(`Failed to update access state: ${data.message}`);
+                }
+            })
+            .catch(error => console.error('Error updating access state:', error));
+        }
+
 
 
         confirmExitBtn.addEventListener("click", function() {
@@ -516,6 +536,7 @@
                                         modalInstance.hide();
                                     }
                                     window.location.reload();
+                                    updateAccessState(false);
                                 });
                             } else {
                                 Swal.fire({

@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     rfidLabel.style.display = "block";
                     enterBtn.style.display = "block";
                     enterBtn.disabled = true;
-
                     fetch("/get-professor-rfid")
                         .then(response => response.json())
                         .then(professorData => {
@@ -96,10 +95,28 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error fetching schedule:", error));
     });
 
+    function updateAccessState(accessState) {
+        return fetch('/update-access-state', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ access_state: accessState })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log(`Access state updated to ${accessState}.`);
+            } else {
+                console.error(`Failed to update access state: ${data.message}`);
+            }
+        })
+        .catch(error => console.error('Error updating access state:', error));
+    }
 
     function checkRFIDMatch(professorRFID) {
         const superAdminRFID = "23b28d14"; // Define the super admin RFID
-
         fetch("/get-rfid")
             .then(response => response.json())
             .then(data => {
@@ -123,11 +140,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             showConfirmButton: false
                         });
                         enterBtn.disabled = true;
+                        updateAccessState(false);
                     }
                 }
             })
             .catch(error => console.error("Error fetching RFID:", error));
     }
+
 
 
 
@@ -192,8 +211,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (modalInstance) {
                             modalInstance.hide();
                         }
-                        window.location.reload();
-                    });
+                            updateAccessState(true);
+                            window.location.reload();
+                        });
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -203,9 +223,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             } catch (e) {
                 console.error("Invalid JSON response:", text);
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "An unexpected error occurred.",
+                });
             }
         })
         .catch(error => console.error("Error logging entry:", error));
     });
+
+
+
 });
 </script>

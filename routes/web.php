@@ -283,6 +283,12 @@ Route::get('/get-rfid', function (FirebaseService $firebaseService) {
     return Response::json(['rfid' => $rfid]);
 });
 
+Route::post('/update-access-state', function (Request $request, FirebaseService $firebaseService) {
+    $accessState = $request->input('access_state');
+    $result = $firebaseService->updateAccessState($accessState);
+
+    return response()->json($result);
+});
 
 Route::get('/get-rfid-from-firebase', function (FirebaseService $firebase) {
     try {

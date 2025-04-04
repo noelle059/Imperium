@@ -65,6 +65,16 @@ class FirebaseService
         return $this->database->getReference('rfid/current')->getValue();
     }
 
+    public function updateAccessState($accessState)
+    {
+        try {
+            $this->setData('/access/state', $accessState); // Updating access state
+            return ['status' => 'success'];
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
+    }
+
     public function getAccessRFID()
     {
         return $this->database->getReference('rfid/access')->getValue();
