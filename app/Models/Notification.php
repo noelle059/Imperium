@@ -12,7 +12,7 @@ class Notification extends Model
 
     protected $dates = ['deleted_at']; // Timestamp for soft deletes
 
-    protected $fillable = ['user_id', 'message', 'is_read'];
+    protected $fillable = ['user_id', 'message', 'is_read', 'ip_address','device_info','location'];
 
     public function user()
     {

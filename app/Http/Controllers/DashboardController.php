@@ -34,9 +34,9 @@ class DashboardController extends Controller
     }
 
     public function accountHistory()
-{
-    return view('user.login-history'); // Ensure this view file exists
-}
+    {
+        return view('user.login-history'); // Ensure this view file exists
+    }
 
 
 
@@ -260,7 +260,7 @@ class DashboardController extends Controller
     $logs = Notification::where('user_id', auth()->id())
         ->where('message', 'LIKE', '%logged in%') // Fetch only login messages
         ->orderBy('created_at', 'desc')
-        ->paginate(10); 
+        ->paginate(10);
 
     return view('user.login-history', compact('logs'));
 }

@@ -21,6 +21,38 @@ class GoogleController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
+    private function getUserIp(Request $request)
+    {
+        return $request->ip();
+    }
+
+    public function getDeviceType($userAgent)
+    {
+        if (preg_match('/(android|iphone|ipod|windows phone)/i', $userAgent)) {
+            return 'Mobile';
+        } elseif (preg_match('/(tablet|ipad|playbook|silk)/i', $userAgent)) {
+            return 'Tablet';
+        } else {
+            return 'Desktop';
+        }
+    }
+
+    private function getLocationFromIp($ip)
+    {
+        // Use a basic free service or some PHP libraries for IP location lookup
+        // Example: Using free IP geolocation data available from 'http://ip-api.com/json/'
+
+        $url = "http://ip-api.com/json/{$ip}";
+        $response = file_get_contents($url);
+        $locationData = json_decode($response, true);
+
+        if ($locationData && $locationData['status'] === 'success') {
+            return $locationData['city'] . ', ' . $locationData['country']; // Example: 'New York, USA'
+        }
+
+        return 'Unknown Location'; // Default if no location data is found
+    }
+
     
     public function googleCallback(Request $request)
     {
@@ -66,11 +98,23 @@ class GoogleController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
     
+            // ✅ **Get user IP using default Laravel Request method**
+            $ip = $request->ip(); // Get the user's IP address
+            $userAgent = $request->header('User-Agent'); // Get the User-Agent string
+
+            // Get device type (Mobile, Tablet, or Desktop)
+            $deviceType = $this->getDeviceType($userAgent);
+            $location = $this->getLocationFromIp($ip);
+
+    
             // ✅ **Notify user about login**
             Notification::create([
                 'user_id' => $user->id,
                 'message' => 'You have successfully logged in using Google on ' . now()->format('F j, Y \a\t h:i A') . '.',
                 'is_read' => false,
+                'ip_address' => $ip, // Store IP address
+                'device_info' => $deviceType, // Store only device type (Mobile/Desktop/Tablet)
+                'location' => $location, // Location based on IP                
             ]);
     
             return $user->is_admin 
@@ -80,6 +124,9 @@ class GoogleController extends Controller
         } catch (Exception $e) {
             return redirect()->route('login')->with('alert', 'Unable to login using Google. Please try again.');
         }
+
+
+        
     }
     
     
