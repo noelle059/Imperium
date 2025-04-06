@@ -40,11 +40,11 @@
                             </div>
                             <div class="number dashtext-1">{{ $userCount }}</div>
                         </div>
-                        <div class="progress progress-template">
+                        {{-- <div class="progress progress-template">
                             <div role="progressbar" style="width: {{ $userCount }}%"
                                 aria-valuenow="{{ $userCount }}" aria-valuemin="0" aria-valuemax="200"
                                 class="progress-bar progress-bar-template dashbg-1"></div>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>
@@ -57,11 +57,11 @@
                             </div>
                             <div class="number dashtext-2">{{ $subjectCount }}</div>
                         </div>
-                        <div class="progress progress-template">
+                        {{-- <div class="progress progress-template">
                             <div role="progressbar" style="width: {{ $subjectCount }}%"
                                 aria-valuenow="{{ $subjectCount }}" aria-valuemin="0" aria-valuemax="200"
                                 class="progress-bar progress-bar-template dashbg-2"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
@@ -75,11 +75,11 @@
                             </div>
                             <div class="number dashtext-3">{{ $deviceCount }}</div>
                         </div>
-                        <div class="progress progress-template">
+                        {{-- <div class="progress progress-template">
                             <div role="progressbar" style="width: {{ $deviceCount }}%"
                                 aria-valuenow="{{ $deviceCount }}" aria-valuemin="0" aria-valuemax="200"
                                 class="progress-bar progress-bar-template dashbg-3"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
@@ -93,11 +93,11 @@
                             </div>
                             <div class="number dashtext-4">{{ $classroomCount }}</div>
                         </div>
-                        <div class="progress progress-template">
+                        {{-- <div class="progress progress-template">
                             <div role="progressbar" style="width: {{ $classroomCount }}%"
                                 aria-valuenow="{{ $classroomCount }}" aria-valuemin="0" aria-valuemax="200"
                                 class="progress-bar progress-bar-template dashbg-4"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="bar-chart block no-margin-bottom">
-                        <canvas id="barChartExample1"></canvas>
+                        <canvas id="barChartExample1" width="400" height="200"></canvas>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -199,29 +199,16 @@
 
 
     <script>
-        // Bar Chart - Users, Subjects, Devices, Classrooms
         var ctx1 = document.getElementById('barChartExample1').getContext('2d');
         var barChartExample1 = new Chart(ctx1, {
             type: 'bar',
             data: {
-                labels: ['Users', 'Subjects', 'Devices', 'Classrooms'], // Labels
+                labels: {!! json_encode(array_keys($classroomCountPerFloor)) !!}, // Dynamic floor names
                 datasets: [{
-                    label: 'Total Data Summary',
-                    data: [{{ $userCount }}, {{ $subjectCount }}, {{ $deviceCount }},
-                        {{ $classroomCount }}
-                    ], // Dynamic data
-                    backgroundColor: [
-                        'rgb(37, 95, 56, 0.3)',
-                        'rgb(31, 125, 83, 0.3)',
-                        'rgb(168, 205, 137, 0.3)',
-                        'rgb(53, 95, 46, 0.3)'
-                    ],
-                    borderColor: [
-                        'rgb(37, 95, 56, 1)',
-                        'rgb(31, 125, 83, 1)',
-                        'rgb(168, 205, 137, 1)',
-                        'rgb(53, 95, 46, 1)'
-                    ],
+                    label: 'Classroom Count per Floor',
+                    data: {!! json_encode(array_values($classroomCountPerFloor)) !!}, // Dynamic classroom counts
+                    backgroundColor: 'rgba(53, 95, 46, 0.3)', // Background color for bars
+                    borderColor: 'rgba(53, 95, 46, 1)', // Border color for bars
                     borderWidth: 1
                 }]
             },
@@ -236,33 +223,36 @@
             }
         });
 
-        // Line Chart (you can adjust this to show other relevant data)
-        document.addEventListener("DOMContentLoaded", function () {
-        var ctx2 = document.getElementById('lineChartExample').getContext('2d');
 
-        var lineChartExample = new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: {!! json_encode($months) !!}, // Display only months
-                datasets: [{
-                    label: 'Classroom Usage per Month',
-                    data: {!! json_encode($counts) !!}, // Fetch counts dynamically
-                    borderColor: 'rgb(24, 85, 25, 1)',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+
+
+        // Line Chart (you can adjust this to show other relevant data)
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx2 = document.getElementById('lineChartExample').getContext('2d');
+
+            var lineChartExample = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: {!! json_encode($months) !!}, // Display only months
+                    datasets: [{
+                        label: 'Classroom Usage per Month',
+                        data: {!! json_encode($counts) !!}, // Fetch counts dynamically
+                        borderColor: 'rgb(24, 85, 25, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
+            });
         });
-    });
     </script>
 
 
