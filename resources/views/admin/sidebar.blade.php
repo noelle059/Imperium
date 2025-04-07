@@ -98,20 +98,20 @@
                 </a>
 
                 <ul id="Report" class="collapse list-unstyled">
-                <li>
-    <a href="{{ route('report.scheduleLogs') }}">
-        <i class="fa fa-building" style="font-size: 25px; padding-left: 8px;"></i> Classroom
-    </a>
-</li>
+                    <li>
+                        <a href="{{ route('report.scheduleLogs') }}">
+                            <i class="fa fa-building" style="font-size: 25px; padding-left: 8px;"></i> Classroom
+                        </a>
+                    </li>
                     <li> <a href="{{ route('admin.login.logs') }}">
-                            <i class="fa fa-building"
-                                style="font-size:font-size: 25px; padding-left: 8px;"></i>Admin Logs</a>
-                      </li>
+                            <i class="fa fa-building" style="font-size:font-size: 25px; padding-left: 8px;"></i>Admin
+                            Logs</a>
+                    </li>
 
 
                     {{-- <li><a href="#"><i class="material-icons" style="font-size: 25px;">devices</i>Device</a></li> --}}
                 </ul>
-             
+
             </li>
 
 
@@ -132,6 +132,10 @@
                                 style="font-size: 25px; padding-left: 8px;"></i>Classroom</a></li>
                     <li><a href="{{ route('show_archive_device') }}"><i class="material-icons"
                                 style="font-size: 25px;">devices</i>Device</a>
+                    </li>
+
+                    <li><a href="{{ route('show_archive_schedules') }}"><i class="material-icons"
+                                style="font-size: 25px;">add_box</i>Schedule</a>
                     </li>
 
                 </ul>

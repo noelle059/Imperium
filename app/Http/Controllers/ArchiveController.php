@@ -128,4 +128,29 @@ class ArchiveController extends Controller
         // Return a success response in JSON format
         return response()->json(['success' => true, 'message' => 'Device Retrieved Successfully']);
     }
+
+
+    public function showArchiveSchedules()
+    {
+        // Use query builder to paginate before fetching the data
+        $archiveSchedules = Schedule::where('archive_status', 0)  // Filter by archive_status = 0
+            ->paginate(10);  // Paginate the results
+
+        // Pass archiveUsers to the view
+        return view('admin.archive.schedule', compact('archiveSchedules'));
+    }
+
+
+    public function retrieveSchedule($id)
+    {
+        // Find the floor by id
+        $schedule = Schedule::find($id);
+
+        // Set the archive_status to 0
+        $schedule->archive_status = 1;
+        $schedule->save();
+
+        // Return a success response in JSON format
+        return response()->json(['success' => true, 'message' => 'Schedule Retrieved Successfully']);
+    }
 }

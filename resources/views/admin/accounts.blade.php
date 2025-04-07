@@ -38,15 +38,16 @@
                                     <img src="{{ $professor->id_picture }}" alt="ID Picture"
                                         style="width: 50px; height: auto;">
                                 @else
-                                    <img src="{{ asset('uploads/id_pictures/' . $professor->id_picture) }}" alt="ID Picture"
-                                        style="width: 50px; height: auto;">
+                                    <img src="{{ asset('uploads/id_pictures/' . $professor->id_picture) }}"
+                                        alt="ID Picture" style="width: 50px; height: auto;">
                                 @endif
                             </td>
                             <td>{{ $professor->name }}</td>
                             <td>{{ $professor->email }}</td>
                             <td>{{ $professor->rfid_uid ?? 'Not Activated' }}</td>
                             <td>{{ $professor->is_activated ? 'Registered' : 'Pending Activation' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($professor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($professor->created_at)->timezone('Asia/Manila')->format('F j, Y \a\t h:i A') }}
+                            </td>
 
                             <td class="action-cell">
                                 <button class="btn gradient-button update" type="button" data-id="{{ $professor->id }}"
@@ -57,8 +58,8 @@
                                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
                                 </button>
 
-                                <button class="btn gradient-button archive" type="button" data-id="{{ $professor->id }}"
-                                    id="RemoveAccountButton">
+                                <button class="btn gradient-button archive" type="button"
+                                    data-id="{{ $professor->id }}" id="RemoveAccountButton">
                                     <i class="fa-solid fa-box-archive"></i>
                                 </button>
                             </td>
@@ -73,64 +74,71 @@
         </div>
     </div>
 
+
+
+    @include('admin.modal.accountModals')
+    @include('admin.sweetAlerts.accountAlert')
+
+    @include('admin.footer')
+
 </div>
 
-@include('admin.footer')
-@include('admin.modal.accountModals')
-@include('admin.sweetAlerts.accountAlert')
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-    function fetchData(page = 1, searchValue = '') {
-        $.ajax({
-            url: "{{ route('accounts') }}",
-            method: 'GET',
-            data: { search: searchValue, page: page },
-            success: function (response) {
-                $('#tableSection').html($(response.html).find('#tableSection').html());
-                attachEventListeners(); // Reattach event listeners
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", status, error);
-            }
+    $(document).ready(function() {
+        function fetchData(page = 1, searchValue = '') {
+            $.ajax({
+                url: "{{ route('accounts') }}",
+                method: 'GET',
+                data: {
+                    search: searchValue,
+                    page: page
+                },
+                success: function(response) {
+                    $('#tableSection').html($(response.html).find('#tableSection').html());
+                    attachEventListeners(); // Reattach event listeners
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+        }
+
+        $('#searchInput').on('keyup', function() {
+            let searchValue = $(this).val();
+            fetchData(1, searchValue);
         });
-    }
 
-    $('#searchInput').on('keyup', function () {
-        let searchValue = $(this).val();
-        fetchData(1, searchValue);
-    });
-
-    $(document).on('click', '.pagination a', function (e) {
-        e.preventDefault();
-        let page = $(this).attr('href').split('page=')[1];
-        let searchValue = $('#searchInput').val();
-        fetchData(page, searchValue);
-    });
-
-    function attachEventListeners() {
-        $(document).off('click', '.update').on('click', '.update', function () {
-            let id = $(this).data('id');
-            let name = $(this).data('name');
-            let email = $(this).data('email');
-            let rfid = $(this).data('rfid_uid');
-
-            console.log("Update Clicked:", id, name, email, rfid);
-
-            let modal = $('#register_account_id_modal');
-
-            // Set input fields correctly
-            modal.find('input[name="name"]').val(name);
-            modal.find('input[name="email"]').val(email);
-            modal.find('input[name="rfid_uid"]').val(rfid);
-
-            modal.modal('show');
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            let searchValue = $('#searchInput').val();
+            fetchData(page, searchValue);
         });
-    }
 
-attachEventListeners();
-// Attach on initial page load
-});
+        function attachEventListeners() {
+            $(document).off('click', '.update').on('click', '.update', function() {
+                let id = $(this).data('id');
+                let name = $(this).data('name');
+                let email = $(this).data('email');
+                let rfid = $(this).data('rfid_uid');
 
+                console.log("Update Clicked:", id, name, email, rfid);
+
+                let modal = $('#register_account_id_modal');
+
+                // Set input fields correctly
+                modal.find('input[name="name"]').val(name);
+                modal.find('input[name="email"]').val(email);
+                modal.find('input[name="rfid_uid"]').val(rfid);
+
+                modal.modal('show');
+            });
+        }
+
+        attachEventListeners();
+        // Attach on initial page load
+    });
 </script>
