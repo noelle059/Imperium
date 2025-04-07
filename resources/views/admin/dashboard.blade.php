@@ -233,11 +233,11 @@
             var lineChartExample = new Chart(ctx2, {
                 type: 'line',
                 data: {
-                    labels: {!! json_encode($months) !!}, // Display only months
+                    labels: {!! json_encode($every_months) !!}, // Display only months
                     datasets: [{
                         label: 'Classroom Usage per Month',
-                        data: {!! json_encode($counts) !!}, // Fetch counts dynamically
-                        borderColor: 'rgb(24, 85, 25, 1)',
+                        data: {!! json_encode($every_counts) !!}, // Fetch counts dynamically
+                        borderColor: 'rgb(24, 85, 25)',
                         borderWidth: 1,
                         fill: false
                     }]
@@ -247,7 +247,16 @@
                     maintainAspectRatio: true,
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            min: 1, // Set the minimum value for Y-axis to 1
+                            max: 50, // Set the maximum value for Y-axis to 50
+                            ticks: {
+                                stepSize: 1, // Set the step size to 1, which ensures integer ticks
+                                callback: function(value) {
+                                    return Number.isInteger(value) ? value :
+                                        null; // Ensure only integers are displayed
+                                }
+                            }
                         }
                     }
                 }
