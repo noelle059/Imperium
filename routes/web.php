@@ -40,7 +40,7 @@ Route::get('/', function () {
 })->name('home');
 
 
-Route::get('/clear-cache', function() {
+Route::get('/clear-cache', function () {
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
@@ -105,14 +105,14 @@ Route::get('/professor/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('user.dashboard');
 
-    Route::middleware(['auth'])->get('/check-archive-status', function () {
-        $user = Auth::user();
-        if ($user->archive_status == 0) {
-            return response()->json(['archived' => true]);
-        }
+Route::middleware(['auth'])->get('/check-archive-status', function () {
+    $user = Auth::user();
+    if ($user->archive_status == 0) {
+        return response()->json(['archived' => true]);
+    }
 
-        return response()->json(['archived' => false]);
-    });
+    return response()->json(['archived' => false]);
+});
 
 Route::get('/professor/account-profile', [DashboardController::class, 'AccountProfile'])
     ->middleware('auth')
@@ -341,7 +341,9 @@ Route::get('/admin/archive/devices', [ArchiveController::class, 'showArchiveDevi
 // Retrieve Classroom
 Route::patch('admin/device/retrieve/{id}', [ArchiveController::class, 'retrieveDevice'])->name('retrieve_device');
 
-
+Route::get('/admin/archive/schedules', [ArchiveController::class, 'showArchiveSchedules'])->name('show_archive_schedules');
+// Retrieve Schedule
+Route::patch('admin/schedule/retrieve/{id}', [ArchiveController::class, 'retrieveSchedule'])->name('retrieve_schedule');
 
 
 
@@ -510,7 +512,3 @@ Route::get('/admin/schedule-logs', [ScheduleLogController::class, 'showLogs'])->
 Route::get('/login-history', [NotificationController::class, 'loginHistory'])
     ->name('login.history')
     ->middleware('auth');
-
-
-
-
