@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
+// SceduleController.php
 
 use Carbon\Carbon;
 
@@ -339,89 +340,204 @@ class ScheduleController extends Controller
     public function checkSchedule(Request $request)
     {
         try {
-            $classroomId = $request->query('classroom_id');
-            $subjectId = $request->query('subject_id');
-            $professorId = Auth::id();
-            $currentDay = Carbon::now()->format('l');
-            $currentTime = Carbon::now()->format('H:i:s');
 
-            $schedule = Schedule::where('classroom_id', $classroomId)
-                ->where('subject_id', $subjectId)
-                ->where('user_id', $professorId)
-                ->where('archive_status', 1)
-                ->where('schedule_day', '=', $currentDay)
-                ->whereTime('start_time', '<=', $currentTime)
-                ->whereTime('end_time', '>=', $currentTime)
-                ->first();
+            $validator = Validator::make($request->all(), [
+                'subject_id' => 'required|exists:subjects,id',
+                // Include other validations as needed
+            ]);
 
-            if (!$schedule) {
-                Log::warning("❌ No valid schedule found!");
-
-                // Classroom and subject tama pero wrong professor
-                $wrongProfessor = Schedule::where('classroom_id', $classroomId)
-                    ->where('subject_id', $subjectId)
-                    ->where('schedule_day', '=', $currentDay)
-                    ->first();
-
-                if ($wrongProfessor) {
-                    return response()->json([
-                        'error' => true,
-                        'message' => 'You are not assigned to this subject in this classroom.'
-                    ]);
-                }
-
-                // Classroom and professor tama pero wrong subject
-                $wrongSubject = Schedule::where('classroom_id', $classroomId)
-                    ->where('user_id', $professorId)
-                    ->where('schedule_day', '=', $currentDay)
-                    ->first();
-
-                if ($wrongSubject) {
-                    return response()->json([
-                        'error' => true,
-                        'message' => 'The selected subject is not assigned to this classroom at this time.'
-                    ]);
-                }
-
-                // Classroom and professor tama pero wrong time
-                $wrongTime = Schedule::where('classroom_id', $classroomId)
-                    ->where('user_id', $professorId)
-                    ->where('subject_id', $subjectId)
-                    ->where('archive_status', 1)
-                    ->where('schedule_day', '=', $currentDay)
-                    ->first();
-
-                if ($wrongTime) {
-                    return response()->json([
-                        'error' => true,
-                        'message' => 'You are trying to enter outside of the scheduled time.'
-                    ]);
-                }
-
+            if ($validator->fails()) {
                 return response()->json([
                     'error' => true,
-                    'message' => 'The selected subject is not scheduled for this classroom at this time.'
-                ]);
+                    'message' => $validator->errors()->all()
+                ], 422);
             }
 
-            Log::info("✅ Schedule found: " . json_encode($schedule));
+            $classroomId = $request->query('classroom_id');
+            $scheduleDay = $request->query('schedule_day');
+            $startTime = $request->query('start_time');
+            $professorId = $request->query('professor_id');
+            $subjectId = $request->query('subject_id');
+            $scheduleId = $request->query('schedule_id');
+
+            $startTimeCarbon = \Carbon\Carbon::createFromFormat('H:i', $startTime);
+
+            // Get subject units
+            $units = Subject::where('id', $subjectId)->value('units') ?? 1;
+            $endTime = $startTimeCarbon->copy()->addHours($units);
+
+            // For debugging
+            Log::info('Checking schedule conflicts:', [
+                'start_time' => $startTimeCarbon->format('H:i:s'),
+                'end_time' => $endTime->format('H:i:s'),
+                'day' => $scheduleDay,
+                'professor' => $professorId,
+                'classroom' => $classroomId,
+                'subject' => $subjectId
+            ]);
+
+            $response = [
+                'error' => false,
+                'message' => []
+            ];
+
+            // Time validation: Check if end time exceeds 9 PM
+            $lastEndTime = \Carbon\Carbon::createFromFormat('H:i:s', '21:00:00');
+            if ($endTime->greaterThan($lastEndTime)) {
+                $response['error'] = true;
+                $response['message']['time'] = 'The schedule cannot extend beyond 9:00 PM. Please adjust the starting time.';
+            }
+
+            // Time validation: Ensure start time is before end time
+            if ($startTimeCarbon->greaterThanOrEqualTo($endTime)) {
+                $response['error'] = true;
+                $response['message']['time'] = 'Start time must be earlier than end time.';
+            }
+
+            $professorConflictQuery = Schedule::where('schedule_day', $scheduleDay)
+                ->where('user_id', $professorId)
+                ->where('subject_id', '!=', $subjectId)
+                ->where(function ($query) use ($startTimeCarbon, $endTime) {
+                    $query->where(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>', $startTimeCarbon->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<', $endTime->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '>=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '<=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    });
+                });
+
+            if ($scheduleId) {
+                $professorConflictQuery->where('id', '!=', $scheduleId);
+            }
+
+            $professorConflict = $professorConflictQuery->exists();
+
+            if ($professorConflict) {
+                $response['error'] = true;
+                $response['message']['professor'] = 'The professor already has a schedule with a different subject at this time.';
+            }
+
+            // Apply the same improved overlap detection to the other checks
+
+            // PROFESSOR DIFFERENT ROOM CONFLICT
+            $professorDifferentRoomQuery = Schedule::where('schedule_day', $scheduleDay)
+                ->where('user_id', $professorId)
+                ->where('classroom_id', '!=', $classroomId)
+                ->where(function ($query) use ($startTimeCarbon, $endTime) {
+                    $query->where(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>', $startTimeCarbon->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<', $endTime->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '>=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '<=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    });
+                });
+
+            if ($scheduleId) {
+                $professorDifferentRoomQuery->where('id', '!=', $scheduleId);
+            }
+
+            $professorDifferentRoomConflict = $professorDifferentRoomQuery->exists();
+
+            if ($professorDifferentRoomConflict) {
+                $response['error'] = true;
+                $response['message']['professor_room'] = 'The professor is already scheduled in another classroom at this time.';
+            }
+
+            // CLASSROOM CONFLICT
+            $classroomConflictQuery = Schedule::where('schedule_day', $scheduleDay)
+                ->where('classroom_id', $classroomId)
+                ->where(function ($query) use ($startTimeCarbon, $endTime) {
+                    $query->where(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>', $startTimeCarbon->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<', $endTime->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '>=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '<=', $endTime->format('H:i:s'));
+                    })->orWhere(function ($q) use ($startTimeCarbon, $endTime) {
+                        $q->whereTime('start_time', '<=', $startTimeCarbon->format('H:i:s'))
+                          ->whereTime('end_time', '>=', $endTime->format('H:i:s'));
+                    });
+                });
+
+            if ($scheduleId) {
+                $classroomConflictQuery->where('id', '!=', $scheduleId);
+            }
+
+            $classroomConflict = $classroomConflictQuery->exists();
+
+            if ($classroomConflict) {
+                $response['error'] = true;
+                $response['message']['classroom'] = 'The classroom is already occupied at this time.';
+            }
+
+
+            $existingSchedules = Schedule::where('schedule_day', $scheduleDay)
+            ->where(function ($query) use ($professorId, $classroomId) {
+                $query->where('user_id', $professorId)
+                    ->orWhere('classroom_id', $classroomId);
+            })
+            ->where('id', '!=', $scheduleId)
+            ->where('archive_status', 1)
+            ->get();
+
+            Log::info('Existing schedules that might conflict:', $existingSchedules->toArray());
+
+            foreach ($existingSchedules as $existing) {
+            $existingStart = \Carbon\Carbon::createFromFormat('H:i:s', $existing->start_time);
+            $existingEnd = \Carbon\Carbon::createFromFormat('H:i:s', $existing->end_time);
+
+            $hasOverlap = (
+                ($startTimeCarbon >= $existingStart && $startTimeCarbon < $existingEnd) ||
+                ($endTime > $existingStart && $endTime <= $existingEnd) ||
+                ($startTimeCarbon <= $existingStart && $endTime >= $existingEnd) ||
+                ($startTimeCarbon >= $existingStart && $endTime <= $existingEnd)
+            );
+
+            if ($hasOverlap && !$response['error']) {
+                Log::warning('Direct comparison found overlap but SQL did not!');
+
+                if ($existing->user_id == $professorId && $existing->classroom_id != $classroomId) {
+                    $response['error'] = true;
+                    $response['message']['professor_room'] = 'The professor is already scheduled in another classroom at this time (detected by direct comparison).';
+                } else if ($existing->user_id == $professorId) {
+                    $response['error'] = true;
+                    $response['message']['professor'] = 'The professor already has a schedule at this time (detected by direct comparison).';
+                } else if ($existing->classroom_id == $classroomId) {
+                    $response['error'] = true;
+                    $response['message']['classroom'] = 'The classroom is already occupied at this time (detected by direct comparison).';
+                }
+            }
+            }
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            Log::error('Schedule check error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return response()->json([
-                'error' => false,
-                'message' => 'Schedule is valid.',
-                'schedule_id' => $schedule->id
-            ]);
-        } catch (\Exception $e) {
-            Log::error("❌ Error checking schedule: " . $e->getMessage());
-            return response()->json([
                 'error' => true,
-                'message' => 'An unexpected error occurred. Check logs for details.'
+                'message' => ['An unexpected error occurred: ' . $e->getMessage()]
             ]);
         }
     }
-
-
-
 
     public function removeSchedule($id)
     {
@@ -435,12 +551,5 @@ class ScheduleController extends Controller
         // Return a success response in JSON format
         return response()->json(['success' => true, 'message' => 'Schedule Removed Successfully']);
     }
-
-
-    
-
-
-
-
 
 }

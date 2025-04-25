@@ -277,6 +277,8 @@ Route::patch('/admin/schedule/remove/{id}', [ScheduleController::class, 'removeS
 Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
 Route::get('/professor/subjects', [ScheduleController::class, 'getProfessorSubjects']);
 Route::get('/check-schedule', [ScheduleController::class, 'checkSchedule']);
+Route::get('/check-schedule-conflict', [ScheduleController::class, 'checkSchedule']);
+
 
 Route::get('/get-rfid', function (FirebaseService $firebaseService) {
     $rfid = $firebaseService->getAccessRFID();

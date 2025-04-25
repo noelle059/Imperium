@@ -98,7 +98,7 @@ class AdminController extends Controller
             $account = User::findOrFail($id);
 
             // CASE 1: Professor is already registered & admin scans super admin RFID → Deactivate first
-            if ($account->rfid_uid && $scannedRFID === 'a2aa1702') {
+            if ($account->rfid_uid && $scannedRFID === '23b28d14') {
                 $account->is_activated = 0; // Deactivate the professor
                 $account->rfid_uid = null;  // Remove RFID
                 $account->save();
@@ -232,7 +232,7 @@ class AdminController extends Controller
         'message' => 'Admin "' . $user->name . ' ' . $user->last_name . '" has been created by ' . Auth::user()->name . ' ' . Auth::user()->last_name . '.',
         'is_read' => false,
     ]);
-    
+
 
     return redirect()->back()->with('success', 'Admin account created successfully!');
 }
@@ -290,8 +290,8 @@ class AdminController extends Controller
     ]);
 
 
-    
-    
+
+
 
     return redirect()->back()->with('success', 'Admin updated successfully!');
 }
