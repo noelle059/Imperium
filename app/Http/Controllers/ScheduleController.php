@@ -552,4 +552,40 @@ class ScheduleController extends Controller
         return response()->json(['success' => true, 'message' => 'Schedule Removed Successfully']);
     }
 
+    public function validateSchedule(Request $request)
+    {
+        // Get the parameters from the request
+        $userId = $request->input('user_id');  // Logged-in user's ID
+        $classroomId = $request->input('classroom_id');  // Classroom ID (CL1 = 32)
+        $currentTime = $request->input('current_time');  // Current time in ISO format
+
+        // Convert current time to Carbon instance, but extract only the time part (HH:MM:SS)
+        $currentTime = Carbon::parse($currentTime)->timezone('Asia/Manila')->format('H:i:s'); // Convert to HH:MM:SS in Manila timezone
+
+        // Fetch the schedule for the logged-in user in the given classroom (CL1)
+        $schedule = Schedule::where('user_id', $userId)
+                            ->where('classroom_id', $classroomId)
+                            ->first();
+
+        // Check if a valid schedule exists
+        if ($schedule) {
+            $startTime = Carbon::parse($schedule->start_time)->timezone('Asia/Manila')->format('H:i:s');
+            $endTime = Carbon::parse($schedule->end_time)->timezone('Asia/Manila')->format('H:i:s');
+
+            // Compare the current time with the schedule's start and end times
+            if ($currentTime >= $startTime && $currentTime <= $endTime) {
+                return response()->json([
+                    'validSchedule' => true,
+                    'scheduleId' => $schedule->id,
+                ]);
+            } else {
+                return response()->json(['validSchedule' => false]);
+            }
+        } else {
+            // If no schedule found for this professor in this classroom
+            return response()->json(['validSchedule' => false]);
+        }
+    }
+
+
 }

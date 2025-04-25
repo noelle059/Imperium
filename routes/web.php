@@ -278,6 +278,7 @@ Route::get('/get-schedules', [ScheduleController::class, 'getSchedules']);
 Route::get('/professor/subjects', [ScheduleController::class, 'getProfessorSubjects']);
 Route::get('/check-schedule', [ScheduleController::class, 'checkSchedule']);
 Route::get('/check-schedule-conflict', [ScheduleController::class, 'checkSchedule']);
+Route::get('/validate-schedule', [ScheduleController::class, 'validateSchedule']);
 
 
 Route::get('/get-rfid', function (FirebaseService $firebaseService) {

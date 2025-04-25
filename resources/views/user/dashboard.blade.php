@@ -83,10 +83,7 @@
                                     <i class="fa-solid fa-door-closed"></i>
                                 </button>
                             @elseif (!$activeLog)
-                                <button class="btn gradient-button entry" type="button" data-id="{{ $classroom->id }}"
-                                    data-bs-toggle="modal" data-bs-target="#entryModal">
-                                    <i class="fa-solid fa-door-open"></i>
-                                </button>
+                                N/A
                             @else
                                 <span class="text-muted">No Access</span>
                             @endif
@@ -202,6 +199,7 @@
             url: '/professor/get-devices/' + classroomId, // Endpoint to get devices
             method: 'GET',
             success: function(data) {
+                console.log(data.devices);
                 // Clear the container before injecting devices
                 $('#device-controls-container').empty();
 
@@ -235,21 +233,17 @@
                     $('#device-controls-container').append(deviceControl);
                 });
 
-                // Now you have the device IDs from the data.device_ids array
-                // You can do whatever is necessary with the device IDs here
-                console.log('Device IDs:', data
-                    .device_ids); // Example of how to access the device IDs
+
+                console.log('Device IDs:', data.device_ids); // Example of how to access the device IDs
 
                 // Sync the UI with Firebase state after loading
-                syncDeviceStateWithFirebase(classroomId); // Make sure classroomId is passed here
+                syncDeviceStateWithFirebase(classroomId);
             },
             error: function(error) {
                 console.log('Error fetching devices:', error);
             }
         });
     });
-
-
 
 
     // Sync device states with Firebase
@@ -329,26 +323,6 @@
     window.toggleSwitch = toggleSwitch;
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
     // JavaScript to update date and time every second
     function updateDateTime() {
@@ -372,6 +346,8 @@
 </script>
 
 
+<script>
+</script>
 
 
 <script>
@@ -397,6 +373,148 @@
                 fetchProfessorRFIDForExit();
             }, 3000);
         });
+
+
+        setInterval(() => {
+            fetch("/get-rfid")
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Scanned RFID:", data.rfid);
+                    let loggedInUserRFID = "{{ auth()->user()->rfid_uid }}";
+                    if (data.rfid && data.rfid.trim() === loggedInUserRFID.trim()) {
+                        console.log("RFID matched!");
+                        validateScheduleAndShowModal();
+                    }
+                })
+                .catch(error => console.error("Error fetching RFID:", error));
+        }, 3000);
+
+
+    function validateScheduleAndShowModal() {
+        const userId = "{{ auth()->user()->id }}";
+        const classroomId = '32';
+
+        let currentTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
+        currentTime = new Date(currentTime).toTimeString().split(' ')[0];
+
+        fetch(`/validate-schedule?classroom_id=${classroomId}&user_id=${userId}&current_time=${currentTime}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.validSchedule) {
+                    showConfirmationModal(data.scheduleId);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Access Denied',
+                        text: 'You do not have a valid schedule for this classroom at the current time.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => console.error("Error validating schedule:", error));
+    }
+
+    function showConfirmationModal(scheduleId) {
+        var userHasActiveSession = @json(isset($activeLog) && $activeLog && isset($schedule) && $schedule->user_id === auth()->user()->id ? true : false);
+
+        if (document.getElementById('confirmAccessModal') && document.getElementById('confirmAccessModal').classList.contains('show')) {
+            console.log("Modal is already open.");
+            return;
+        }
+
+        if (typeof userHasActiveSession === 'undefined') {
+            userHasActiveSession = false;
+        }
+
+        if (userHasActiveSession) {
+            console.log("User already has an active session for this classroom.");
+            return;
+        }
+
+        fetch(`/active-log?professor_id={{ auth()->user()->id }}&schedule_id=${scheduleId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.active) {
+                    console.log("User already has an active session for this classroom.");
+                    return;
+                }
+
+                const modalHtml = `
+                    <div class="modal fade" id="confirmAccessModal" tabindex="-1" aria-labelledby="confirmAccessModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmAccessModalLabel">Confirm Access to CL1</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p>Are you sure you want to access CL1?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-success" id="confirmAccessBtn">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                const confirmModal = new bootstrap.Modal(document.getElementById('confirmAccessModal'));
+                confirmModal.show();
+
+                document.getElementById('confirmAccessBtn').addEventListener('click', function () {
+                    grantAccessToClassroom(scheduleId);
+                    confirmModal.hide();
+                    document.getElementById('confirmAccessModal').remove();
+                });
+            })
+            .catch(error => {
+                console.error('Error checking active session:', error);
+            });
+    }
+
+    function grantAccessToClassroom(scheduleId) {
+        const professorId = "{{ auth()->user()->id }}";
+        const rfid = "{{ auth()->user()->rfid_uid }}";
+
+        fetch("/schedule-log", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({
+                user_id: professorId,
+                schedule_id: scheduleId,
+                rfid_no: rfid,
+                start_time: new Date().toISOString(),
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Access Granted",
+                    text: "You may now enter CL1.",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed",
+                    text: "Something went wrong while logging the entry.",
+                });
+            }
+        })
+        .catch(error => console.error("Error logging entry:", error));
+    }
+
 
         function fetchProfessorRFIDForExit() {
             fetch("/get-professor-rfid")
